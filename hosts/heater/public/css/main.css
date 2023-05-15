@@ -1,0 +1,475 @@
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+:focus, :active {
+  outline: none;
+}
+
+a:focus, a:active {
+  outline: none;
+}
+
+nav, footer, header, aside {
+  display: block;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+input, button, textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*--------------------*/
+body {
+  height: 100%;
+  font-family: "Arial";
+  font-size: 1.3rem;
+  color: white;
+}
+
+.body__Overflow_y_hidden {
+  overflow-y: hidden;
+}
+
+.wrapper {
+  position: relative;
+  min-height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 100%;
+  background: #5C5C5C;
+}
+
+a:visited, a:active, a:link {
+  color: white;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  background: #5C5C5C;
+  color: white;
+}
+.header .menu__list {
+  display: flex;
+  max-width: 600px;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+  height: 100px;
+  margin: 0 auto;
+  align-items: center;
+}
+.header .menu__list li {
+  padding: 20px;
+  text-align: center;
+  border: 1.5px solid white;
+  border-radius: 0.5rem;
+  background: #5C5C5C;
+}
+
+.content, #app, #debug {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin-bottom: calc(1.3rem + 20px);
+}
+
+.content {
+  margin-top: 100px;
+}
+
+.room {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  min-height: 100px;
+  max-width: 600px;
+  color: white;
+  background-color: #5C5C5C;
+  border: 1.5px solid white;
+  justify-content: space-between;
+  padding: 2px;
+  flex-flow: row nowrap;
+  border-radius: 0.5rem;
+  flex-direction: row;
+}
+.room__temperature_name {
+  flex-direction: column;
+}
+.room__temperature span {
+  margin: 0 30px 0 0;
+}
+.room__clock_debug, .room__temperature_name {
+  display: flex;
+  justify-content: space-between;
+  flex: 0 0 75%;
+  align-self: start;
+  padding: 1%;
+  flex-direction: column;
+}
+.room__clock_debug, .room__temperature_block, .room__block_status {
+  flex-flow: row nowrap;
+}
+.room__debug {
+  margin: 0 20% 0 0;
+}
+.room__block_status {
+  display: flex;
+  justify-content: space-between;
+  flex: 0 0 25%;
+  padding-right: 5px;
+}
+.room__temperature_block {
+  display: flex;
+  align-self: center;
+}
+.room__temperature_value {
+  margin: 0 0 0 2px;
+  font-size: 0.78rem;
+}
+.room__state, .room__settings {
+  align-self: center;
+}
+
+.loading_status {
+  margin: 0 auto;
+  align-self: center;
+}
+
+.footer {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #5C5C5C;
+  height: calc(1.3rem + 20px);
+  bottom: 0px;
+}
+.footer__content {
+  font-size: 1.3rem;
+  align-self: center;
+}
+
+.modal__shadow_main, .modal__shadow_child1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.modal__shadow_background {
+  background-color: rgba(199, 180, 180, 0.5);
+}
+.modal__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin-top: 20px;
+}
+.modal__body {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 450px;
+  background-color: #5C5C5C;
+  border: 1.5px solid white;
+  border-radius: 0.5rem;
+  margin: 0 auto;
+}
+.modal__header {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: #747474;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.modal__close {
+  position: absolute;
+  font-family: sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  right: 5px;
+  top: 5px;
+}
+.modal__title {
+  margin: 5px 5px;
+}
+.modal__content {
+  display: flex;
+  position: relative;
+  flex-flow: column nowrap;
+  margin: 10px;
+}
+.modal__modal_mode {
+  z-index: 1001;
+}
+.modal__modal_setting {
+  z-index: 1002;
+}
+.modal__modal_period_mode {
+  z-index: 1003;
+}
+.modal__mode_list {
+  height: 80px;
+}
+.modal__mode_list, .modal__mode_setting {
+  display: flex;
+  position: relative;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+.modal__mode_block {
+  margin: 15px;
+}
+.modal__settings_block {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.modal__bottom_line {
+  border-bottom: 5px solid white;
+}
+.modal__temp_relay_block {
+  display: flex;
+  flex-flow: column nowrap;
+  padding-bottom: 10px;
+  border-bottom: 2px solid white;
+}
+.modal__temp_relay_block input {
+  font-size: 20px;
+}
+.modal__temp_relay_setting {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 40px;
+}
+.modal__temp_relay_img {
+  height: 60px;
+}
+.modal__temp_relay_text {
+  width: 80px;
+}
+.modal__temp_relay_element {
+  margin: 5px 0;
+}
+.modal__temp_block {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+.modal__temp_element {
+  display: inline-flex;
+  flex-flow: column nowrap;
+  align-self: center;
+  text-align: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+.modal__temp_element img {
+  margin: auto;
+  text-align: center;
+  align-self: center;
+}
+.modal__temp_element p {
+  font-size: 40px;
+}
+.modal__hide_text {
+  color: #a49d9d;
+}
+.modal__schedule_container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+.modal__schedule_block {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+.modal__schedule_element {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1 1 33.333%;
+  justify-content: space-between;
+  align-self: center;
+}
+.modal__schedule_info {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-left: 40px;
+}
+.modal__schedule_info p {
+  margin: auto 10px;
+  font-size: 20px;
+}
+.modal__schedule_mode_select_block, .modal__schedule_mode_select_element {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.modal__schedule_mode_select_element {
+  margin-left: 20px;
+}
+.modal__footer {
+  display: flex;
+  position: relative;
+  background-color: #747474;
+  min-height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+.modal__schedule_footer {
+  display: flex;
+  flex-flow: column nowrap;
+  align-self: center;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+.modal__schedule_footer_keys {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 2px 0;
+}
+.modal__schedule_keys_block {
+  display: flex;
+  flex-flow: row nowrap;
+  min-width: 180px;
+}
+.modal__schedule_keys_block p {
+  margin: auto 5px;
+}
+.modal__footer_button {
+  font-weight: bold;
+  font-size: 16px;
+  width: 100px;
+  height: 30px;
+  border-radius: 0.5rem;
+  margin: auto;
+}
+
+.debug__content {
+  display: flex;
+  flex: 1 1 auto;
+  margin: 0 20px;
+  flex-flow: column nowrap;
+  background: #5C5C5C;
+}
+.debug__block_column {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+.debug__block_row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.debug__block_list_path {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+.debug__element {
+  margin: 5px;
+}
+.debug__element_input_250 {
+  font-size: 1.3rem;
+  width: 250px;
+}
+.debug__element_input_30 {
+  font-size: 1.3rem;
+  width: 30px;
+}
+.debug__button {
+  border: 1.5px solid white;
+  border-radius: 0.5rem;
+  padding: 5px;
+  min-height: 40px;
+  margin: 5px;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid white;
+  border-collapse: collapse;
+  width: 2%;
+  padding: 5px;
+  word-wrap: break-word;
+}
