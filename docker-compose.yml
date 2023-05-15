@@ -1,0 +1,79 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ${WORKDIR_LOCAL}:${WORKDIR_CONTAINER}
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/log:/var/log/nginx/
+    working_dir: ${WORKDIR_CONTAINER}
+    depends_on:
+      - php_fpm
+    networks:
+      - app_net
+    container_name: app_nginx
+  php_fpm:
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    build:
+      context: ./
+      args:
+        PHP_VER: ${PHP_VER}
+        APP_USER: ${APP_USER}
+        APP_UID: ${APP_UID}
+      dockerfile: ./php-fpm/DockerFile
+    working_dir: ${WORKDIR_CONTAINER}
+    volumes:
+      - ${WORKDIR_LOCAL}:${WORKDIR_CONTAINER}
+    depends_on:
+      - mysql
+    networks:
+      - app_net
+    container_name: app_php
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/db:/var/lib/mysql
+      - ./mysql/log:/var/log/mysql
+    environment:
+      #MYSQL_DATABASE: heater
+      MYSQL_USER: webdev
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: 12345
+    networks:
+      - app_net
+    container_name: app_mysql
+  pma:
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    ports:
+      - "81:80"
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      MYSQL_USER: webdev
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: 12345
+      UPLOAD_LIMIT: 10000M
+    networks:
+      - app_net
+    container_name: app_pma
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app_net
+    container_name: app_redis
+networks:
+  app_net:
+    driver: bridge
