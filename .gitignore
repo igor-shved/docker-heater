@@ -1,3 +1,5 @@
-/mysq/db
-/mysql/log
-/nginx/log
+**/db
+**/log
+**/vendor
+**/node_modules
+*.log
