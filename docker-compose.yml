@@ -10,14 +10,10 @@ services:
     volumes:
       - ${WORKDIR_LOCAL}:${WORKDIR_CONTAINER}
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/php_fastcgi.conf:/etc/nginx/php_fastcgi.conf
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - ./nginx/log:/var/log/nginx/
-      - ./nginx/ssl:/etc/letsencrypt
-      - ./host/letsencrypt:/var/www/letsencrypt
-      - ./nginx/security.conf:/etc/nginx/security.conf
-      - ./nginx/letsencrypt.conf:/etc/nginx/letsencrypt.conf
-      - ./nginx/dhparam.pem:/etc/nginx/dhparam.pem
+      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./nginx/user.d:/etc/nginx/user.d
     working_dir: ${WORKDIR_CONTAINER}
     depends_on:
       - php_fpm

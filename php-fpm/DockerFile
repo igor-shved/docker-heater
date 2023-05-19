@@ -61,13 +61,20 @@ FROM php:$PHP_VER
 	  && docker-php-source delete
 	
 	RUN apt update && apt install -y git
+
+# Install node and npm in container
+	RUN apt update && apt install -y nodejs && apt install -y npm
+
+# php.ini
     ADD ./php-fpm/php.ini /usr/local/etc/php/conf.d/
+
 # Get latest Composer
 	COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # Create system user to run Composer and Artisan Commands
 	RUN useradd -G www-data,root -u $APP_UID -d /home/$APP_USER $APP_USER
-	RUN mkdir -p /home/$APP_USER/.composer && \
-    chown -R $APP_USER:$APP_USER /home/$APP_USER
+	RUN mkdir -p /home/$APP_USER/.composer && chown -R $APP_USER:$APP_USER /home/$APP_USER
+
 # Clear cache
 	RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 	
