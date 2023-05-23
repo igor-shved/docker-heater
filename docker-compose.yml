@@ -14,6 +14,7 @@ services:
       - ./nginx/log:/var/log/nginx/
       - ./nginx/letsencrypt:/etc/letsencrypt
       - ./nginx/user.d:/etc/nginx/user.d
+      - ./nginx/ssl.d:/etc/nginx/ssl.d
     working_dir: ${WORKDIR_CONTAINER}
     depends_on:
       - php_fpm
