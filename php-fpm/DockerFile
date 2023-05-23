@@ -63,7 +63,8 @@ FROM php:$PHP_VER
 	RUN apt update && apt install -y git
 
 # Install node and npm in container
-	RUN apt update && apt install -y nodejs && apt install -y npm
+	RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - &&\
+	apt-get install -y nodejs
 
 # php.ini
     ADD ./php-fpm/php.ini /usr/local/etc/php/conf.d/
