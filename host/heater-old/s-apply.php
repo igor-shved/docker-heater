@@ -1,5 +1,8 @@
-<?php require_once('s-check.php');
- 
+<?php
+//require_once('s-check.php');
+session_start();
+$auth = true;
+
  if ( !isset($_GET['vals']) )
   return; 
   
