@@ -183,7 +183,7 @@
 
 <script>
 import modal_child from "././ModalChild.vue";
-import schedule_list from "../room/ScheduleList.vue";
+import schedule_list from "../mode/ScheduleList.vue";
 import select_temperature from "../mode/SelectTemperature.vue";
 import {mapActions, mapState} from "vuex";
 

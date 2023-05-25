@@ -72,6 +72,11 @@ app.mixin({
                 return obj;
             }
         }
+        this.$consoleOutArrayObjects = function (arrayObjects) {
+            arrayObjects.map(
+                item => (item.map())
+            );
+        }
     }
 })
 

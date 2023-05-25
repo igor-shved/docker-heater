@@ -117,7 +117,7 @@ export default {
                 );
                 this.curRoom.currentMode = this.selectMode;
             }
-            console.log('arrayNewSetting = ' + this.arrayNewSetting[0].name, 'length = ' + this.arrayNewSetting.length);
+            console.log(this.arrayNewSetting);
             this.closeModalMode();
         },
     },

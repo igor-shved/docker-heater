@@ -149,7 +149,7 @@
 
 <script>
 import modal_child from "../modal/ModalChild.vue";
-import select_temperature from "../mode/SelectTemperature.vue";
+import select_temperature from "./SelectTemperature.vue";
 import {mapState} from "vuex";
 
 export default {
