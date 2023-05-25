@@ -5,13 +5,63 @@ namespace App\Models\api;
 use App\Helpers\ServiceHelpers;
 use Illuminate\Database\Eloquent\Model;
 
-//use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use PHPUnit\Util\Xml\Exception;
 
 
 class RoomsData extends Model
 {
-    function countVal($val)
+    private $diskFiles;
+
+    // Loik Max example
+//    private $can_edit = false;
+//
+//    /**
+//     * @return bool
+//     */
+//    public function isCanEdit(): bool
+//    {
+//        return $this->can_edit;
+//    }
+//
+//    /**
+//     * @param bool $can_edit
+//     */
+//    public function setCanEdit(bool $can_edit): RoomsData
+//    {
+//        $this->can_edit = $can_edit;
+//        return $this;
+//    }
+//
+//    public function getSomeSetings($key)
+//    {
+//
+//        if($this->can_edit) {
+//            if ($key == ' count') {
+//                return $this->countVal(1);
+//            }
+//        }
+//        else {
+//            throw new Exception("DENY");
+//        }
+//
+//        return $this;
+//    }
+//
+//    public static  function getInstanse()
+//    {
+//        return new RoomsData();
+//    }
+
+
+    public function __construct()
+    {
+        $this->diskFiles = Storage::disk('projectFiles');
+    }
+
+
+    public function countVal($val)
     {
         $retVal = 0;
         if (!is_null($val)) {
@@ -23,18 +73,12 @@ class RoomsData extends Model
         return $retVal;
     }
 
-    private function getArrNames(): array
+    public function getArrNames(): array
     {
-        /*$disk = Storage::disk('public');
-          $arrNames = [];
-          if ($disk->exists('heater/outputs/names')) {
-              $arrNames = explode(';', $disk->get('heater/outputs/names'));
-              dd($arrNames);
-          }*/
         $filePath = './outputs/names';
         $arrNamesFile = [];
-        if (File::exists($filePath)) {
-            $arrNamesFile = explode(';', File::get($filePath), 18);
+        if ($this->diskFiles->exists($filePath)) {
+            $arrNamesFile = explode(';', $this->diskFiles->get($filePath), 18);
         }
         $collectNamesFile = collect($arrNamesFile);
         return $collectNamesFile->filter(function ($item, $key) {
@@ -50,12 +94,12 @@ class RoomsData extends Model
     {
         $filePath = './outputs/st';
         $st = '';
-        if (File::exists($filePath)) {
-            $st = File::get($filePath);
+        if ($this->diskFiles->exists($filePath)) {
+            $st = $this->diskFiles->get($filePath);
         }
         if (strlen($st) < 17) {
             $st = "00000000000000000:restore";
-            File::put($filePath, $st, true);
+            $this->diskFiles->put($filePath, $st, true);
         }
         return $st;
     }
@@ -73,12 +117,12 @@ class RoomsData extends Model
     }
 
 
-    private function getLatestData(): array
+    public function getLatestData(): array
     {
         $filePath = './datalog/latestdata.php';
         $latestData = [];
-        if (File::exists($filePath)) {
-            $latestData = explode(';', File::get($filePath));
+        if ($this->diskFiles->exists($filePath)) {
+            $latestData = explode(';', $this->diskFiles->get($filePath));
         }
         return $latestData;
     }
@@ -91,7 +135,7 @@ class RoomsData extends Model
         return $state;
     }
 
-    private function getScheduleTemp($arrMode)
+    public function getScheduleTemp($arrMode)
     {
         /*$curDateTimeZone = new \DateTimeZone("Europe/Kiev");
         $curDateTime = new \DateTime("now", $curDateTimeZone);
@@ -111,7 +155,7 @@ class RoomsData extends Model
 //        dump($scheduleArrTime);
         $scheduleArr[0] = 0;
         $scheduleArr[6] = 2360;
-        $countScheduleArrTime = RoomsData::countVal($scheduleArrTime);
+        $countScheduleArrTime = $this->countVal($scheduleArrTime);
         for ($i = 1; $i < 6; $i++) {
             if ($scheduleIntervalsNum < $i) {
                 break;
@@ -150,7 +194,7 @@ class RoomsData extends Model
             case 5:
                 return 'выкл';
             case 2:
-                return RoomsData::getScheduleTemp($arrMode);
+                return $this->getScheduleTemp($arrMode);
             default:
                 return '--°c';
         }
@@ -184,18 +228,18 @@ class RoomsData extends Model
         $roomsTsensors = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
         $roomsPOutputs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-        $roomsName = RoomsData::getArrNames();
+        $roomsName = $this->getArrNames();
 
-        $latestData = RoomsData::getLatestData();
+        $latestData = $this->getLatestData();
         $modeXStrPrev = $latestData[23];
-        $state = RoomsData::setState($latestData);
+        $state = $this->setState($latestData);
         $stateArray = [];
         for ($i = 1; $i <= 16; $i++) {
             $stateArray[] = ['number' => $i, 'state' => $state % 2];
             $state = floor($state / 2);
         }
         //ServiceHelpers::debughtml(['$stateArray' => $stateArray]);
-        $st = RoomsData::getSt();
+        $st = $this->getSt();
         //Todo изменение выходов
         $stateDebugStr = $st;
         $len = strlen($st);
@@ -207,11 +251,10 @@ class RoomsData extends Model
         }
         $followAllHouse[0] = 1;
 
-        $updateSettings = RoomsData::getupdateSettings($st);
-
+        $updateSettings = $this->getupdateSettings($st);
         for ($i = 0; $i < 17; $i++) {
             $filePath = './outputs/' . $i;
-            $parts = explode(':', File::get($filePath));
+            $parts = explode(':', $this->diskFiles->get($filePath));
             $p1 = explode(";", $parts[0]);
             $p2 = explode(";", $parts[1]);
             $currentMode[$i] = $p1[1];
@@ -228,7 +271,7 @@ class RoomsData extends Model
             for ($j = 0; $j < $intervalsNum; $j++) {
                 $val = hexdec($p2[$j + 4]);
 
-                $time = substr($val, 0, RoomsData::countVal($val) - 4);
+                $time = substr($val, 0, $this->countVal($val) - 4);
                 $scheduleArrTime[$i][$j] = $time;
 
                 $temp = substr($val, -3, 3);
@@ -267,20 +310,20 @@ class RoomsData extends Model
             $currentModeValue = (int)$currentMode[$index];
             if ($index == 0) {
                 $arrayModes = [
-                    ['id' => 1, 'textMode' => 'ручной', 'img' => 'mode-hand.png', 'isSelect' => RoomsData::isSelectSet(1, $currentModeValue)],
-                    ['id' => 2, 'textMode' => 'по расписанию', 'img' => 'mode-schedule.png', 'isSelect' => RoomsData::isSelectSet(2, $currentModeValue)],
-                    ['id' => 3, 'textMode' => 'никого нет дома', 'img' => 'mode-standby.png', 'isSelect' => RoomsData::isSelectSet(3, $currentModeValue)],
-                    ['id' => 4, 'textMode' => 'включить', 'img' => 'mode-on.png', 'isSelect' => RoomsData::isSelectSet(4, $currentModeValue)],
-                    ['id' => 5, 'textMode' => 'выключить', 'img' => 'mode-off.png', 'isSelect' => RoomsData::isSelectSet(5, $currentModeValue)],
-                    ['id' => 7, 'textMode' => 'индивидуально', 'img' => 'individual.png', 'isSelect' => RoomsData::isSelectSet(7, $currentModeValue)],
+                    ['id' => 1, 'textMode' => 'ручной', 'img' => 'mode-hand.png', 'isSelect' => $this->isSelectSet(1, $currentModeValue)],
+                    ['id' => 2, 'textMode' => 'по расписанию', 'img' => 'mode-schedule.png', 'isSelect' => $this->isSelectSet(2, $currentModeValue)],
+                    ['id' => 3, 'textMode' => 'никого нет дома', 'img' => 'mode-standby.png', 'isSelect' => $this->isSelectSet(3, $currentModeValue)],
+                    ['id' => 4, 'textMode' => 'включить', 'img' => 'mode-on.png', 'isSelect' => $this->isSelectSet(4, $currentModeValue)],
+                    ['id' => 5, 'textMode' => 'выключить', 'img' => 'mode-off.png', 'isSelect' => $this->isSelectSet(5, $currentModeValue)],
+                    ['id' => 7, 'textMode' => 'индивидуально', 'img' => 'individual.png', 'isSelect' => $this->isSelectSet(7, $currentModeValue)],
                 ];
             } else {
                 $arrayModes = [
-                    ['id' => 1, 'textMode' => 'ручной', 'img' => 'mode-hand.png', 'isSelect' => RoomsData::isSelectSet(1, $currentModeValue)],
-                    ['id' => 2, 'textMode' => 'по расписанию', 'img' => 'mode-schedule.png', 'isSelect' => RoomsData::isSelectSet(2, $currentModeValue)],
-                    ['id' => 3, 'textMode' => 'никого нет дома', 'img' => 'mode-standby.png', 'isSelect' => RoomsData::isSelectSet(3, $currentModeValue)],
-                    ['id' => 4, 'textMode' => 'включить', 'img' => 'mode-on.png', 'isSelect' => RoomsData::isSelectSet(4, $currentModeValue)],
-                    ['id' => 5, 'textMode' => 'выключить', 'img' => 'mode-off.png', 'isSelect' => RoomsData::isSelectSet(5, $currentModeValue)],
+                    ['id' => 1, 'textMode' => 'ручной', 'img' => 'mode-hand.png', 'isSelect' => $this->isSelectSet(1, $currentModeValue)],
+                    ['id' => 2, 'textMode' => 'по расписанию', 'img' => 'mode-schedule.png', 'isSelect' => $this->isSelectSet(2, $currentModeValue)],
+                    ['id' => 3, 'textMode' => 'никого нет дома', 'img' => 'mode-standby.png', 'isSelect' => $this->isSelectSet(3, $currentModeValue)],
+                    ['id' => 4, 'textMode' => 'включить', 'img' => 'mode-on.png', 'isSelect' => $this->isSelectSet(4, $currentModeValue)],
+                    ['id' => 5, 'textMode' => 'выключить', 'img' => 'mode-off.png', 'isSelect' => $this->isSelectSet(5, $currentModeValue)],
                 ];
             }
             $arrMode = [
@@ -294,7 +337,7 @@ class RoomsData extends Model
                 'scheduleArrTemp' => $scheduleArrTemp[$index],
             ];
             $scheduleArrRoom = [];
-            for ($i = 0; $i < count($scheduleArrTime[$index]); $i++){
+            for ($i = 0; $i < count($scheduleArrTime[$index]); $i++) {
                 $scheduleArrRoom[] = [
                     'numStr' => $i + 1,
                     'time' => intval($scheduleArrTime[$index][$i]),
@@ -307,8 +350,8 @@ class RoomsData extends Model
                 'id' => $index,
                 'roomName' => $roomsName[$index],
                 'currentMode' => $currentModeValue,
-                'currentModeTextArray' => RoomsData::getCurrentModeText($arrMode),
-                'roomNowTemp' => RoomsData::getNowTempText($latestData[3 + $roomsTsensors[$index]]),
+                'currentModeTextArray' => $this->getCurrentModeText($arrMode),
+                'roomNowTemp' => $this->getNowTempText($latestData[3 + $roomsTsensors[$index]]),
                 'currentStatusRelay' => $currentStatusRelay,
                 'rightNowTemp' => $rightNowTemp[$index],
                 'standByTemp' => $standByTemp[$index],
@@ -329,9 +372,11 @@ class RoomsData extends Model
             ];
         }
         //dd($latestData, $roomsTsensors, $roomsPOutputs, $arrayRooms);
-
         return $arrayRooms;
     }
 
+    public function saveSettings($arraySettings)
+    {
 
+    }
 }

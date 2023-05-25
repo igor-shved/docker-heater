@@ -79,7 +79,7 @@
             </div>
         </template>
         <template #footer>
-            <button @click="saveSelectSetting" class="modal__footer_button">OK</button>
+            <button @click="saveRelayTempSetting" class="modal__footer_button">OK</button>
         </template>
     </modal_child>
 
@@ -257,7 +257,6 @@ export default {
         },
         modalStatusTemp(statusModal) {
             this.isOpenModalTemp = statusModal;
-            this.isOpenModalTemp = statusModal;
         },
         modalStatusSchedule(statusModal) {
             if (!statusModal && !this.$isEqualArrays(this.arrSchedule, this.room.scheduleArrRoom)) {
@@ -269,12 +268,9 @@ export default {
             this.selectMode = selMode;
         },
         saveSelectMode() {
-            if (this.room.selectMode != null)
-                this.SET_NEW_SETTING_ARRAY({
-                    idRoom: this.room.id,
-                    name: 'selectMode',
-                    value: this.selectMode
-                });
+            if (this.room.selectMode != null) {
+                this.setNewSetting(this.room.id, 'selectMode', this.selectMode);
+            }
         },
         tempSensorClick(sideClick) {
             let index = this.arrayTemp.findIndex(obj => obj.value === this.nameTempRoom);
@@ -313,31 +309,29 @@ export default {
         relayRight() {
             this.relayClick('right')
         },
-        saveSelectSetting() {
+        saveRelayTempSetting() {
+            if (this.nameRoom !== this.beforeNameRoom) {
+                this.setNewSetting(this.room.id, 'nameRoom', this.nameRoom);
+            }
+            if (this.nameTempRoom !== this.beforeNameTempRoom) {
+                this.setNewSetting(this.room.id, 'nameTempRoom', this.nameTempRoom);
+            }
+            if (this.nameRelayRoom !== this.beforeNameRelayRoom) {
+                this.setNewSetting(this.room.id, 'nameRelayRoom', this.nameRelayRoom);
+            }
 
+            this.modalStatusSetting(false);
         },
         saveTempSetting() {
             if (this.tempNobodyHome !== this.room.standByTemp * 10) {
-                this.SET_NEW_SETTING_ARRAY(
-                    {
-                        idRoom: this.room.id,
-                        name: 'tempNobodyHome',
-                        value: this.tempNobodyHome / 10
-                    }
-                );
+                this.setNewSetting(this.room.id, 'tempNobodyHome', this.tempNobodyHome / 10);
             }
             this.modalStatusTemp(false);
         },
         saveScheduleSetting() {
             if (!this.$isEqualArrays(this.arrSchedule, this.room.scheduleArrRoom)) {
                 this.room.scheduleArrRoom = this.arrSchedule.map(item => ({...item}));
-                this.SET_NEW_SETTING_ARRAY(
-                    {
-                        idRoom: this.room.id,
-                        name: 'scheduleArray',
-                        value: this.arrSchedule.map(item => ({...item}))
-                    }
-                );
+                this.setNewSetting(this.room.id, 'scheduleArray', this.arrSchedule.map(item => ({...item})));
             }
             this.modalStatusSchedule(false);
         },
@@ -347,6 +341,13 @@ export default {
             } else {
                 this.componentScheduleKey += '1';
             }
+        },
+        setNewSetting(idRoomProp, nameProp, ValueProp) {
+            this.SET_NEW_SETTING_ARRAY({
+                idRoom: idRoomProp,
+                name: nameProp,
+                value: ValueProp
+            });
         },
         addScheduleItem() {
             if (this.arrSchedule.length >= 6) {
@@ -369,6 +370,7 @@ export default {
                 this.arrSchedule.push({'numStr': 1, 'time': 0, 'temp': 20, 'mode': 0});
             }
             this.rerenderScheduleList();
+
         },
         removeScheduleItem() {
             if (this.arrSchedule.length <= 1)

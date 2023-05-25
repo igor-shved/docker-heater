@@ -111,6 +111,9 @@ const getters = {
         return state.arrayModesRooms;
     },
     arrayNewSetting: state => {
+        if (state.arrayNewSetting.length != 0) {
+            console.log(state.arrayNewSetting[0]);
+        }
         return state.arrayNewSetting;
     },
     currentRoom: state => {

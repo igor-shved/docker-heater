@@ -20130,7 +20130,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     modalStatusTemp: function modalStatusTemp(statusModal) {
       this.isOpenModalTemp = statusModal;
-      this.isOpenModalTemp = statusModal;
     },
     modalStatusSchedule: function modalStatusSchedule(statusModal) {
       if (!statusModal && !this.$isEqualArrays(this.arrSchedule, this.room.scheduleArrRoom)) {
@@ -20144,11 +20143,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.selectMode = selMode;
     },
     saveSelectMode: function saveSelectMode() {
-      if (this.room.selectMode != null) this.SET_NEW_SETTING_ARRAY({
-        idRoom: this.room.id,
-        name: 'selectMode',
-        value: this.selectMode
-      });
+      if (this.room.selectMode != null) {
+        this.setNewSetting(this.room.id, 'selectMode', this.selectMode);
+      }
     },
     tempSensorClick: function tempSensorClick(sideClick) {
       var _this = this;
@@ -20192,14 +20189,21 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     relayRight: function relayRight() {
       this.relayClick('right');
     },
-    saveSelectSetting: function saveSelectSetting() {},
+    saveRelayTempSetting: function saveRelayTempSetting() {
+      if (this.nameRoom !== this.beforeNameRoom) {
+        this.setNewSetting(this.room.id, 'nameRoom', this.nameRoom);
+      }
+      if (this.nameTempRoom !== this.beforeNameTempRoom) {
+        this.setNewSetting(this.room.id, 'nameTempRoom', this.nameTempRoom);
+      }
+      if (this.nameRelayRoom !== this.beforeNameRelayRoom) {
+        this.setNewSetting(this.room.id, 'nameRelayRoom', this.nameRelayRoom);
+      }
+      this.modalStatusSetting(false);
+    },
     saveTempSetting: function saveTempSetting() {
       if (this.tempNobodyHome !== this.room.standByTemp * 10) {
-        this.SET_NEW_SETTING_ARRAY({
-          idRoom: this.room.id,
-          name: 'tempNobodyHome',
-          value: this.tempNobodyHome / 10
-        });
+        this.setNewSetting(this.room.id, 'tempNobodyHome', this.tempNobodyHome / 10);
       }
       this.modalStatusTemp(false);
     },
@@ -20208,13 +20212,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         this.room.scheduleArrRoom = this.arrSchedule.map(function (item) {
           return _objectSpread({}, item);
         });
-        this.SET_NEW_SETTING_ARRAY({
-          idRoom: this.room.id,
-          name: 'scheduleArray',
-          value: this.arrSchedule.map(function (item) {
-            return _objectSpread({}, item);
-          })
-        });
+        this.setNewSetting(this.room.id, 'scheduleArray', this.arrSchedule.map(function (item) {
+          return _objectSpread({}, item);
+        }));
       }
       this.modalStatusSchedule(false);
     },
@@ -20224,6 +20224,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       } else {
         this.componentScheduleKey += '1';
       }
+    },
+    setNewSetting: function setNewSetting(idRoomProp, nameProp, ValueProp) {
+      this.SET_NEW_SETTING_ARRAY({
+        idRoom: idRoomProp,
+        name: nameProp,
+        value: ValueProp
+      });
     },
     addScheduleItem: function addScheduleItem() {
       if (this.arrSchedule.length >= 6) {
@@ -20579,6 +20586,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         });
         this.curRoom.currentMode = this.selectMode;
       }
+      console.log('arrayNewSetting = ' + this.arrayNewSetting[0].name, 'length = ' + this.arrayNewSetting.length);
       this.closeModalMode();
     }
   }),
@@ -21337,7 +21345,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         onClick: _cache[9] || (_cache[9] = function () {
-          return $options.saveSelectSetting && $options.saveSelectSetting.apply($options, arguments);
+          return $options.saveRelayTempSetting && $options.saveRelayTempSetting.apply($options, arguments);
         }),
         "class": "modal__footer_button"
       }, "OK")];
@@ -22449,6 +22457,9 @@ var getters = {
     return state.arrayModesRooms;
   },
   arrayNewSetting: function arrayNewSetting(state) {
+    if (state.arrayNewSetting.length != 0) {
+      console.log(state.arrayNewSetting[0]);
+    }
     return state.arrayNewSetting;
   },
   currentRoom: function currentRoom(state) {

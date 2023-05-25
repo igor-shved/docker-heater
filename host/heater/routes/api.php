@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('/get_rooms_data', [RoomsDataController::class, 'getRoomsData']);
-Route::post('/post_files_data', [DataFilesController::class, 'getDataFiles']);
+Route::post('/get_data_files', [DataFilesController::class, 'getDataFiles']);
+Route::post('/save_rooms_data', [DataFilesController::class, 'saveRoomsData']);
 
 
 

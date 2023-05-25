@@ -23,6 +23,9 @@
             <a class="debug__block_row debug__button" href="" @click.prevent="stopRead">
                 Остановить вывод содержимого
             </a>
+            <a class="debug__block_row debug__button" href="" @click.prevent="clearTable">
+                Очистить таблицу
+            </a>
         </div>
         <div class="debug__block_list_path">
             <div v-for="(item, index) in arrayPath" :key="index">
@@ -62,7 +65,7 @@ export default {
             arrayPath: [],
             arrayRequest: [],
             arrayDataFiles: [],
-            pauseRead: 2,
+            pauseRead: 15,
         }
     },
     mounted() {
@@ -125,7 +128,7 @@ export default {
                         this.arrayDataFiles.push(response.data.data);
                     })
                     .catch(err => {
-                        console.log('error /api/post_files_data', err.response.data);
+                        console.log('error /api/get_data_files', err.response.data);
                     })
                 this.execTimeoutRead = setTimeout(execRead, this.pauseRead * 1000);
             }
@@ -137,6 +140,9 @@ export default {
         },
         stopRead() {
             clearTimeout(this.execTimeoutRead);
+        },
+        clearTable() {
+           this.arrayDataFiles.splice(0, this.arrayDataFiles.length);
         }
     },
 }

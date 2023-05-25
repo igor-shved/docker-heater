@@ -18,8 +18,8 @@ class DataFiles extends Model
 
         $arrayData = [];
         foreach ($arrayPath as $item) {
-            $arrayData[] = DataFiles::getDataPath($item);
-            //$arrayData[] = DataFiles::getDataPath('http://192.168.200.77/heater/datalog/latestdata.php');
+            $arrayData[] = $this->getDataPath($item);
+            //$arrayData[] = ProjectFiles::getDataPath('http://192.168.200.77/heater/datalog/latestdata.php');
             //Log::channel('debug')->debug('$arrayData: ' . json_encode($arrayData));
         }
         return response()->json(['success' => true, 'data' => $arrayData, 'status' => 200]);

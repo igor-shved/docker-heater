@@ -14,6 +14,7 @@ class DataFilesController extends Controller
     {
         $data = Arr::get($request->all(),'data',[]);
         Log::channel('debug')->debug('$data: ' . json_encode($data));
-        return DataFiles::getDataFromFiles($data);
+        $data_files = new DataFiles();
+        return $data_files->getDataFromFiles($data);
     }
 }

@@ -19734,7 +19734,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       arrayPath: [],
       arrayRequest: [],
       arrayDataFiles: [],
-      pauseRead: 2
+      pauseRead: 15
     };
   },
   mounted: function mounted() {
@@ -19822,7 +19822,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }).then(function (response) {
                     _this3.arrayDataFiles.push(response.data.data);
                   })["catch"](function (err) {
-                    console.log('error /api/post_files_data', err.response.data);
+                    console.log('error /api/get_data_files', err.response.data);
                   });
                   _this3.execTimeoutRead = setTimeout(execRead, _this3.pauseRead * 1000);
                 case 3:
@@ -19843,6 +19843,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     stopRead: function stopRead() {
       clearTimeout(this.execTimeoutRead);
+    },
+    clearTable: function clearTable() {
+      this.arrayDataFiles.splice(0, this.arrayDataFiles.length);
     }
   }
 });
@@ -19973,7 +19976,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.stopRead && $options.stopRead.apply($options, arguments);
     }, ["prevent"]))
-  }, " Остановить вывод содержимого ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.arrayPath, function (item, index) {
+  }, " Остановить вывод содержимого "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": "debug__block_row debug__button",
+    href: "",
+    onClick: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.clearTable && $options.clearTable.apply($options, arguments);
+    }, ["prevent"]))
+  }, " Очистить таблицу ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.arrayPath, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <label class=\"debug__element\" :for=\"'input'+ index\">Путь к файлу:</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
