@@ -16,7 +16,7 @@ import {mapState} from "vuex";
 
 export default {
     name: "schedule_list",
-    props: ['scheduleArrayProps'],
+    props: ['scheduleArrayProps',''],
     components: {schedule_item},
     data() {
         return {

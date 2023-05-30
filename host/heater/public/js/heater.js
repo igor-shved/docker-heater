@@ -20003,7 +20003,6 @@ __webpack_require__.r(__webpack_exports__);
   props: ['classProps'],
   data: function data() {
     return {
-      selectMode: undefined,
       classWindow: this.classProps
     };
   },
@@ -20084,24 +20083,25 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       arrSchedule: this.roomProps.scheduleArrRoom.map(function (item) {
         return _objectSpread({}, item);
       }),
-      tempNobodyHome: 0,
+      standByTemp: 0,
       classModal: {
         'modal__shadow_child1': true,
         'modal__modal_setting': true,
         'modal__shadow_background': true
       },
-      componentScheduleKey: 'scheduleList'
+      componentScheduleKey: 'scheduleList',
+      selectMode: null
     };
   },
   created: function created() {
-    this.tempNobodyHome = this.room.standByTemp * 10;
+    this.standByTemp = this.room.standByTemp * 10;
     this.SET_CURRENT_ROOM(this.room);
     this.$eventBus.$on('select_mode_set', this.selectModeSet);
     this.$eventBus.$on('modal_open_setting', this.modalStatusSetting);
     this.$eventBus.$on('modal_open_temp', this.modalStatusTemp);
     this.$eventBus.$on('modal_open_schedule', this.modalStatusSchedule);
     this.$eventBus.$on('rerender_schedule_list', this.rerenderScheduleList);
-    this.$eventBus.$on('select_temp_nobody_home', this.selectTempNoBodyHome);
+    this.$eventBus.$on('select_stand_by_temp', this.selectStandByTemp);
   },
   mounted: function mounted() {
     document.body.addEventListener("keydown", this.onKeyDown);
@@ -20114,7 +20114,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.$eventBus.$off('modal_open_setting', this.modalStatusSetting);
     this.$eventBus.$off('modal_open_temp', this.modalStatusTemp);
     this.$eventBus.$off('modal_open_schedule', this.modalStatusSchedule);
-    this.$eventBus.$off('select_temp_nobody_home', this.selectTempNoBodyHome);
+    this.$eventBus.$off('select_stand_by_temp', this.selectStandByTemp);
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapActions)(["SET_CURRENT_ROOM", "SET_NEW_SETTING_ARRAY", "COPY_SCHEDULE"])), {}, {
     closeModalMode: function closeModalMode() {
@@ -20202,8 +20202,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.modalStatusSetting(false);
     },
     saveTempSetting: function saveTempSetting() {
-      if (this.tempNobodyHome !== this.room.standByTemp * 10) {
-        this.setNewSetting(this.room.id, 'tempNobodyHome', this.tempNobodyHome / 10);
+      if (this.standByTemp !== this.room.standByTemp * 10) {
+        this.setNewSetting(this.room.id, 'standByTemp', this.standByTemp / 10);
       }
       this.modalStatusTemp(false);
     },
@@ -20283,8 +20283,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
       this.rerenderScheduleList();
     },
-    selectTempNoBodyHome: function selectTempNoBodyHome(temp) {
-      this.tempNobodyHome = temp;
+    selectStandByTemp: function selectStandByTemp(temp) {
+      console.log('standByTemp = ' + temp);
+      this.standByTemp = temp;
     }
   }),
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
@@ -20604,6 +20605,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.scheduleMode = mode;
     },
     selectTempMode: function selectTempMode(curTempMode) {
+      console.log('changeTempMode = ' + curTempMode);
       this.tempMode = curTempMode;
     },
     savePeriod: function savePeriod() {
@@ -20705,7 +20707,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "schedule_list",
-  props: ['scheduleArrayProps'],
+  props: ['scheduleArrayProps', ''],
   components: {
     schedule_item: _ScheduleItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -20744,10 +20746,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "select_temperature",
-  props: ['tempSelectProps'],
+  props: ['tempSelectProps', 'nameSelectModeProps'],
   data: function data() {
     return {
       tempSelect: this.tempSelectProps,
+      nameSelectMode: this.nameSelectModeProps,
       tenTemp: 0,
       oneTemp: 0,
       tenthTemp: 0
@@ -20777,8 +20780,11 @@ __webpack_require__.r(__webpack_exports__);
         this.tempSelect = 0;
       }
       this.changeTemp();
-      this.$eventBus.$emit('select_temp_nobody_home', this.tempSelect);
-      this.$eventBus.$emit('select_temp_mode', this.tempSelect);
+      if (this.nameSelectMode === 'changeScheduleItem') {
+        this.$eventBus.$emit('select_temp_mode', this.tempSelect);
+      } else if (this.nameSelectMode === 'changeStandByTemp') {
+        this.$eventBus.$emit('select_stand_by_temp', this.tempSelect);
+      }
     },
     tempTenUp: function tempTenUp() {
       this.tempChange(100, 'up');
@@ -20861,13 +20867,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mode_ModeList_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mode/ModeList.vue */ "./resources/js/components/mode/ModeList.vue");
 /* harmony import */ var _mode_SettingsList_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mode/SettingsList.vue */ "./resources/js/components/mode/SettingsList.vue");
 /* harmony import */ var _mode_ModeBlock_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mode/ModeBlock.vue */ "./resources/js/components/mode/ModeBlock.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
 
 
 
@@ -20890,6 +20899,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       curRoom: undefined,
       selectMode: undefined,
       classMode: '',
+      arrayNameSetting: ['currentMode', 'rightNowTemp', 'roomsPOutputs', 'roomsTsensors', 'standByTemp', 'num', 'scheduleIntervalsNum'],
       classArrayModal: {
         'modal__shadow_main': true,
         'modal__shadow_background': true,
@@ -20912,7 +20922,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.$eventBus.$off('close_modal_mode', this.closeModalMode);
     this.$eventBus.$off('select_mode_set', this.selectModeSet);
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapActions)(['LOAD_ROOMS_DATA', 'SET_NEW_SETTING_ARRAY'])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapActions)(['LOAD_ROOMS_DATA', 'SET_NEW_SETTING_ARRAY'])), {}, {
     openModalMode: function openModalMode(selRoom) {
       this.curRoom = selRoom;
       this.arrayModes = this.$getArrayModesFromRoom(this.curRoom.id);
@@ -20927,19 +20937,32 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.selectMode = selMode;
     },
     saveSelectMode: function saveSelectMode() {
+      var needSave = false;
       if (this.selectMode != undefined) {
         this.SET_NEW_SETTING_ARRAY({
           idRoom: this.curRoom.id,
-          name: 'selectMode',
+          name: 'currentMode',
           value: this.selectMode
         });
+        if (this.selectMode === 1) {
+          this.curRoom.currentMode = this.selectMode;
+        }
         this.curRoom.currentMode = this.selectMode;
       }
-      console.log(this.arrayNewSetting);
+      console.log(this.curRoom);
+      // axios.post('/api/post_files_data', {data: this.arrayNewSetting})
+      //     .then(response => {
+      //         console.log('save setting to room ' + this.arrayNewSetting);
+      //     })
+      //     .catch(err => {
+      //         console.log('error /api/save_setting_to_files', err.response.data);
+      //     })
+      //console.log(this.arrayNewSetting);
       this.closeModalMode();
-    }
+    },
+    addMissingSetting: function addMissingSetting(arrNewSettings) {}
   }),
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapState)({
     roomsData: 'roomsData',
     isLoadDataRooms: 'isLoadDataRooms',
     arrayNewSetting: 'arrayNewSetting'
@@ -21284,7 +21307,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "modal__body",
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["stop"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "buttonClose"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "header")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "content")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "footer")])])])], 2 /* CLASS */), $data.isOpenModalSetting ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
-    roomProps: $data.room,
     key: 'modalSetting' + String($data.room.id),
     classProps: $data.classModal
   }, {
@@ -21351,8 +21373,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "OK")];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["roomProps", "classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalTemp ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
-    roomProps: $data.room,
+  }, 8 /* PROPS */, ["classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalTemp ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
     key: 'modalTemp' + String($data.room.id),
     classProps: $data.classModal
   }, {
@@ -21370,8 +21391,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_select_temperature, {
-        key: 'selectTempNobodyHome',
-        tempSelectProps: $data.tempNobodyHome
+        key: 'selectStandByTemp' + String($data.room.id),
+        tempSelectProps: $data.standByTemp,
+        nameSelectModeProps: 'changeStandByTemp'
       }, null, 8 /* PROPS */, ["tempSelectProps"]))];
     }),
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -21383,8 +21405,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "OK")];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["roomProps", "classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalSchedule ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
-    roomProps: $data.room,
+  }, 8 /* PROPS */, ["classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalSchedule ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
     key: 'modalSchedule' + String($data.room.id),
     classProps: $data.classModal
   }, {
@@ -21435,7 +21456,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "OK")])])];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["roomProps", "classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
+  }, 8 /* PROPS */, ["classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -21678,7 +21699,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_modal_child = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal_child");
   var _component_select_temperature = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("select_temperature");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$data.isOpenModalPeriod ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
-    key: 'modalSchedulePeriod',
+    key: 'modalSchedulePeriod' + String(_ctx.currentRoom.id),
     classProps: $data.classModal
   }, {
     buttonClose: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -21747,7 +21768,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["classProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalScheduleMode ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_child, {
-    key: 'modalMode',
+    key: 'modalMode' + String(_ctx.currentRoom.id),
     classProps: $data.classModal
   }, {
     buttonClose: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -21779,7 +21800,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [$data.scheduleMode === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_select_temperature, {
-        key: 'selectTempMode',
+        key: 'selectTempMode' + String(_ctx.currentRoom.id),
+        nameSelectModeProps: 'changeScheduleItem',
         tempSelectProps: $data.tempMode
       }, null, 8 /* PROPS */, ["tempSelectProps"])) : $data.scheduleMode === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_46, _hoisted_49)) : $data.scheduleMode === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_50, _hoisted_53)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),

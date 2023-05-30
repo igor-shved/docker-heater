@@ -1,6 +1,6 @@
 <template>
     <modal_child v-if="isOpenModalPeriod"
-                 :key="'modalSchedulePeriod'"
+                 :key="'modalSchedulePeriod' + String(currentRoom.id)"
                  :classProps="classModal"
     >
         <template #buttonClose>
@@ -67,7 +67,7 @@
     </modal_child>
 
     <modal_child v-if="isOpenModalScheduleMode"
-                 :key="'modalMode'"
+                 :key="'modalMode' + String(currentRoom.id)"
                  :classProps="classModal"
     >
         <template #buttonClose>
@@ -105,8 +105,9 @@
         </template>
         <template #content>
             <select_temperature v-if="scheduleMode === 0"
-                :key="'selectTempMode'"
-                :tempSelectProps="tempMode"
+                                :key="'selectTempMode'  + String(currentRoom.id)"
+                                :nameSelectModeProps="'changeScheduleItem'"
+                                :tempSelectProps="tempMode"
             >
             </select_temperature>
 
@@ -350,7 +351,8 @@ export default {
         selectScheduleMode(mode) {
             this.scheduleMode = mode;
         },
-        selectTempMode(curTempMode){
+        selectTempMode(curTempMode) {
+            console.log('changeTempMode = ' + curTempMode);
             this.tempMode = curTempMode;
         },
         savePeriod() {

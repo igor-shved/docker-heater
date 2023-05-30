@@ -3,6 +3,7 @@
                   :roomProps="curRoom"
                   :key="'modalAllSetting'"
                   :classProps="classArrayModal"
+
     >
         <template #buttonClose>
             <a href="" @click.prevent="closeModalMode" class="modal__close">X</a>
@@ -56,6 +57,7 @@ import mode_list from "../mode/ModeList.vue";
 import settings_list from "../mode/SettingsList.vue";
 import mode_block from "../mode/ModeBlock.vue";
 import {mapState, mapActions} from "vuex";
+import axios from "axios";
 
 export default {
     name: "heater_list",
@@ -69,6 +71,7 @@ export default {
             curRoom: undefined,
             selectMode: undefined,
             classMode: '',
+            arrayNameSetting: ['currentMode', 'rightNowTemp', 'roomsPOutputs', 'roomsTsensors', 'standByTemp', 'num', 'scheduleIntervalsNum'],
             classArrayModal: {
                 'modal__shadow_main': true,
                 'modal__shadow_background': true,
@@ -107,18 +110,33 @@ export default {
             this.selectMode = selMode;
         },
         saveSelectMode() {
+            let needSave = false;
             if (this.selectMode != undefined) {
                 this.SET_NEW_SETTING_ARRAY(
                     {
                         idRoom: this.curRoom.id,
-                        name: 'selectMode',
+                        name: 'currentMode',
                         value: this.selectMode
                     }
                 );
+                if (this.selectMode === 1) {
+                    this.curRoom.currentMode = this.selectMode;
+                }
                 this.curRoom.currentMode = this.selectMode;
             }
-            console.log(this.arrayNewSetting);
+            console.log(this.curRoom);
+            // axios.post('/api/post_files_data', {data: this.arrayNewSetting})
+            //     .then(response => {
+            //         console.log('save setting to room ' + this.arrayNewSetting);
+            //     })
+            //     .catch(err => {
+            //         console.log('error /api/save_setting_to_files', err.response.data);
+            //     })
+            //console.log(this.arrayNewSetting);
             this.closeModalMode();
+        },
+        addMissingSetting(arrNewSettings) {
+
         },
     },
 

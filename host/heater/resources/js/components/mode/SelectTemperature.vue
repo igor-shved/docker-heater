@@ -30,10 +30,11 @@
 <script>
 export default {
     name: "select_temperature",
-    props: ['tempSelectProps'],
+    props: ['tempSelectProps', 'nameSelectModeProps'],
     data() {
         return {
             tempSelect: this.tempSelectProps,
+            nameSelectMode: this.nameSelectModeProps,
             tenTemp: 0,
             oneTemp: 0,
             tenthTemp: 0,
@@ -63,8 +64,13 @@ export default {
                 this.tempSelect = 0;
             }
             this.changeTemp();
-            this.$eventBus.$emit('select_temp_nobody_home', this.tempSelect);
-            this.$eventBus.$emit('select_temp_mode', this.tempSelect);
+            if (this.nameSelectMode === 'changeScheduleItem') {
+                this.$eventBus.$emit('select_temp_mode', this.tempSelect);
+            } else if (this.nameSelectMode === 'changeStandByTemp'){
+                this.$eventBus.$emit('select_stand_by_temp', this.tempSelect);
+            }
+
+
         },
         tempTenUp() {
             this.tempChange(100, 'up');

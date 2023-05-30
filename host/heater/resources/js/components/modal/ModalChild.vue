@@ -31,7 +31,6 @@ export default {
     props: ['classProps'],
     data() {
         return {
-            selectMode: undefined,
             classWindow: this.classProps,
           }
     },

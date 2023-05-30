@@ -25,7 +25,6 @@
         </div>
     </div>
     <modal_child v-if="isOpenModalSetting"
-                 :roomProps="room"
                  :key="'modalSetting'+String(room.id)"
                  :classProps="classModal"
     >
@@ -84,7 +83,6 @@
     </modal_child>
 
     <modal_child v-if="isOpenModalTemp"
-                 :roomProps="room"
                  :key="'modalTemp'+String(room.id)"
                  :classProps="classModal"
     >
@@ -109,8 +107,9 @@
         </template>
         <template #content>
             <select_temperature
-                :key="'selectTempNobodyHome'"
-                :tempSelectProps="tempNobodyHome"
+                :key="'selectStandByTemp'+String(room.id)"
+                :tempSelectProps="standByTemp"
+                :nameSelectModeProps="'changeStandByTemp'"
             >
             </select_temperature>
         </template>
@@ -120,7 +119,6 @@
     </modal_child>
 
     <modal_child v-if="isOpenModalSchedule"
-                 :roomProps="room"
                  :key="'modalSchedule'+String(room.id)"
                  :classProps="classModal"
     >
@@ -210,24 +208,25 @@ export default {
             arrayRelay: this.$store.state.arrayRelay,
             classWindow: this.classProps,
             arrSchedule: this.roomProps.scheduleArrRoom.map(item => ({...item})),
-            tempNobodyHome: 0,
+            standByTemp: 0,
             classModal: {
                 'modal__shadow_child1': true,
                 'modal__modal_setting': true,
                 'modal__shadow_background': true,
             },
-            componentScheduleKey: 'scheduleList'
+            componentScheduleKey: 'scheduleList',
+            selectMode: null,
         }
     },
     created() {
-        this.tempNobodyHome = this.room.standByTemp * 10;
+        this.standByTemp = this.room.standByTemp * 10;
         this.SET_CURRENT_ROOM(this.room);
         this.$eventBus.$on('select_mode_set', this.selectModeSet);
         this.$eventBus.$on('modal_open_setting', this.modalStatusSetting);
         this.$eventBus.$on('modal_open_temp', this.modalStatusTemp);
         this.$eventBus.$on('modal_open_schedule', this.modalStatusSchedule);
         this.$eventBus.$on('rerender_schedule_list', this.rerenderScheduleList);
-        this.$eventBus.$on('select_temp_nobody_home', this.selectTempNoBodyHome);
+        this.$eventBus.$on('select_stand_by_temp', this.selectStandByTemp);
     },
     mounted() {
         document.body.addEventListener("keydown", this.onKeyDown);
@@ -240,7 +239,7 @@ export default {
         this.$eventBus.$off('modal_open_setting', this.modalStatusSetting);
         this.$eventBus.$off('modal_open_temp', this.modalStatusTemp);
         this.$eventBus.$off('modal_open_schedule', this.modalStatusSchedule);
-        this.$eventBus.$off('select_temp_nobody_home', this.selectTempNoBodyHome);
+        this.$eventBus.$off('select_stand_by_temp', this.selectStandByTemp);
     },
     methods: {
         ...mapActions(["SET_CURRENT_ROOM", "SET_NEW_SETTING_ARRAY", "COPY_SCHEDULE"]),
@@ -323,8 +322,8 @@ export default {
             this.modalStatusSetting(false);
         },
         saveTempSetting() {
-            if (this.tempNobodyHome !== this.room.standByTemp * 10) {
-                this.setNewSetting(this.room.id, 'tempNobodyHome', this.tempNobodyHome / 10);
+            if (this.standByTemp !== this.room.standByTemp * 10) {
+                this.setNewSetting(this.room.id, 'standByTemp', this.standByTemp / 10);
             }
             this.modalStatusTemp(false);
         },
@@ -391,8 +390,9 @@ export default {
             }
             this.rerenderScheduleList();
         },
-        selectTempNoBodyHome(temp) {
-            this.tempNobodyHome = temp;
+        selectStandByTemp(temp) {
+            console.log('standByTemp = ' + temp);
+            this.standByTemp = temp;
         },
     },
     computed: {

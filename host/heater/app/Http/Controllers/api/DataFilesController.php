@@ -13,8 +13,14 @@ class DataFilesController extends Controller
     public function getDataFiles(Request $request)
     {
         $data = Arr::get($request->all(),'data',[]);
-        Log::channel('debug')->debug('$data: ' . json_encode($data));
+        Log::channel('debug')->debug('$data get: ' . json_encode($data));
         $data_files = new DataFiles();
         return $data_files->getDataFromFiles($data);
+    }
+    public function saveSettingToFiles(Request $request)
+    {
+        $data = Arr::get($request->all(),'data',[]);
+        Log::channel('debug')->debug('$data save: ' . json_encode($data));
+        return view('debug_data', [$data]);
     }
 }

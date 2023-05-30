@@ -34,4 +34,8 @@ class DataFiles extends Model
             return '';
         }
     }
+    public function saveSettingRoomToFiles($arraySetting)
+    {
+
+    }
 }
