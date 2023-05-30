@@ -15,9 +15,9 @@ mix.js('resources/js/app/heater.js', 'public/js').vue()
     .js('resources/js/app/menu.js', 'public/js').vue()
     .js('resources/js/app/debugSite.js', 'public/js').vue()
     .version()
-    .copyDirectory('storage/app/ProjectFiles/icons','public/icons')
-    .copyDirectory('storage/app/ProjectFiles/images','public/images')
-    .copyDirectory('storage/app/ProjectFiles/fonts','public/fonts')
+    .copyDirectory('storage/app/files_project/icons','public/icons')
+    .copyDirectory('storage/app/files_project/images','public/images')
+    .copyDirectory('storage/app/files_project/fonts','public/fonts')
     //.webpackConfig(webpackConfig)
     .sass('resources/sass/main.scss', 'public/css');
 // if (mix.inProduction()) {

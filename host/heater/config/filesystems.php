@@ -34,9 +34,9 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-        'projectFiles' => [
+        'files_project' => [
             'driver' => 'local',
-            'root' => storage_path('app/ProjectFiles'),
+            'root' => storage_path('app/files_project'),
         ],
         'public' => [
             'driver' => 'local',

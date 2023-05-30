@@ -57,7 +57,7 @@ class RoomsData extends Model
 
     public function __construct()
     {
-        $this->diskFiles = Storage::disk('projectFiles');
+        $this->diskFiles = Storage::disk('files_project');
     }
 
 
