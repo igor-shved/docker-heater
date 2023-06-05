@@ -68,6 +68,8 @@ export default {
                 this.$eventBus.$emit('select_temp_mode', this.tempSelect);
             } else if (this.nameSelectMode === 'changeStandByTemp'){
                 this.$eventBus.$emit('select_stand_by_temp', this.tempSelect);
+            } else if (this.nameSelectMode === 'changeRightNowTemp'){
+                this.$eventBus.$emit('select_right_now_temp', this.tempSelect);
             }
 
 

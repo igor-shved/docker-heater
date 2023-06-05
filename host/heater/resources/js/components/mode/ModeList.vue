@@ -11,7 +11,6 @@
 
 <script>
 import mode_block from "./ModeBlock.vue";
-import {mapState, mapGetters, mapActions} from "vuex";
 export default {
     name: "modal_list",
     components: {mode_block},
@@ -41,8 +40,8 @@ export default {
     computed: {},
     methods: {
         selectModeClick(idMode) {
-            let selectMode = this.roomProps.currentMode !== idMode ? idMode : undefined;
-            this.$eventBus.$emit('select_mode_set', selectMode);
+            //let selectMode = this.roomProps.currentMode !== idMode ? idMode : undefined;
+            this.$eventBus.$emit('select_mode_set', idMode);
 
             this.arrayModes.forEach(item => {
                 if (item.id === idMode) {

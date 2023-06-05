@@ -136,7 +136,9 @@ export default {
 
         },
         startRead() {
-            this.startReadLaravel();
+            if (this.arrayPath.length !== 0) {
+                this.startReadLaravel();
+            }
         },
         stopRead() {
             clearTimeout(this.execTimeoutRead);

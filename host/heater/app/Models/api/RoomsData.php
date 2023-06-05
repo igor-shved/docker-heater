@@ -345,7 +345,6 @@ class RoomsData extends Model
                     'mode' => intval($scheduleArrIntervalMode[$index][$i]),
                 ];
             }
-
             $arrayRooms[] = [
                 'id' => $index,
                 'roomName' => $roomsName[$index],

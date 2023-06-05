@@ -77,6 +77,35 @@ app.mixin({
                 item => (item.map())
             );
         }
+        String.prototype.hashCode = function () {
+            let hash = 0;
+            let len = this.length;
+            if (this.length == 0) return hash;
+            for (let i = 0; i < len; i++) {
+                let chr = this.charCodeAt(i);
+                hash = ((hash << 5) - hash) + chr;
+                hash &= 0xFFFFFFFF;
+            }
+            let hash2 = hash >> 24;
+            hash2 &= 0xFF;
+            hash &= 0x00FFFFFF;
+
+            let hash3 = hash.toString(16);
+
+            while (hash3.length < 6)
+                hash3 = '0' + hash3;
+
+            if (hash2 != 0)
+                return hash2.toString(16) + hash3;
+            return hash3;
+        }
+        this.$setNewSetting = function (idRoomProp, nameProp, ValueProp) {
+            this.SET_NEW_SETTING_ARRAY({
+                idRoom: idRoomProp,
+                name: nameProp,
+                value: ValueProp
+            });
+        }
     }
 })
 

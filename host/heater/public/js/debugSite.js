@@ -19839,7 +19839,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       execRead();
     },
     startRead: function startRead() {
-      this.startReadLaravel();
+      if (this.arrayPath.length !== 0) {
+        this.startReadLaravel();
+      }
     },
     stopRead: function stopRead() {
       clearTimeout(this.execTimeoutRead);
