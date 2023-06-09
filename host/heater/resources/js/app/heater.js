@@ -106,6 +106,26 @@ app.mixin({
                 value: ValueProp
             });
         }
+        this.$debugData = function (nameData, valueData) {
+            if(!this.$isEmpty(valueData)) {
+                console.log(nameData);
+            }
+            if(!this.$isEmpty(valueData)) {
+                console.log(valueData);
+            }
+        }
+        this.$isEmpty = function (value) {
+            if (value === null || value === undefined) {
+                return true;
+            }
+            if (typeof value === 'string' || Array.isArray(value)) {
+                return value.length === 0;
+            }
+            if (typeof value === 'object') {
+                return Object.keys(value).length === 0;
+            }
+            return false;
+        }
     }
 })
 

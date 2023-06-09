@@ -348,6 +348,8 @@ class RoomsData extends Model
             $arrayRooms[] = [
                 'id' => $index,
                 'roomName' => $roomsName[$index],
+                'tempName' => '',
+                'relayName' => '',
                 'currentMode' => $currentModeValue,
                 'currentModeTextArray' => $this->getCurrentModeText($arrMode),
                 'roomNowTemp' => $this->getNowTempText($latestData[3 + $roomsTsensors[$index]]),

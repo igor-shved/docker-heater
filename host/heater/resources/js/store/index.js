@@ -5,20 +5,12 @@ const state = {
     roomsData: [],
     isLoadDataRooms: false,
     arrayTemp: [
-        {id: 0, value: '0'}, {id: 1, value: '1'}, {id: 2, value: '2'}, {id: 3, value: '3'}, {id: 4, value: '4'}, {
-            id: 5,
-            value: '5'
-        }, {id: 6, value: '6'},
-        {id: 7, value: '7'}, {id: 8, value: '8'}, {id: 9, value: '9'}, {id: 10, value: 'a [k]'}, {
-            id: 11,
-            value: 'b [y]'
-        }, {id: 12, value: 'c [a]'},
-        {id: 13, value: 'd [b]'}, {id: 14, value: 'e [c]'}, {id: 15, value: 'f [d]'}
-    ],
+        {id: 0, value: '0'}, {id: 1, value: '1'}, {id: 2, value: '2'}, {id: 3, value: '3'}, {id: 4, value: '4'}, {id: 5, value: '5'}, {id: 6, value: '6'}, {id: 7, value: '7'}, {id: 8, value: '8'}, {id: 9, value: '9'}, {id: 10, value: 'a [k]'}, {id: 11,value: 'b [y]'}, {id: 12, value: 'c [a]'},{id: 13, value: 'd [b]'}, {id: 14, value: 'e [c]'}, {id: 15, value: 'f [d]'}],
     arrayRelay: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
     arrayModesRooms: [],
     arrayNewSetting: [],
     currentRoom: null,
+    copySettingRoom: [],
     copySchedule: {nameRoom: 'begin setting', scheduleRoom: []},
 };
 
@@ -63,6 +55,9 @@ const actions = {
         COPY_SCHEDULE({commit}, objSchedule) {
             commit('COPY_SCHEDULE', objSchedule);
         },
+        COPY_SETTING_ROOM_TO_ARRAY({commit}, curRoom) {
+            commit('COPY_SETTING_ROOM_TO_ARRAY', curRoom);
+        },
     }
 ;
 
@@ -98,6 +93,32 @@ const mutations = {
     COPY_SCHEDULE(state, objSchedule) {
         state.copySchedule = objSchedule;
     },
+    COPY_SETTING_ROOM_TO_ARRAY(state, curRoom) {
+        if (state.copySettingRoom.length !== 0 || curRoom === null) {
+            state.copySettingRoom.splice(0, state.copySettingRoom.length);
+        }
+        //this.$setNewSetting(this.curRoom.id, 'scheduleSetting', this.curRoom.scheduleArrRoom);
+        //['currentMode', 'rightNowTemp', 'roomsPOutputs', 'roomsTsensors', 'standByTemp', 'scheduleSetting']
+        let addSettingToArray = function (idRoom, nameSetting, valueSetting) {
+            if (state.copySettingRoom.find(item => item.idRoom === idRoom && item.name === nameSetting)) {
+                return;
+            }
+            state.copySettingRoom.push(
+                {
+                    idRoom: idRoom,
+                    name: nameSetting,
+                    value: valueSetting,
+                }
+            )
+        }
+        //this.$debugData('copy setting', curRoom);
+        addSettingToArray(curRoom.id, 'currentMode', curRoom.currentMode);
+        addSettingToArray(curRoom.id, 'rightNowTemp', curRoom.rightNowTemp);
+        addSettingToArray(curRoom.id, 'roomsPOutputs', curRoom.roomsPOutputs);
+        addSettingToArray(curRoom.id, 'roomsTsensors', curRoom.roomsTsensors);
+        addSettingToArray(curRoom.id, 'standByTemp', curRoom.standByTemp);
+        addSettingToArray(curRoom.id, 'scheduleSetting', curRoom.scheduleArrRoom.map(item => ({...item})));
+    },
 };
 
 const getters = {
@@ -111,9 +132,6 @@ const getters = {
         return state.arrayModesRooms;
     },
     arrayNewSetting: state => {
-        if (state.arrayNewSetting.length != 0) {
-            console.log(state.arrayNewSetting[0]);
-        }
         return state.arrayNewSetting;
     },
     currentRoom: state => {
@@ -121,6 +139,9 @@ const getters = {
     },
     copySchedule: state => {
         return state.copySchedule;
+    },
+    copySettingRoom: state => {
+        return state.copySettingRoom;
     },
 }
 

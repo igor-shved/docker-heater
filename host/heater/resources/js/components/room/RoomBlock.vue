@@ -42,7 +42,7 @@
                 <img v-if="onRelay" src="/icons/h.png"/>
             </div>
             <div class="room__settings">
-                <a href="" @click.prevent="openModalMode">
+                <a href="" @click.prevent="openModalAllSetting">
                     <img :src="imgSettings"/>
                 </a>
             </div>
@@ -87,8 +87,8 @@ export default {
         }
     },
     methods: {
-        openModalMode() {
-            this.$eventBus.$emit('open_modal_mode', this.room);
+        openModalAllSetting() {
+            this.$eventBus.$emit('modal_all_setting', 'open', this.room);
         }
     },
 }

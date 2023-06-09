@@ -4,18 +4,22 @@
             <a href="" @click.prevent="openModalSetting"> <img src="/icons/settings-ex.png"/> </a>
         </div>
         <div class="modal__mode_block">
-            <a href="" @click.prevent="openModalTemp"> <img src="/icons/t1.png"/> </a>
+            <a href="" @click.prevent="openModalStandByTemp"> <img src="/icons/t1.png"/> </a>
         </div>
         <div class="modal__mode_block">
             <a href="" @click.prevent="openModalSchedule"> <img src="/icons/schedule-settings.png"/> </a>
         </div>
     </div>
+
 </template>
 
 <script>
 
+import modal_select_temp from "../modal/ModalSelectTemp.vue";
+
 export default {
     name: "settings_list",
+    components: {modal_select_temp},
     props: {
         roomProps: {
             type: Object,
@@ -33,13 +37,13 @@ export default {
     },
     methods: {
         openModalSetting(){
-            this.$eventBus.$emit('modal_open_setting', true);
+            this.$eventBus.$emit('open_modal_setting_relay_temp', );
         },
-        openModalTemp(){
-            this.$eventBus.$emit('modal_open_temp', true);
+        openModalStandByTemp(){
+            this.$eventBus.$emit('open_select_stand_by_temp');
         },
         openModalSchedule(){
-            this.$eventBus.$emit('modal_open_schedule', true);
+            this.$eventBus.$emit('open_modal_schedule', true);
         },
     },
 }

@@ -34,14 +34,13 @@ export default {
         this.arrayModes = this.$getArrayModesFromRoom(this.roomProps.id);
         this.$eventBus.$on('select_mode_click', this.selectModeClick);
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.$eventBus.$off('select_mode_click', this.selectModeClick);
     },
     computed: {},
     methods: {
         selectModeClick(idMode) {
-            //let selectMode = this.roomProps.currentMode !== idMode ? idMode : undefined;
-            this.$eventBus.$emit('select_mode_set', idMode);
+            this.$eventBus.$emit('modal_select_mode', idMode);
 
             this.arrayModes.forEach(item => {
                 if (item.id === idMode) {
