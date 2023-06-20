@@ -20356,6 +20356,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     modal_window: _ModalWindow_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     select_temperature: _mode_SelectTemperature_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  props: ['objProps', 'zIndexProps'],
   data: function data() {
     return {
       room: undefined,
@@ -20363,10 +20364,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       endPeriodStr: this.objProps.endPeriodStr,
       scheduleItem: this.objProps.scheduleItem,
       scheduleMode: this.objProps.scheduleItem.mode,
-      tempMode: this.objProps.scheduleItem.tempMode,
-      classModal: {
-        'modal__shadow_child1': true,
-        'modal__modal_setting': true,
+      scheduleTemp: this.objProps.scheduleItem.temp,
+      classArray: {
+        'modal__shadow_main': true,
         'modal__shadow_background': true
       }
     };
@@ -20375,20 +20375,40 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.room = this.copySettingRoom.find(function (item) {
       return item.name === 'currentRoom';
     }).value;
+    this.$eventBus.$on('select_temp_mode', this.selectTemp);
   },
   beforeUnmount: function beforeUnmount() {
-    this.$eventBus.$off('change_temp_mode', this.changeTempMode);
+    this.$eventBus.$off('select_temp_mode', this.selectTemp);
   },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
+    copySettingRoom: 'copySettingRoom'
+  })), {}, {
+    itMainBlock: function itMainBlock() {
+      return this.room.id === 0;
+    }
+  }),
   methods: {
     selectScheduleMode: function selectScheduleMode(selectMode) {
       this.scheduleMode = selectMode;
     },
-    changeTempMode: function changeTempMode(objArg) {},
-    saveScheduleMode: function saveScheduleMode() {}
-  },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
-    copySettingRoom: 'copySettingRoom'
-  }))
+    selectTemp: function selectTemp(scheduleTemp) {
+      this.scheduleTemp = scheduleTemp;
+    },
+    closeScheduleMode: function closeScheduleMode() {
+      this.$eventBus.$emit('change_mode', {
+        eventName: 'close',
+        scheduleItem: this.scheduleItem
+      });
+    },
+    saveScheduleMode: function saveScheduleMode() {
+      this.scheduleItem.temp = this.scheduleTemp;
+      this.scheduleItem.mode = this.scheduleMode;
+      this.$eventBus.$emit('change_mode', {
+        eventName: 'save',
+        scheduleItem: this.scheduleItem
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -20893,6 +20913,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _modal_ModalPeriodMode_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modal/ModalPeriodMode.vue */ "./resources/js/components/modal/ModalPeriodMode.vue");
 /* harmony import */ var _modal_ModalPeriod_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../modal/ModalPeriod.vue */ "./resources/js/components/modal/ModalPeriod.vue");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -20912,7 +20938,8 @@ __webpack_require__.r(__webpack_exports__);
       classEndPeriod: {
         'modal__hide_text': false
       },
-      objProps: {},
+      objPropsPeriod: {},
+      objPropsMode: {},
       isOpenModalPeriod: false,
       selectTime: this.scheduleItemProps.time,
       isOpenModalPeriodMode: false,
@@ -21004,7 +21031,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     openPeriod: function openPeriod() {
       if (!this.isLastItem) {
-        this.objProps = {
+        this.objPropsPeriod = {
           scheduleItem: this.scheduleItem,
           endPeriod: this.endPeriod,
           beginPeriodStr: this.periodToStr(this.beginPeriod),
@@ -21023,10 +21050,25 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     openMode: function openMode() {
+      this.objPropsMode = {
+        scheduleItem: this.scheduleItem,
+        scheduleTemp: this.scheduleItem.temp,
+        beginPeriodStr: this.periodToStr(this.beginPeriod),
+        endPeriodStr: this.periodToStr(this.endPeriod)
+      };
       this.isOpenModalPeriodMode = true;
-      this.$eventBus.$emit('change_mode_period', this.scheduleItem);
     },
-    changeMode: function changeMode() {}
+    closeMode: function closeMode() {
+      this.isOpenModalPeriodMode = false;
+    },
+    changeMode: function changeMode(objArg) {
+      if (objArg.enentName = "close") {
+        this.closeMode();
+      } else if (objArg.enentName = "save") {
+        this.scheduleItem = _objectSpread({}, objArg.scheduleItem);
+        this.updateData();
+      }
+    }
   }
 });
 
@@ -21080,6 +21122,8 @@ __webpack_require__.r(__webpack_exports__);
       this.changeTemp();
       if (this.nameSelectTempProps === 'selectTempMain') {
         this.$eventBus.$emit('select_temp_main', this.tempSelect / 10);
+      } else if (this.nameSelectTempProps === 'changeScheduleItem') {
+        this.$eventBus.$emit('select_temp_mode', this.tempSelect / 10);
       }
     },
     tempTenUp: function tempTenUp() {
@@ -21482,6 +21526,7 @@ var _hoisted_29 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_modal_window = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal_window");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_window, {
+    key: 'modalPeriod' + String($data.room.id),
     classArrayProps: $data.classArray,
     zIndexProps: $props.zIndexProps
   }, {
@@ -21633,19 +21678,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_modal_window = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal_window");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_window, {
     key: 'modalMode' + String($data.room.id),
-    classProps: $data.classModal
+    classArrayProps: $data.classArray,
+    zIndexProps: $props.zIndexProps
   }, {
     buttonClose: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
         href: "",
-        onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-          return _ctx.closeModalStatusMode();
+        onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+          return $options.closeScheduleMode && $options.closeScheduleMode.apply($options, arguments);
         }, ["prevent"])),
         "class": "modal__close"
       }, "X")];
     }),
     header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_ctx.itMainBlock ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, " Настройки всего дома ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, " Настройки комнаты № " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.room.id), 1 /* TEXT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.room.roomName), 1 /* TEXT */), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.beginPeriodStr + ' - ' + $data.endPeriodStr), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [$options.itMainBlock ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, " Настройки всего дома ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, " Настройки комнаты № " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.room.id), 1 /* TEXT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.room.roomName), 1 /* TEXT */), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.beginPeriodStr + ' - ' + $data.endPeriodStr), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
         href: "",
         onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
           return $options.selectScheduleMode(0);
@@ -21665,8 +21711,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [$data.scheduleMode === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_select_temperature, {
         key: 'selectTempMode' + String($data.room.id),
-        nameSelectModeProps: 'changeScheduleItem',
-        tempSelectProps: $data.tempMode
+        nameSelectTempProps: 'changeScheduleItem',
+        nameValueProps: 'tempMode',
+        tempSelectProps: $data.scheduleTemp * 10
       }, null, 8 /* PROPS */, ["tempSelectProps"])) : $data.scheduleMode === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, _hoisted_20)) : $data.scheduleMode === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -21678,7 +21725,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, "OK")];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["classProps"]);
+  }, 8 /* PROPS */, ["classArrayProps", "zIndexProps"]);
 }
 
 /***/ }),
@@ -22206,6 +22253,7 @@ var _hoisted_7 = {
 var _hoisted_8 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_modal_period = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal_period");
+  var _component_modal_period_mode = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal_period_mode");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.numStr), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
     "class": "modal__schedule_element",
@@ -22224,11 +22272,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     src: $options.imgPeriod
   }, null, 8 /* PROPS */, _hoisted_8), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.scheduleTemp), 1 /* TEXT */)])])]), $data.isOpenModalPeriod ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_period, {
     key: 'modalPeriod' + this.scheduleItemProps.numStr,
-    objProps: this.objProps,
+    objProps: this.objPropsPeriod,
     zIndexProps: this.zIndexProps + 1
-  }, null, 8 /* PROPS */, ["objProps", "zIndexProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalPeriodMode ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_period, {
+  }, null, 8 /* PROPS */, ["objProps", "zIndexProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isOpenModalPeriodMode ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal_period_mode, {
     key: 'modalPeriod' + this.scheduleItemProps.numStr,
-    objProps: this.objProps,
+    objProps: this.objPropsMode,
     zIndexProps: this.zIndexProps + 1
   }, null, 8 /* PROPS */, ["objProps", "zIndexProps"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
 }

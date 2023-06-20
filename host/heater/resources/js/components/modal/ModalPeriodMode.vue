@@ -1,10 +1,11 @@
 <template>
     <modal_window
-                 :key="'modalMode' + String(room.id)"
-                 :classProps="classModal"
+        :key="'modalMode' + String(room.id)"
+        :classArrayProps="classArray"
+        :zIndexProps="zIndexProps"
     >
         <template #buttonClose>
-            <a href="" @click.prevent="closeModalStatusMode()" class="modal__close">X</a>
+            <a href="" @click.prevent="closeScheduleMode" class="modal__close">X</a>
         </template>
         <template #header>
             <div class="modal__title">
@@ -39,8 +40,9 @@
         <template #content>
             <select_temperature v-if="scheduleMode === 0"
                                 :key="'selectTempMode'  + String(room.id)"
-                                :nameSelectModeProps="'changeScheduleItem'"
-                                :tempSelectProps="tempMode"
+                                :nameSelectTempProps="'changeScheduleItem'"
+                                :nameValueProps="'tempMode'"
+                                :tempSelectProps="scheduleTemp * 10"
             >
             </select_temperature>
 
@@ -68,6 +70,7 @@ import modal_window from "./ModalWindow.vue";
 export default {
     name: "modal_period_mode",
     components: {modal_window, select_temperature},
+    props: ['objProps', 'zIndexProps'],
     data() {
         return {
             room: undefined,
@@ -75,35 +78,41 @@ export default {
             endPeriodStr: this.objProps.endPeriodStr,
             scheduleItem: this.objProps.scheduleItem,
             scheduleMode: this.objProps.scheduleItem.mode,
-            tempMode: this.objProps.scheduleItem.tempMode,
-            classModal: {
-                'modal__shadow_child1': true,
-                'modal__modal_setting': true,
+            scheduleTemp: this.objProps.scheduleItem.temp,
+            classArray: {
+                'modal__shadow_main': true,
                 'modal__shadow_background': true,
             },
         }
     },
     beforeMount() {
         this.room = this.copySettingRoom.find(item => item.name === 'currentRoom').value;
-
+        this.$eventBus.$on('select_temp_mode', this.selectTemp);
     },
     beforeUnmount() {
-        this.$eventBus.$off('change_temp_mode', this.changeTempMode);
-    },
-    methods: {
-        selectScheduleMode(selectMode){
-            this.scheduleMode = selectMode;
-        },
-        changeTempMode(objArg){
-
-        },
-        saveScheduleMode(){
-
-        },
+        this.$eventBus.$off('select_temp_mode', this.selectTemp);
     },
     computed: {
         ...mapState({copySettingRoom: 'copySettingRoom'}),
-
+        itMainBlock() {
+            return this.room.id === 0;
+        },
+    },
+    methods: {
+        selectScheduleMode(selectMode) {
+            this.scheduleMode = selectMode;
+        },
+        selectTemp(scheduleTemp) {
+            this.scheduleTemp = scheduleTemp;
+        },
+        closeScheduleMode() {
+            this.$eventBus.$emit('change_mode', {eventName: 'close', scheduleItem: this.scheduleItem})
+        },
+        saveScheduleMode() {
+            this.scheduleItem.temp = this.scheduleTemp;
+            this.scheduleItem.mode = this.scheduleMode;
+            this.$eventBus.$emit('change_mode', {eventName: 'save', scheduleItem: this.scheduleItem})
+        },
     },
 }
 </script>

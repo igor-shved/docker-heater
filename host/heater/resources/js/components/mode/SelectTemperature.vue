@@ -65,6 +65,8 @@ export default {
             this.changeTemp();
             if (this.nameSelectTempProps === 'selectTempMain') {
                 this.$eventBus.$emit('select_temp_main', this.tempSelect / 10);
+            } else if (this.nameSelectTempProps === 'changeScheduleItem') {
+                this.$eventBus.$emit('select_temp_mode', this.tempSelect / 10);
             }
         },
         tempTenUp() {

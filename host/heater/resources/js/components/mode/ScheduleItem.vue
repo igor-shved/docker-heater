@@ -22,17 +22,17 @@
 
     <modal_period v-if="isOpenModalPeriod"
                   :key="'modalPeriod' + this.scheduleItemProps.numStr"
-                  :objProps = "this.objProps"
+                  :objProps="this.objPropsPeriod"
                   :zIndexProps="this.zIndexProps + 1"
     >
     </modal_period>
 
-    <modal_period v-if="isOpenModalPeriodMode"
-                  :key="'modalPeriod' + this.scheduleItemProps.numStr"
-                  :objProps = "this.objProps"
-                  :zIndexProps="this.zIndexProps + 1"
+    <modal_period_mode v-if="isOpenModalPeriodMode"
+                       :key="'modalPeriod' + this.scheduleItemProps.numStr"
+                       :objProps="this.objPropsMode"
+                       :zIndexProps="this.zIndexProps + 1"
     >
-    </modal_period>
+    </modal_period_mode>
 
 </template>
 
@@ -54,7 +54,8 @@ export default {
             classEndPeriod: {
                 'modal__hide_text': false,
             },
-            objProps: {},
+            objPropsPeriod: {},
+            objPropsMode: {},
             isOpenModalPeriod: false,
             selectTime: this.scheduleItemProps.time,
             isOpenModalPeriodMode: false,
@@ -146,7 +147,7 @@ export default {
         },
         openPeriod() {
             if (!this.isLastItem) {
-                this.objProps = {
+                this.objPropsPeriod = {
                     scheduleItem: this.scheduleItem,
                     endPeriod: this.endPeriod,
                     beginPeriodStr: this.periodToStr(this.beginPeriod),
@@ -163,16 +164,27 @@ export default {
             if (objArg.scheduleItem === this.scheduleItem) {
                 this.$eventBus.$emit('change_period_item', objArg);
             }
-
         },
         openMode() {
+            this.objPropsMode = {
+                scheduleItem: this.scheduleItem,
+                scheduleTemp: this.scheduleItem.temp,
+                beginPeriodStr: this.periodToStr(this.beginPeriod),
+                endPeriodStr: this.periodToStr(this.endPeriod),
+            }
             this.isOpenModalPeriodMode = true;
-            this.$eventBus.$emit('change_mode_period', this.scheduleItem);
         },
-
-        changeMode(){
-
-        }
+        closeMode() {
+            this.isOpenModalPeriodMode = false;
+        },
+        changeMode(objArg) {
+            if (objArg.enentName = "close"){
+                this.closeMode();
+            } else if (objArg.enentName = "save") {
+                this.scheduleItem = {...objArg.scheduleItem};
+                this.updateData();
+            }
+        },
     },
 }
 </script>

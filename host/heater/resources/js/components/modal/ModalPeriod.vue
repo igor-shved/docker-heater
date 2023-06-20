@@ -1,7 +1,8 @@
 <template>
     <modal_window
-                 :classArrayProps="classArray"
-                 :zIndexProps="zIndexProps"
+        :key="'modalPeriod' + String(room.id)"
+        :classArrayProps="classArray"
+        :zIndexProps="zIndexProps"
     >
         <template #buttonClose>
             <a href="" @click.prevent="closePeriod" class="modal__close">X</a>
@@ -71,6 +72,7 @@
 <script>
 import modal_window from "./ModalWindow.vue";
 import {mapState} from "vuex";
+
 export default {
     name: "modal_period",
     props: ['objProps', 'zIndexProps'],
@@ -187,14 +189,14 @@ export default {
             this.changeEndPeriod(1, 'down');
         },
         closePeriod() {
-            let objArg ={
+            let objArg = {
                 eventName: 'close',
                 time: this.endPeriod,
             };
             this.$eventBus.$emit('change_period', objArg);
         },
         savePeriod() {
-            let objArg ={
+            let objArg = {
                 eventName: 'save',
                 time: this.endPeriod,
                 scheduleItem: this.scheduleItem,
