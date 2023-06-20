@@ -137,6 +137,11 @@ export default {
         },
         startRead() {
             if (this.arrayPath.length !== 0) {
+                for (let i = this.arrayPath.length - 1; i >= 0; i--) {
+                    if (this.arrayPath[i] === "") {
+                        this.arrayPath.splice(i, 1);
+                    }
+                }
                 this.startReadLaravel();
             }
         },

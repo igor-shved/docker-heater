@@ -61,23 +61,22 @@
 
 <script>
 import modal_window from "./ModalWindow.vue";
-import schedule_list from "../mode/ScheduleList.vue";
 import select_temperature from "../mode/SelectTemperature.vue";
 
 export default {
     name: "modal_setting_relay_temp",
-    components: {schedule_list, modal_window, select_temperature},
-    props: ['objSettingRelayTempProps', 'classArrayProps', 'zIndexProps'],
+    components: {modal_window, select_temperature},
+    props: ['objSettingProps', 'classArrayProps', 'zIndexProps'],
     data() {
         return {
-            roomId: this.objSettingRelayTempProps.roomId,
-            nameTempRoom: this.$store.state.arrayTemp[this.objSettingRelayTempProps.roomsTsensors].value,
-            nameRelayRoom: this.objSettingRelayTempProps.roomsPOutputs,
-            roomsPOutputs: this.objSettingRelayTempProps.roomsPOutputs,
-            roomsTsensors: this.objSettingRelayTempProps.roomsTsensors,
-            roomName: this.objSettingRelayTempProps.roomName,
-            tempName: this.objSettingRelayTempProps.tempName,
-            relayName: this.objSettingRelayTempProps.relayName,
+            roomId: this.objSettingProps.roomId,
+            nameTempRoom: this.$store.state.arrayTemp[this.objSettingProps.roomsTsensors].value,
+            nameRelayRoom: this.objSettingProps.roomsPOutputs,
+            roomsPOutputs: this.objSettingProps.roomsPOutputs,
+            roomsTsensors: this.objSettingProps.roomsTsensors,
+            roomName: this.objSettingProps.roomName,
+            tempName: this.objSettingProps.tempName,
+            relayName: this.objSettingProps.relayName,
             arrayTemp: this.$store.state.arrayTemp,
             arrayRelay: this.$store.state.arrayRelay,
         }

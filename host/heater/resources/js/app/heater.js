@@ -6,8 +6,8 @@ import VueEventer from "vue-eventer";
 const app = createApp({});
 /*heater.use(router).mount('#heater'); */
 
-app.component('menu_list', require('../components/MenuList.vue').default);
 app.component('heater_list', require('../components/room/HeaterList.vue').default);
+//app.config.compilerOptions = {isCustomElement: (tag) => tag.startsWith('my-custom-element')};
 app.config.globalProperties.$eventBus = new VueEventer();
 app.mixin({
     created() {
@@ -105,14 +105,6 @@ app.mixin({
                 name: nameProp,
                 value: ValueProp
             });
-        }
-        this.$debugData = function (nameData, valueData) {
-            if(!this.$isEmpty(valueData)) {
-                console.log(nameData);
-            }
-            if(!this.$isEmpty(valueData)) {
-                console.log(valueData);
-            }
         }
         this.$isEmpty = function (value) {
             if (value === null || value === undefined) {

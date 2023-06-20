@@ -11,7 +11,7 @@ const state = {
     arrayNewSetting: [],
     currentRoom: null,
     copySettingRoom: [],
-    copySchedule: {nameRoom: 'begin setting', scheduleRoom: []},
+    copySchedule: {roomId: 0, scheduleRoom: []},
 };
 
 const axios_async = async (req_url) => {
@@ -97,8 +97,7 @@ const mutations = {
         if (state.copySettingRoom.length !== 0 || curRoom === null) {
             state.copySettingRoom.splice(0, state.copySettingRoom.length);
         }
-        //this.$setNewSetting(this.curRoom.id, 'scheduleSetting', this.curRoom.scheduleArrRoom);
-        //['currentMode', 'rightNowTemp', 'roomsPOutputs', 'roomsTsensors', 'standByTemp', 'scheduleSetting']
+
         let addSettingToArray = function (idRoom, nameSetting, valueSetting) {
             if (state.copySettingRoom.find(item => item.idRoom === idRoom && item.name === nameSetting)) {
                 return;
@@ -112,6 +111,7 @@ const mutations = {
             )
         }
         //this.$debugData('copy setting', curRoom);
+        addSettingToArray(curRoom.id, 'currentRoom', curRoom);
         addSettingToArray(curRoom.id, 'currentMode', curRoom.currentMode);
         addSettingToArray(curRoom.id, 'rightNowTemp', curRoom.rightNowTemp);
         addSettingToArray(curRoom.id, 'roomsPOutputs', curRoom.roomsPOutputs);

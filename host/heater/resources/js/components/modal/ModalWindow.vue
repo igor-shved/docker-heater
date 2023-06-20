@@ -1,5 +1,4 @@
 <template>
-    <!--    <div :class="classWindow" @click.prevent="closeModalMode">-->
     <div :class="classArray" :style="{'z-index': zIndexProps}">
         <div class="modal__container">
             <div class="modal__body" @click.stop>

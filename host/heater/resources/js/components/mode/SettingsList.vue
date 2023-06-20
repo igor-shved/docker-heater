@@ -43,7 +43,10 @@ export default {
             this.$eventBus.$emit('open_select_stand_by_temp');
         },
         openModalSchedule(){
-            this.$eventBus.$emit('open_modal_schedule', true);
+            this.$eventBus.$emit('modal_select_schedule', {
+                eventName: 'open',
+                scheduleArray: []
+            });
         },
     },
 }

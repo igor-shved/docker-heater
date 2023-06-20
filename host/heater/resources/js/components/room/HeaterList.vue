@@ -10,7 +10,7 @@
     </div>
     <modal_all_setting v-if="isOpenModalAllSetting"
                        :roomProps="curRoom"
-                       :curIndexProps = 1001
+                       :zIndexProps = 1001
     />
 </template>
 

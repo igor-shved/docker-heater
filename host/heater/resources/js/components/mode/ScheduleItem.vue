@@ -1,22 +1,18 @@
 <template>
     <div class="modal__schedule_block">
+
         <div class="modal__schedule_element">
             <div class="modal__schedule_info">
                 <img class="modal__temp_img" src="/icons/mode-schedule.png"/>
                 <p>{{ numStr }}</p>
             </div>
         </div>
-        <a href="" class="modal__schedule_element" @click.prevent="clickChangePeriod" v-if="!isLastItem">
+        <a href="" class="modal__schedule_element" @click.prevent="openPeriod">
             <p class="modal__hide_text">{{ beginPeriodStr }}</p>
             <p>-</p>
             <p :class="classEndPeriod">{{ endPeriodStr }}</p>
         </a>
-        <div v-else class="modal__schedule_element">
-            <p class="modal__hide_text">{{ beginPeriodStr }}</p>
-            <p>-</p>
-            <p :class="classEndPeriod">{{ endPeriodStr }}</p>
-        </div>
-        <a href="" class="modal__schedule_element" @click.prevent="clickChangeMode">
+        <a href="" class="modal__schedule_element" @click.prevent="openMode">
             <div class="modal__schedule_info">
                 <img :src="imgPeriod"/>
                 <p>{{ scheduleTemp }}</p>
@@ -24,36 +20,63 @@
         </a>
     </div>
 
+    <modal_period v-if="isOpenModalPeriod"
+                  :key="'modalPeriod' + this.scheduleItemProps.numStr"
+                  :objProps = "this.objProps"
+                  :zIndexProps="this.zIndexProps + 1"
+    >
+    </modal_period>
+
+    <modal_period v-if="isOpenModalPeriodMode"
+                  :key="'modalPeriod' + this.scheduleItemProps.numStr"
+                  :objProps = "this.objProps"
+                  :zIndexProps="this.zIndexProps + 1"
+    >
+    </modal_period>
+
 </template>
 
 <script>
-// import modal_child from "../modal/ModalChild.vue";
-// import select_temperature from "./SelectTemperature.vue";
-import {mapState} from "vuex";
+import modal_period_mode from "../modal/ModalPeriodMode.vue";
+import modal_period from "../modal/ModalPeriod.vue"
 
 export default {
     name: "schedule_item",
-    props: ['scheduleItemProps', 'beginPeriodProps', 'scheduleArrayProps', 'indexProps'],
+    components: {modal_period, modal_period_mode},
+    props: ['scheduleItemProps', 'roomIdProps', 'isLastItemProps', 'beginPeriodProps', 'endPeriodProps', 'zIndexProps'],
     data() {
         return {
-            scheduleArray: this.scheduleArrayProps,
-            isLastItem: false,
             scheduleItem: this.scheduleItemProps,
             numStr: this.scheduleItemProps.numStr,
+            isLastItem: this.isLastItemProps,
             beginPeriod: this.beginPeriodProps,
-            endPeriod: this.scheduleItemProps.time,
-            beforeChangeEndPeriod: this.scheduleItemProps.time,
+            endPeriod: this.endPeriodProps,
             classEndPeriod: {
                 'modal__hide_text': false,
             },
+            objProps: {},
+            isOpenModalPeriod: false,
+            selectTime: this.scheduleItemProps.time,
+            isOpenModalPeriodMode: false,
+            selectMode: this.scheduleItemProps.mode,
+            classArray: {
+                'modal__shadow_main': true,
+                'modal__shadow_background': true,
+            },
         }
     },
-    created() {
-        this.isLastItem = this.scheduleArray.length === this.scheduleItem.numStr;
-        if (this.isLastItem) {
-            this.endPeriod = 2359;
-            this.classEndPeriod.modal__hide_text = this.isLastItem;
-        }
+    beforeMount() {
+        this.updateData();
+        this.$eventBus.$on('change_period', this.changePeriod);
+        this.$eventBus.$on('change_mode', this.changeMode);
+    },
+    beforeUnmount() {
+        this.$eventBus.$off('change_period', this.changePeriod);
+        this.$eventBus.$off('change_mode', this.changeMode);
+    },
+    updated() {
+        //console.log('update item', this.scheduleItem);
+        this.updateData();
     },
     computed: {
         scheduleTemp() {
@@ -79,12 +102,29 @@ export default {
             }
         },
     },
-    methods: {
-        clickChangePeriod(){
-            this.$eventBus.emit('change_schedule_period', this.scheduleItem);
+    watch: {
+        scheduleItem: {
+            deep: true,
+            handler(val, oldVal) {
+                //console.log('scheduleItem new', val, 'scheduleItem old');
+                //this.updateData();
+                //this.updateObjProps();
+            }
         },
-        clickChangeMode(){
-            this.$eventBus.emit('change_mode_period', this.scheduleItem);
+    },
+    methods: {
+        updateData() {
+            this.scheduleItem = this.scheduleItemProps;
+            this.numStr = this.scheduleItemProps.numStr;
+            this.isLastItem = this.isLastItemProps;
+            this.beginPeriod = this.beginPeriodProps;
+            this.endPeriod = this.endPeriodProps;
+            if (this.isLastItem) {
+                this.classEndPeriod.modal__hide_text = true;
+            } else {
+                this.classEndPeriod.modal__hide_text = false;
+            }
+            this.selectTime = this.scheduleItem.time;
         },
         periodToStr(curPeriod) {
             let arrayPeriod = String(curPeriod).split('');
@@ -95,6 +135,44 @@ export default {
             arrayPeriod.splice(2, 0, ':');
             return arrayPeriod.join('');
         },
+        changePeriod(objArg) {
+            if (objArg.eventName === 'close') {
+                this.closePeriod();
+            } else if (objArg.eventName === 'open') {
+                this.openPeriod();
+            } else if (objArg.eventName === 'save') {
+                this.savePeriod(objArg);
+            }
+        },
+        openPeriod() {
+            if (!this.isLastItem) {
+                this.objProps = {
+                    scheduleItem: this.scheduleItem,
+                    endPeriod: this.endPeriod,
+                    beginPeriodStr: this.periodToStr(this.beginPeriod),
+                    endPeriodStr: this.periodToStr(this.endPeriod),
+                }
+                this.isOpenModalPeriod = true;
+            }
+        },
+        closePeriod() {
+            this.isOpenModalPeriod = false;
+        },
+        savePeriod(objArg) {
+            this.isOpenModalPeriod = false;
+            if (objArg.scheduleItem === this.scheduleItem) {
+                this.$eventBus.$emit('change_period_item', objArg);
+            }
+
+        },
+        openMode() {
+            this.isOpenModalPeriodMode = true;
+            this.$eventBus.$emit('change_mode_period', this.scheduleItem);
+        },
+
+        changeMode(){
+
+        }
     },
 }
 </script>

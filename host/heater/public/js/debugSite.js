@@ -19840,6 +19840,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     startRead: function startRead() {
       if (this.arrayPath.length !== 0) {
+        for (var i = this.arrayPath.length - 1; i >= 0; i--) {
+          if (this.arrayPath[i] === "") {
+            this.arrayPath.splice(i, 1);
+          }
+        }
         this.startReadLaravel();
       }
     },
