@@ -19976,13 +19976,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModalSelectTemp_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalSelectTemp.vue */ "./resources/js/components/modal/ModalSelectTemp.vue");
 /* harmony import */ var _ModalSettingRelayTemp_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalSettingRelayTemp.vue */ "./resources/js/components/modal/ModalSettingRelayTemp.vue");
 /* harmony import */ var _ModalSchedule_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalSchedule.vue */ "./resources/js/components/modal/ModalSchedule.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
 
 
 
@@ -20044,7 +20047,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.$eventBus.$off('open_select_stand_by_temp', this.openSelectStandByTemp);
     this.$eventBus.$off('modal_select_schedule', this.modalSelectSchedule);
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapState)({
     copySettingRoom: 'copySettingRoom'
   })), {}, {
     itMainBlock: function itMainBlock() {
@@ -20068,7 +20071,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       return textMode;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapActions)(['COPY_SETTING_ROOM_TO_ARRAY', 'SET_CURRENT_ROOM'])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapActions)(['COPY_SETTING_ROOM_TO_ARRAY', 'SET_CURRENT_ROOM'])), {}, {
     closeModal: function closeModal() {
       this.$eventBus.$emit('modal_all_setting', 'close', this.curRoom);
     },
@@ -20143,10 +20146,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     },
     openModalSchedule: function openModalSchedule() {
+      var scheduleArray = [];
+      this.scheduleSetting.map(function (item) {
+        return scheduleArray.push(_objectSpread({}, item));
+      });
       this.objSettingSchedule = {
         roomId: this.curRoom.id,
         curRoom: this.curRoom,
-        scheduleArray: this.scheduleSetting
+        scheduleArray: scheduleArray
       };
       this.isOpenModalSchedule = true;
     },
@@ -20157,11 +20164,29 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       var _this2 = this;
       this.scheduleSetting = [];
       objArg.scheduleArray.map(function (item) {
-        return _this2.scheduleSetting.push(item);
+        return _this2.scheduleSetting.push(_objectSpread({}, item));
       });
       this.isOpenModalSchedule = false;
     },
-    saveSetting: function saveSetting() {}
+    saveSetting: function saveSetting() {
+      var objSetting = {
+        id: this.curRoom.id,
+        currentMode: this.currentMode,
+        rightNowTemp: this.rightNowTemp,
+        roomsPOutputs: this.roomsPOutputs,
+        roomsTsensors: this.roomsTsensors,
+        standByTemp: this.standByTemp,
+        scheduleSetting: this.scheduleSetting,
+        roomName: this.roomName,
+        tempName: this.tempName,
+        relayName: this.relayName
+      };
+      axios__WEBPACK_IMPORTED_MODULE_6___default().post('/api/save_setting_to_files', objSetting).then(function (response) {
+        console.log('response', response.data.data);
+      })["catch"](function (err) {
+        console.log('error /api/save_setting_to_files', err.response.data);
+      });
+    }
   })
 });
 
@@ -20450,6 +20475,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       roomId: this.objSettingProps.roomId,
       zIndex: this.zIndexProps,
       scheduleArray: this.objSettingProps.scheduleArray,
+      scheduleArrayBeforeChange: this.objSettingProps.scheduleArray,
       objArg: {
         eventName: '',
         scheduleArray: this.objSettingProps.scheduleArray
@@ -20595,7 +20621,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           this.scheduleArray[indexItem].time = prevItem.time + 1;
           this.changeArray(indexItem, comparTime, this.scheduleArray);
         } else {
-          //console.log('prevItem.time < objArg.time', prevItem.time, 'indexItem', this.scheduleArray[indexItem], 'objArg.time', objArg.time, 'this.scheduleArray[indexItem].time', this.scheduleArray[indexItem].time);
           comparTime = objArg.time + 1;
           this.changeArray(indexItem + 1, comparTime, this.scheduleArray);
         }
@@ -20603,7 +20628,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         comparTime = objArg.time + 1;
         this.changeArray(indexItem + 1, comparTime, this.scheduleArray);
       }
-      console.log('this.scheduleArray', this.scheduleArray);
     }
   })
 });
@@ -21062,9 +21086,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.isOpenModalPeriodMode = false;
     },
     changeMode: function changeMode(objArg) {
-      if (objArg.enentName = "close") {
+      if (objArg.eventName = "close") {
         this.closeMode();
-      } else if (objArg.enentName = "save") {
+      } else if (objArg.eventName = "save") {
         this.scheduleItem = _objectSpread({}, objArg.scheduleItem);
         this.updateData();
       }

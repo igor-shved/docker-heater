@@ -87,6 +87,7 @@ import modal_select_temp from "./ModalSelectTemp.vue";
 import modal_setting_relay_temp from "./ModalSettingRelayTemp.vue"
 import modal_schedule from "./ModalSchedule.vue"
 import {mapActions, mapState} from "vuex";
+import axios from "axios";
 
 export default {
     name: "modal_all_setting",
@@ -235,10 +236,12 @@ export default {
             }
         },
         openModalSchedule() {
+            let scheduleArray = [];
+            this.scheduleSetting.map(item => scheduleArray.push({...item}));
             this.objSettingSchedule = {
                 roomId: this.curRoom.id,
                 curRoom: this.curRoom,
-                scheduleArray: this.scheduleSetting,
+                scheduleArray: scheduleArray,
             }
             this.isOpenModalSchedule = true;
         },
@@ -247,11 +250,29 @@ export default {
         },
         saveModalSchedule(objArg) {
             this.scheduleSetting = [];
-            objArg.scheduleArray.map(item => this.scheduleSetting.push(item)) ;
+            objArg.scheduleArray.map(item => this.scheduleSetting.push({...item}));
             this.isOpenModalSchedule = false;
         },
         saveSetting() {
-
+            let objSetting = {
+                id: this.curRoom.id,
+                currentMode: this.currentMode,
+                rightNowTemp: this.rightNowTemp,
+                roomsPOutputs: this.roomsPOutputs,
+                roomsTsensors: this.roomsTsensors,
+                standByTemp: this.standByTemp,
+                scheduleSetting: this.scheduleSetting,
+                roomName: this.roomName,
+                tempName: this.tempName,
+                relayName: this.relayName,
+            }
+            axios.post('/api/save_setting_to_files', objSetting)
+                .then(response => {
+                    console.log('response', response.data.data);
+                })
+                .catch(err => {
+                    console.log('error /api/save_setting_to_files', err.response.data);
+                })
         },
     },
 }

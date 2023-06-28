@@ -114,7 +114,6 @@ export default {
                         })
                 });
                 this.arrayDataFiles.push(arrayData);
-                console.log('arrayDataFiles ', typeof this.arrayDataFiles);
                 this.execTimeoutRead = setTimeout(execRead, this.pauseRead * 1000);
             }
             execRead();
@@ -123,12 +122,12 @@ export default {
             let arrayRequest = this.getArrayForRequest(this.arrayPath);
             const execRead = async () => {
                 let arrayData = [];
-                axios.post('/api/post_files_data', {data: arrayRequest})
+                axios.post('/api/get_data_files_debug', {data: arrayRequest})
                     .then(response => {
                         this.arrayDataFiles.push(response.data.data);
                     })
                     .catch(err => {
-                        console.log('error /api/get_data_files', err.response.data);
+                        console.log('error /api/get_data_files_debug', err.response.data);
                     })
                 this.execTimeoutRead = setTimeout(execRead, this.pauseRead * 1000);
             }

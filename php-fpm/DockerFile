@@ -63,8 +63,11 @@ FROM php:$PHP_VER
 	RUN apt update && apt install -y git
 
 # Install node and npm in container
-	RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - &&\
+	RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - &&\
 	apt-get install -y nodejs
+	
+# Install vue/cli in container
+	RUN npm install -g @vue/cli
 
 # php.ini
     ADD ./php-fpm/php.ini /usr/local/etc/php/conf.d/

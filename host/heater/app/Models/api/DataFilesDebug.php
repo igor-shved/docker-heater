@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class DataFiles extends Model
+class DataFilesDebug extends Model
 {
     public function getDataFromFiles($arrayPath)
     {

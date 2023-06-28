@@ -54,7 +54,7 @@ export default {
         openModalAllSetting(curRoom) {
             this.curRoom = curRoom;
             this.isOpenModalAllSetting = true;
-            document.body.classList.add('body__Overflow_y_hidden');
+            document.body.classList.add('body__overflow_y_hidden');
         },
         closeModalAllSetting(curRoom) {
             this.curRoom = curRoom;

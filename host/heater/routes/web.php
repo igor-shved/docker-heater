@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\api\DataFilesController;
+use App\Http\Controllers\api\DataFilesDebugController;
 use App\Http\Controllers\MainPageController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +26,7 @@ Route::get('/debug', function () {
 
 
 
-Route::match(['get', 'post'], '/test', [DataFilesController::class, 'getDataFiles']);
+Route::match(['get', 'post'], '/test', [DataFilesDebugController::class, 'getDataFiles']);
 
 //Auth::routes();
 

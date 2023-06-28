@@ -84,6 +84,7 @@ export default {
             roomId: this.objSettingProps.roomId,
             zIndex: this.zIndexProps,
             scheduleArray: this.objSettingProps.scheduleArray,
+            scheduleArrayBeforeChange: this.objSettingProps.scheduleArray,
             objArg: {
                 eventName: '',
                 scheduleArray: this.objSettingProps.scheduleArray
@@ -213,7 +214,6 @@ export default {
                     this.scheduleArray[indexItem].time = prevItem.time + 1;
                     this.changeArray(indexItem, comparTime, this.scheduleArray);
                 } else {
-                    //console.log('prevItem.time < objArg.time', prevItem.time, 'indexItem', this.scheduleArray[indexItem], 'objArg.time', objArg.time, 'this.scheduleArray[indexItem].time', this.scheduleArray[indexItem].time);
                     comparTime = objArg.time + 1;
                     this.changeArray(indexItem + 1, comparTime, this.scheduleArray);
                 }
@@ -221,7 +221,6 @@ export default {
                 comparTime = objArg.time + 1;
                 this.changeArray(indexItem + 1, comparTime, this.scheduleArray);
             }
-            console.log('this.scheduleArray', this.scheduleArray);
         },
     },
 }

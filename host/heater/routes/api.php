@@ -2,7 +2,8 @@
 
 //namespace \App\Http\Controllers;
 use App\Http\Controllers\api\RoomsDataController;
-use App\Http\Controllers\api\DataFilesController;
+use App\Http\Controllers\api\DataFilesDebugController;
+use App\Http\Controllers\api\SaveSettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('/get_rooms_data', [RoomsDataController::class, 'getRoomsData']);
-Route::post('/get_data_files', [DataFilesController::class, 'getDataFiles']);
-Route::match('get,post', '/save_setting_to_files', [DataFilesController::class, 'saveSettingToFiles']);
-//[DataFilesController::class, 'saveSettingToFiles']
+Route::post('/get_data_files_debug', [DataFilesDebugController::class, 'getDataFiles']);
+Route::any('/save_setting_to_files', SaveSettingController::class);
+//[DataFilesDebugController::class, 'saveSettingToFiles']
 //Route::get('/demo', [DemoController::class, 'getData']);

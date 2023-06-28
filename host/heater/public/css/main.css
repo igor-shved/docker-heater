@@ -188,7 +188,7 @@ a:visited, a:active, a:link {
   align-self: center;
 }
 
-.loading_status {
+.loading_status, .check_status {
   margin: 0 auto;
   align-self: center;
 }

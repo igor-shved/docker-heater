@@ -178,9 +178,9 @@ export default {
             this.isOpenModalPeriodMode = false;
         },
         changeMode(objArg) {
-            if (objArg.enentName = "close"){
+            if (objArg.eventName = "close"){
                 this.closeMode();
-            } else if (objArg.enentName = "save") {
+            } else if (objArg.eventName = "save") {
                 this.scheduleItem = {...objArg.scheduleItem};
                 this.updateData();
             }
