@@ -1,0 +1,488 @@
+@import "clearstyle";
+
+$font-color: white;
+$color-block: #5C5C5C;
+$border-radius: 0.5rem;
+$width-name-block: 75%;
+$border-thickness: 1.5px;
+$font-family: "Arial";
+$font-size: 1.3rem;
+$height-menu: 100px;
+$width-content: 80%;
+$max-width-block: 600px;
+$min-height-block: 100px;
+$width-wrapper: 100%;
+
+
+body {
+    height: 100%;
+    font-family: $font-family;
+    font-size: $font-size;
+    color: white;
+}
+
+.body__Overflow_y_hidden {
+    overflow-y: hidden;
+}
+
+.wrapper {
+    position: relative;
+    min-height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: $width-wrapper;
+    background: $color-block;
+}
+
+a:visited, a:active, a:link {
+    color: $font-color;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: $height-menu;
+    width: 100%;
+    background: $color-block;
+    color: $font-color;
+
+    .menu__list {
+        display: flex;
+        max-width: $max-width-block;
+        justify-content: space-between;
+        flex-flow: row nowrap;
+        height: $min-height-block;
+        margin: 0 auto;
+        align-items: center;
+
+        li {
+            padding: 20px;
+            text-align: center;
+            border: $border-thickness solid white;
+            border-radius: $border-radius;
+            background: $color-block;
+        }
+    }
+}
+
+.content, #app, #debug {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    margin-bottom: calc($font-size + 20px);
+}
+
+.content {
+    margin-top: $height-menu;
+}
+
+.room {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    min-height: $min-height-block;
+    max-width: $max-width-block;
+    color: $font-color;
+    background-color: $color-block;
+    border: $border-thickness solid white;
+    justify-content: space-between;
+    padding: 2px;
+    //align-self: center;
+    flex-flow: row nowrap;
+    border-radius: $border-radius;
+    flex-direction: row;
+
+    &__temperature_name {
+        flex-direction: column;
+    }
+
+    &__temperature {
+        span {
+            margin: 0 30px 0 0;
+        }
+    }
+
+    &__clock_debug, &__temperature_name {
+        display: flex;
+        justify-content: space-between;
+        flex: 0 0 $width-name-block;
+        align-self: start;
+        padding: 1%;
+        flex-direction: column;
+    }
+
+    &__clock_debug, &__temperature_block, &__block_status {
+        flex-flow: row nowrap;
+    }
+
+    &__debug {
+        margin: 0 20% 0 0;
+    }
+
+    &__block_status {
+        display: flex;
+        justify-content: space-between;
+        flex: 0 0 100% - $width-name-block;
+        padding-right: 5px;
+    }
+
+    &__temperature_block {
+        display: flex;
+        align-self: center;
+    }
+
+    &__temperature_value {
+        margin: 0 0 0 2px;
+        font-size: $font-size * 0.6;
+    }
+
+    &__state, &__settings {
+        align-self: center;
+    }
+
+}
+
+.loading_status {
+    margin: 0 auto;
+    align-self: center;
+}
+
+.footer {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: $color-block;
+    height: calc($font-size + 20px);
+    bottom: 0px;
+
+    &__content {
+        font-size: $font-size;
+        align-self: center;
+        //margin: 20px 0;
+    }
+}
+
+.modal {
+
+    &__shadow_main {
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        transition: opacity 0.3s ease;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        //opacity: 0; /* по умолчанию модальное окно прозрачно */
+        //visibility: hidden;
+        //pointer-events: none; /* элемент невидим для событий мыши */
+    }
+
+    &__shadow_background {
+        background-color: rgba(199, 180, 180, 0.5);
+    }
+
+    &__container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    &__body {
+        position: relative;
+        display: flex;
+        flex-flow: column nowrap;
+        width: 450px;
+        background-color: $color-block;
+        border: $border-thickness solid white;
+        border-radius: $border-radius;
+        margin: 0 auto;
+    }
+
+    &__header {
+        position: relative;
+        display: flex;
+        flex-flow: column nowrap;
+        background-color: #747474;
+        border-radius: $border-radius $border-radius 0 0;
+    }
+
+    &__close {
+        position: absolute;
+        font-family: sans-serif;
+        font-size: 25px;
+        font-weight: bold;
+        right: 5px;
+        top: 5px;
+    }
+
+    &__title {
+        margin: 5px 5px;
+    }
+
+    &__content {
+        display: flex;
+        position: relative;
+        flex-flow: column nowrap;
+        margin: 10px;
+    }
+
+    //&__modal_mode {
+    //    z-index: 1001;
+    //}
+    //
+    //&__modal_setting {
+    //    z-index: 1002;
+    //}
+    //
+    //&__modal_period_mode {
+    //    z-index: 1003;
+    //}
+
+    &__mode_list {
+        height: 80px;
+    }
+
+    &__mode_list, &__mode_setting {
+        display: flex;
+        position: relative;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    }
+
+    &__mode_block {
+        margin: 15px;
+    }
+
+    &__settings_block {
+        position: relative;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    &__bottom_line {
+        border-bottom: 5px solid white;
+    }
+
+    &__temp_relay_block {
+        display: flex;
+        flex-flow: column nowrap;
+        padding-bottom: 10px;
+        border-bottom: 2px solid white;
+
+        input {
+            font-size: 20px;
+        }
+    }
+
+    &__temp_relay_setting {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 40px;
+    }
+
+    &__temp_relay_img {
+        height: 60px;
+    }
+
+    &__temp_relay_text {
+        width: 80px;
+    }
+
+    &__temp_relay_element {
+        margin: 5px 0;
+    }
+
+    &__temp_block {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+    }
+
+    &__temp_element {
+        display: inline-flex;
+        flex-flow: column nowrap;
+        align-self: center;
+        text-align: center;
+        justify-content: space-between;
+        padding: 10px;
+
+        img {
+            margin: auto;
+            text-align: center;
+            align-self: center;
+        }
+
+        p {
+            font-size: 40px;
+        }
+    }
+
+    &__hide_text {
+        color: #a49d9d;
+    }
+
+    &__schedule_container {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-between;
+    }
+
+    &__schedule_block {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    }
+
+    &__schedule_element {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1 1 33.333%;
+        justify-content: space-between;
+        align-self: center;
+    }
+
+    &__schedule_info {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-left: 40px;
+
+        p {
+            margin: auto 10px;
+            font-size: 20px;
+        }
+    }
+
+    &__schedule_mode_select_block, &__schedule_mode_select_element {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+    &__schedule_mode_select_element {
+        margin-left: 20px;
+    }
+
+    &__footer {
+        display: flex;
+        position: relative;
+        background-color: #747474;
+        min-height: 50px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 0 $border-radius $border-radius;
+    }
+
+    &__schedule_footer {
+        display: flex;
+        flex-flow: column nowrap;
+        align-self: center;
+        justify-content: space-between;
+        margin: 5px 0;
+    }
+
+    &__schedule_footer_keys {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        margin: 2px 0;
+    }
+
+    &__schedule_keys_block {
+        display: flex;
+        flex-flow: row nowrap;
+        min-width: 180px;
+
+        p {
+            margin: auto 5px;
+        }
+    }
+
+    &__footer_button {
+        font-weight: bold;
+        font-size: 16px;
+        width: 100px;
+        height: 30px;
+        border-radius: $border-radius;
+        margin: auto;
+    }
+}
+
+.debug {
+    &__content {
+        display: flex;
+        flex: 1 1 auto;
+        margin: 0 20px;
+        flex-flow: column nowrap;
+        background: $color-block;
+    }
+
+    &__block_column {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
+
+    &__block_row {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+    }
+
+    &__block_list_path {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+    }
+
+    &__element {
+        margin: 5px;
+    }
+
+    &__element_input_250 {
+        font-size: $font-size;
+        width: 250px;
+    }
+
+    &__element_input_30 {
+        font-size: $font-size;
+        width: 30px;
+    }
+
+    &__button {
+        border: $border-thickness solid white;
+        border-radius: $border-radius;
+        padding: 5px;
+        min-height: 40px;
+        margin: 5px;
+    }
+}
+table {
+    width: 100%;
+    table-layout: fixed;
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    width: 2%;
+    padding: 5px;
+    word-wrap: break-word;
+}
