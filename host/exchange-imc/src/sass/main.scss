@@ -1,14 +1,26 @@
 @import "clearstyle";
 
 $font-color: black;
-$color-block: white;
-$border-radius-button: 0.5rem;
+$width-wrapper: 80%;
+$color-wrapper: yellow;
+$width-content: 95%;
+$number-buttons-row: 3;
+$border-radius-button: 0.6rem;
+$width-block-main: 50%;
+$width-block-exchange-info: 70%;
 $font-family: "Arial";
 $font-size: 2rem;
-$width-content: 80%;
-$width-wrapper: 100%;
-$height-button: 30px;
-$font-size-button: 3rem;
+$height-button-block: 5rem;
+$height-button: $height-button-block - 1rem;
+$font-size-button: 2rem;
+$color-button-exchange: #4682B4;
+$color-button-add-exchange: #b7e265;
+$color-button-run-exchange: #09961f;
+$border-thickness-line: 1.5px;
+$border-radius: 0.5rem;
+$color-footer: black;
+$font-color-footer: grey;
+$font-size-footer: 1.3rem;
 
 
 body {
@@ -22,15 +34,15 @@ body {
 }
 
 .wrapper {
+  display: flex;
   position: relative;
+  flex-flow: column nowrap;
   min-height: 100%;
   margin: 0 auto;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   max-width: $width-wrapper;
-  background: $color-block;
+  background: $color-wrapper;
 }
 
 a:visited, a:active, a:link {
@@ -39,25 +51,81 @@ a:visited, a:active, a:link {
 
 .content {
   display: flex;
+  margin: auto;
   flex: 1 1 auto;
   flex-flow: column wrap;
-  margin: 0 auto;
-  max-width: $width-content;
+  width: $width-content;
   text-align: center;
 }
+
 .block-text {
   margin-top: 10px;
   font-size: $font-size-button;
 }
-.button-block {
-  height: $height-button;
-  text-align: center;
+
+.buttons-row-main {
   justify-content: center;
-  margin: 20px;
 }
-.button-main {
-  flex: 0 1 100%;
+
+.buttons-row {
+  justify-content: space-between;
 }
-.button-child {
-  flex: 0 1 33.333%;
+
+.content-row {
+  display: flex;
+  width: 100%;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  &__block-main {
+    flex: 0 1 $width-block-main;
+  }
+
+  &__block-child {
+    flex: 0 1 100% / $number-buttons-row;
+  }
+
+  &__block-exchange-info {
+    flex: 0 1 $width-block-exchange-info;
+  }
+
+  &__block-main, &__block-child {
+    display: block;
+  }
+}
+
+.button-block {
+  display: flex;
+  border: $border-thickness-line;
+  border-radius: $border-radius-button;
+  height: $height-button;
+  margin: 10px;
+  align-items: center;
+  &__exchange {
+    background-color: $color-button-exchange;
+  }
+  &__add-exchange {
+    background-color: $color-button-add-exchange;
+  }
+  &__run-exchange {
+    background-color: $color-button-run-exchange;
+  }
+  &__text {
+    margin: auto;
+  }
+}
+
+
+.footer {
+  display: flex;
+  justify-content: center;
+  height: calc($font-size-footer + 20px);
+  font-size: $font-size-footer;
+  background-color: $color-footer;
+  bottom: 0px;
+
+  &__content {
+    color: $font-color-footer;
+    align-self: center;
+  }
 }

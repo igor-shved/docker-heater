@@ -81,15 +81,15 @@ body {
 }
 
 .wrapper {
+  display: flex;
   position: relative;
+  flex-flow: column nowrap;
   min-height: 100%;
   margin: 0 auto;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  max-width: 100%;
-  background: white;
+  max-width: 80%;
+  background: yellow;
 }
 
 a:visited, a:active, a:link {
@@ -98,29 +98,75 @@ a:visited, a:active, a:link {
 
 .content {
   display: flex;
+  margin: auto;
   flex: 1 1 auto;
   flex-flow: column wrap;
-  margin: 0 auto;
-  max-width: 80%;
+  width: 95%;
   text-align: center;
 }
 
 .block-text {
   margin-top: 10px;
-  font-size: 3rem;
+  font-size: 2rem;
+}
+
+.buttons-row-main {
+  justify-content: center;
+}
+
+.buttons-row {
+  justify-content: space-between;
+}
+
+.content-row {
+  display: flex;
+  width: 100%;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.content-row__block-main {
+  flex: 0 1 50%;
+}
+.content-row__block-child {
+  flex: 0 1 33.3333333333%;
+}
+.content-row__block-exchange-info {
+  flex: 0 1 70%;
+}
+.content-row__block-main, .content-row__block-child {
+  display: block;
 }
 
 .button-block {
-  height: 30px;
-  text-align: center;
+  display: flex;
+  border: 1.5px;
+  border-radius: 0.6rem;
+  height: 4rem;
+  margin: 10px;
+  align-items: center;
+}
+.button-block__exchange {
+  background-color: #4682B4;
+}
+.button-block__add-exchange {
+  background-color: #b7e265;
+}
+.button-block__run-exchange {
+  background-color: #09961f;
+}
+.button-block__text {
+  margin: auto;
+}
+
+.footer {
+  display: flex;
   justify-content: center;
-  margin: 20px;
+  height: calc(1.3rem + 20px);
+  font-size: 1.3rem;
+  background-color: black;
+  bottom: 0px;
 }
-
-.button-main {
-  flex: 0 1 100%;
-}
-
-.button-child {
-  flex: 0 1 33.333%;
+.footer__content {
+  color: grey;
+  align-self: center;
 }
