@@ -1,4 +1,4 @@
-import {createApp, provide} from "vue";
+import {createApp} from "vue";
 import store from "../store";
 import axios from "axios";
 import VueEventer from "vue-eventer";

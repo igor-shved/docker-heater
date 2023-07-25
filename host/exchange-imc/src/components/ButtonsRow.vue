@@ -7,28 +7,32 @@ export default {
   props: ['arrButtonsProps', 'indexProps'],
   data() {
     return {
-      classButton: '',
       classRow: '',
+      classRowButton: '',
+      curButton: undefined,
+      buttonSelect: false,
+      arrButtons: this.arrButtonsProps,
     }
   },
   created() {
     if (this.indexProps === 0) {
-      this.classButton = 'content-row__block-main content-row__add-exchange';
-      this.classRow = 'content-row buttons-row-main';
+      this.classRow = 'content-row content-flex-center';
+      this.classRowButton = 'content-row__block-center';
     } else {
-      this.classButton = 'content-row__block-child content-row__add-exchange';
-      this.classRow = 'content-row buttons-row';
+      this.classRow = 'content-row content-flex-between';
+      this.classRowButton = 'content-row__block-between';
     }
-  }
+  },
+  methods: {
+  },
 }
 </script>
 
 <template>
   <div :class="classRow">
-    <button_exchange v-for="(item, index) in arrButtonsProps"
+    <button_exchange v-for="(item, index) in arrButtons"
                      :buttonProps="item"
-                     :classButtonProps="classButton"
-                     :indexRowProps="indexProps"
+                     :classRowButtonProps="classRowButton"
                      :key="'button' + String(indexProps) + String(index)"
     >
     </button_exchange>

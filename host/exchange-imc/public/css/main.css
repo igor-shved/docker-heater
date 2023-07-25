@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5, h6 {
 body {
   height: 100%;
   font-family: "Arial";
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 .body__overflow_y_hidden {
@@ -89,7 +89,7 @@ body {
   overflow: hidden;
   justify-content: center;
   max-width: 80%;
-  background: yellow;
+  background: white;
 }
 
 a:visited, a:active, a:link {
@@ -106,56 +106,85 @@ a:visited, a:active, a:link {
 }
 
 .block-text {
-  margin-top: 10px;
-  font-size: 2rem;
+  display: block;
+  padding: 2px 0;
+  font-size: 1.8rem;
 }
 
-.buttons-row-main {
-  justify-content: center;
-}
-
-.buttons-row {
-  justify-content: space-between;
+.text-select-exchange {
+  color: #3b701c;
 }
 
 .content-row {
   display: flex;
   width: 100%;
   flex-flow: row nowrap;
+  min-height: 4.1rem;
   align-items: center;
 }
-.content-row__block-main {
-  flex: 0 1 50%;
+.content-row__block-center {
+  display: block;
+  flex: 0 1 100%;
 }
-.content-row__block-child {
+.content-row__block-between {
+  display: block;
   flex: 0 1 33.3333333333%;
 }
 .content-row__block-exchange-info {
   flex: 0 1 70%;
 }
-.content-row__block-main, .content-row__block-child {
-  display: block;
+
+.content-flex-center {
+  justify-content: center;
+}
+
+.content-flex-between {
+  justify-content: space-between;
 }
 
 .button-block {
   display: flex;
   border: 1.5px;
   border-radius: 0.6rem;
-  height: 4rem;
-  margin: 10px;
+  min-height: 2.1rem;
+  margin: 5px;
   align-items: center;
 }
 .button-block__exchange {
   background-color: #4682B4;
 }
 .button-block__add-exchange {
-  background-color: #b7e265;
+  background-color: #6C757D;
 }
 .button-block__run-exchange {
   background-color: #09961f;
 }
+.button-block__stop-exchange {
+  background-color: #DC3545;
+}
+.button-block__select {
+  background-color: #3b701c;
+}
 .button-block__text {
   margin: auto;
+  padding: 10px;
+  color: white;
+}
+
+.row-exchange {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+  align-items: center;
+  flex: 0 1 50%;
+  text-align: start;
+}
+.row-exchange__status {
+  padding: 5px;
+  font-size: 1.2rem;
+}
+.row-exchange__button-block {
+  display: block;
 }
 
 .footer {

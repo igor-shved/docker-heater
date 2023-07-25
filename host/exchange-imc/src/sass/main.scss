@@ -2,20 +2,25 @@
 
 $font-color: black;
 $width-wrapper: 80%;
-$color-wrapper: yellow;
+$color-wrapper: white;
 $width-content: 95%;
 $number-buttons-row: 3;
 $border-radius-button: 0.6rem;
-$width-block-main: 50%;
+$width-block-center: 100%;
 $width-block-exchange-info: 70%;
 $font-family: "Arial";
-$font-size: 2rem;
-$height-button-block: 5rem;
-$height-button: $height-button-block - 1rem;
-$font-size-button: 2rem;
+$font-size: 1.8rem;
+$font-size-button: $font-size + 0.3rem;
+$font-size-status: 1.2rem;
+$height-button: $font-size-button;
+$height-row: $height-button + 2rem;
 $color-button-exchange: #4682B4;
-$color-button-add-exchange: #b7e265;
+$font-color-button: white;
+$color-button-add-exchange: #6C757D;
 $color-button-run-exchange: #09961f;
+$color-button-stop-exchange: #DC3545;
+$color-button-select: #3b701c;
+$font-color-text-select-exchange: #3b701c;
 $border-thickness-line: 1.5px;
 $border-radius: 0.5rem;
 $color-footer: black;
@@ -58,30 +63,35 @@ a:visited, a:active, a:link {
   text-align: center;
 }
 
+.list-buttons {
+
+}
+
 .block-text {
-  margin-top: 10px;
-  font-size: $font-size-button;
+  display: block;
+  padding: 2px 0;
+  font-size: $font-size;
 }
 
-.buttons-row-main {
-  justify-content: center;
+.text-select-exchange {
+  color: $font-color-text-select-exchange;
 }
 
-.buttons-row {
-  justify-content: space-between;
-}
 
 .content-row {
   display: flex;
   width: 100%;
   flex-flow: row nowrap;
+  min-height: $height-row;
   align-items: center;
 
-  &__block-main {
-    flex: 0 1 $width-block-main;
+  &__block-center {
+    display: block;
+    flex: 0 1 $width-block-center;
   }
 
-  &__block-child {
+  &__block-between {
+    display: block;
     flex: 0 1 100% / $number-buttons-row;
   }
 
@@ -89,32 +99,68 @@ a:visited, a:active, a:link {
     flex: 0 1 $width-block-exchange-info;
   }
 
-  &__block-main, &__block-child {
-    display: block;
-  }
+}
+
+.content-flex-center {
+  justify-content: center;
+}
+
+.content-flex-between {
+  justify-content: space-between;
 }
 
 .button-block {
   display: flex;
   border: $border-thickness-line;
   border-radius: $border-radius-button;
-  height: $height-button;
-  margin: 10px;
+  min-height: $height-button;
+  margin: 5px;
   align-items: center;
+
   &__exchange {
     background-color: $color-button-exchange;
   }
+
   &__add-exchange {
     background-color: $color-button-add-exchange;
   }
+
   &__run-exchange {
     background-color: $color-button-run-exchange;
   }
+
+  &__stop-exchange {
+    background-color: $color-button-stop-exchange;
+  }
+
+  &__select {
+    background-color: $color-button-select;
+  }
+
   &__text {
     margin: auto;
+    padding: 10px;
+    color: $font-color-button;
   }
 }
 
+.row-exchange {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+  align-items: center;
+  flex: 0 1 50%;
+  text-align: start;
+
+  &__status {
+    padding: 5px;
+    font-size: $font-size-status;
+  }
+
+  &__button-block {
+    display: block;
+  }
+}
 
 .footer {
   display: flex;
