@@ -189,11 +189,13 @@ a:visited, a:active, a:link {
 
 .footer {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
   height: calc(1.3rem + 20px);
   font-size: 1.3rem;
   background-color: black;
   bottom: 0px;
+  border-radius: 0.5rem;
 }
 .footer__content {
   color: grey;

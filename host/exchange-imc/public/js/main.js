@@ -17090,7 +17090,8 @@ __webpack_require__.r(__webpack_exports__);
         id: 1,
         name: 'Київ',
         path: 'http://bases.imc.loc/imc/hs/exchange/',
-        isSelect: false
+        isSelect: false,
+        nameExchange: 'ІМК'
       },
       stopExchangeState: false,
       textSelectExchange: 'Немає даних для обміну',
@@ -17108,47 +17109,62 @@ __webpack_require__.r(__webpack_exports__);
       id: 2,
       name: 'БА',
       path: 'http://serverpl.poltava.loc/ba/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'БуратАгро'
     }, {
       id: 3,
       name: 'БТ',
       path: 'http://serverpl.poltava.loc/bt/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'Бурат'
     }, {
       id: 4,
       name: 'ЧІМК',
       path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'ЧІМК'
     }, {
       id: 5,
       name: 'МБ',
       path: 'http://serverch.chernihiv.loc/mb/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'МЛИБОР'
     }, {
       id: 6,
       name: 'СА',
       path: 'http://bases.imc.loc/sa/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'СлобожанщинаАгро'
     }, {
       id: 7,
       name: 'ВХПП',
       path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'ВХПП'
     }, {
       id: 8,
       name: 'АК',
       path: 'http://serverpr.priluki.loc/ak/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'АгроКім'
     }, {
       id: 9,
       name: 'АП',
       path: 'http://serverns.nosovka.loc/ap/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'Агропрогрес'
     }, {
       id: 10,
       name: 'БХПП',
       path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/',
-      isSelect: false
+      isSelect: false,
+      nameExchange: 'БХПП'
+    }, {
+      id: 11,
+      name: 'БХЗ',
+      path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/',
+      isSelect: false,
+      nameExchange: 'БХЗ'
     }];
     var chunkArray = this.chunkArray(this.arrayExchange, 3);
     this.arrayBlock.push([this.mainExchange]);
@@ -17278,20 +17294,70 @@ __webpack_require__.r(__webpack_exports__);
       this.outputCurrentExchange(this.arraySelect);
     },
     deleteSelectExchange: function deleteSelectExchange(selectExchange) {
-      console.log('selectExchange id', selectExchange.id);
       var indexExchange = undefined;
       this.selectExchanges.map(function (item, index) {
         if (selectExchange.id === item.id) {
           indexExchange = index;
         }
       });
-      //console.log('indexExchange', indexExchange, 'selectExchange', selectExchange, 'selectExchanges', this.selectExchanges);
-      console.log('selectExchanges', this.selectExchanges);
       if (indexExchange !== undefined) {
         this.selectExchanges.splice(indexExchange, 1);
       }
     },
-    runExchange: function runExchange() {},
+    runExchange: function runExchange() {
+      var _this4 = this;
+      this.selectExchanges.forEach(function (itemExchange) {
+        var result = _this4.runSelectExchange(itemExchange);
+        if (result.status === 'error') {
+          return;
+        }
+      });
+    },
+    runSelectExchange: function runSelectExchange(itemExchange) {
+      var _this5 = this;
+      itemExchange.selectArray.forEach(function (itemOperation, index) {
+        var resultRequest = _this5.runItemOperation(itemExchange, itemOperation, index);
+        if (resultRequest.status === 'error') {
+          return resultRequest;
+        }
+      });
+    },
+    runItemOperation: function runItemOperation(itemExchange, itemOperation, index) {
+      if (index === 0) {
+        var nameOperation = 'upload';
+        itemExchange.status = 'Виконується вивантаження даних на ' + itemOperation.name;
+        var resultRequest = this.runRequest(nameOperation, itemOperation);
+        console.log(resultRequest);
+        // if (resultRequest.status === 'error') {
+        //   itemExchange.status = 'Вивантаження даних виконано з помилкою, тому обмін буде зупинено. Текст помилки: ' + resultRequest.data;
+        // } else {
+        //   console.log(resultRequest.data);
+        // }
+        return resultRequest;
+      } else if (index === 1) {}
+    },
+    runRequest: function runRequest(nameOperation, operation) {
+      this.$axios.get(operation.path + nameOperation + '/' + operation.nameExchange).then(function (response) {
+        console.log(response);
+        return {
+          status: 'success',
+          data: response
+        };
+      })["catch"](function (error) {
+        console.log(error);
+        return {
+          status: 'error',
+          data: error
+        };
+      });
+    },
+    // this.$axios.('/api/get_data_files_debug', {data: arrayRequest})
+    //     .then(response => {
+    //       this.arrayDataFiles.push(response.data.data);
+    //     })
+    //     .catch(err => {
+    //       console.log('error /api/get_data_files_debug', err.response.data);
+    //     })
     stopExchange: function stopExchange() {}
   })
 });
@@ -17430,7 +17496,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     deleteExchange: function deleteExchange() {
-      console.log('delete from SelectExchange id', this.selectExchanges.id);
       this.$eventBus.emit('delete_select_exchange', {
         id: this.selectExchanges.id,
         exchange: this.selectExchanges
@@ -17634,18 +17699,14 @@ var _hoisted_4 = {
 var _hoisted_5 = {
   "class": "block-text row-exchange__status"
 };
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "button-block__text"
-}, " x ", -1 /* HOISTED */);
-var _hoisted_7 = [_hoisted_6];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.selectArrayText), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.statusExchange), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
-    "class": "button-block button-block__stop-exchange",
+    "class": "button-block icon-trash-can",
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return _ctx.deleteExchange && _ctx.deleteExchange.apply(_ctx, arguments);
     }, ["prevent"]))
-  }, _hoisted_7)])]);
+  })])]);
 }
 
 /***/ }),

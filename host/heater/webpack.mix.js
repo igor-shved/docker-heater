@@ -20,6 +20,7 @@ mix.js('resources/js/app/heater.js', 'public/js').vue()
     .copyDirectory('storage/app/files_project/fonts','public/fonts')
     //.webpackConfig(webpackConfig)
     .sass('resources/sass/main.scss', 'public/css');
+
 // if (mix.inProduction()) {
 //     mix.version();
 // } else {

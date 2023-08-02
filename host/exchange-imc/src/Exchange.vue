@@ -12,7 +12,7 @@ export default {
       arrayBlock: [],
       arraySelect: [],
       selectExchanges: [],
-      mainExchange: {id: 1, name: 'Київ', path: 'http://bases.imc.loc/imc/hs/exchange/', isSelect: false},
+      mainExchange: {id: 1, name: 'Київ', path: 'http://bases.imc.loc/imc/hs/exchange/', isSelect: false, nameExchange: 'ІМК'},
       stopExchangeState: false,
       textSelectExchange: 'Немає даних для обміну',
       visibleAddExchange: false,
@@ -25,15 +25,16 @@ export default {
     this.$eventBus.$on('select_exchange', this.selectExchange);
     this.$eventBus.$on('delete_select_exchange', this.deleteSelectExchange);
     this.arrayExchange = [
-      {id: 2, name: 'БА', path: 'http://serverpl.poltava.loc/ba/hs/exchange/', isSelect: false},
-      {id: 3, name: 'БТ', path: 'http://serverpl.poltava.loc/bt/hs/exchange/', isSelect: false},
-      {id: 4, name: 'ЧІМК', path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/', isSelect: false},
-      {id: 5, name: 'МБ', path: 'http://serverch.chernihiv.loc/mb/hs/exchange/', isSelect: false},
-      {id: 6, name: 'СА', path: 'http://bases.imc.loc/sa/hs/exchange/', isSelect: false},
-      {id: 7, name: 'ВХПП', path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/', isSelect: false},
-      {id: 8, name: 'АК', path: 'http://serverpr.priluki.loc/ak/hs/exchange/', isSelect: false},
-      {id: 9, name: 'АП', path: 'http://serverns.nosovka.loc/ap/hs/exchange/', isSelect: false},
-      {id: 10, name: 'БХПП', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false}
+      {id: 2, name: 'БА', path: 'http://serverpl.poltava.loc/ba/hs/exchange/', isSelect: false, nameExchange: 'БуратАгро'},
+      {id: 3, name: 'БТ', path: 'http://serverpl.poltava.loc/bt/hs/exchange/', isSelect: false, nameExchange: 'Бурат'},
+      {id: 4, name: 'ЧІМК', path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/', isSelect: false, nameExchange: 'ЧІМК'},
+      {id: 5, name: 'МБ', path: 'http://serverch.chernihiv.loc/mb/hs/exchange/', isSelect: false, nameExchange: 'МЛИБОР'},
+      {id: 6, name: 'СА', path: 'http://bases.imc.loc/sa/hs/exchange/', isSelect: false, nameExchange: 'СлобожанщинаАгро'},
+      {id: 7, name: 'ВХПП', path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/', isSelect: false, nameExchange: 'ВХПП'},
+      {id: 8, name: 'АК', path: 'http://serverpr.priluki.loc/ak/hs/exchange/', isSelect: false, nameExchange: 'АгроКім'},
+      {id: 9, name: 'АП', path: 'http://serverns.nosovka.loc/ap/hs/exchange/', isSelect: false, nameExchange: 'Агропрогрес'},
+      {id: 10, name: 'БХПП', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false, nameExchange: 'БХПП'},
+      {id: 11, name: 'БХЗ', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false, nameExchange: 'БХЗ'},
     ];
     let chunkArray = this.chunkArray(this.arrayExchange, 3);
     this.arrayBlock.push([this.mainExchange]);
@@ -164,21 +165,74 @@ export default {
       this.outputCurrentExchange(this.arraySelect);
     },
     deleteSelectExchange(selectExchange) {
-      console.log('selectExchange id', selectExchange.id);
       let indexExchange = undefined;
       this.selectExchanges.map((item, index) => {
         if (selectExchange.id === item.id) {
           indexExchange = index;
         }
       })
-      //console.log('indexExchange', indexExchange, 'selectExchange', selectExchange, 'selectExchanges', this.selectExchanges);
-      console.log('selectExchanges', this.selectExchanges);
       if (indexExchange !== undefined) {
         this.selectExchanges.splice(indexExchange, 1);
       }
     },
     runExchange() {
+      this.selectExchanges.forEach(itemExchange => {
+        let result = this.runSelectExchange(itemExchange);
+        if (result.status === 'error'){
+          return;
+        }
+      });
     },
+    runSelectExchange(itemExchange) {
+      itemExchange.selectArray.forEach((itemOperation, index) => {
+        let resultRequest = this.runItemOperation(itemExchange, itemOperation, index);
+        if (resultRequest.status === 'error') {
+          return resultRequest;
+        }
+      });
+    },
+    runItemOperation(itemExchange, itemOperation, index) {
+      if (index === 0) {
+        let nameOperation = 'upload';
+        itemExchange.status = 'Виконується вивантаження даних на ' + itemOperation.name;
+        let resultRequest = this.runRequest(nameOperation, itemOperation);
+        console.log(resultRequest);
+        // if (resultRequest.status === 'error') {
+        //   itemExchange.status = 'Вивантаження даних виконано з помилкою, тому обмін буде зупинено. Текст помилки: ' + resultRequest.data;
+        // } else {
+        //   console.log(resultRequest.data);
+        // }
+        return resultRequest;
+      } else if(index === 1) {
+
+      }
+    },
+    runRequest(nameOperation, operation) {
+      this.$axios.get(operation.path + nameOperation + '/' + operation.nameExchange)
+          .then(function (response){
+            console.log(response);
+            return {
+              status: 'success',
+              data: response,
+            }
+          })
+          .catch(function (error){
+            console.log(error);
+            return {
+              status: 'error',
+              data: error,
+            }
+          })
+    },
+
+    // this.$axios.('/api/get_data_files_debug', {data: arrayRequest})
+    //     .then(response => {
+    //       this.arrayDataFiles.push(response.data.data);
+    //     })
+    //     .catch(err => {
+    //       console.log('error /api/get_data_files_debug', err.response.data);
+    //     })
+
     stopExchange() {
     },
   }

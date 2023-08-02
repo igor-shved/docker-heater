@@ -27,7 +27,6 @@ export default defineComponent({
   },
   methods: {
     deleteExchange() {
-      console.log('delete from SelectExchange id',this.selectExchanges.id);
       this.$eventBus.emit('delete_select_exchange', {id: this.selectExchanges.id, exchange: this.selectExchanges});
     }
   }
@@ -41,10 +40,7 @@ export default defineComponent({
     </div>
     <div class="row-exchange">
       <div class="block-text row-exchange__status">{{ statusExchange }}</div>
-      <a href="" class="button-block button-block__stop-exchange" @click.prevent="deleteExchange">
-        <div class="button-block__text">
-          x
-        </div>
+      <a href="" class="button-block icon-trash-can" @click.prevent="deleteExchange">
       </a>
     </div>
   </div>

@@ -164,11 +164,13 @@ a:visited, a:active, a:link {
 
 .footer {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
   height: calc($font-size-footer + 20px);
   font-size: $font-size-footer;
   background-color: $color-footer;
   bottom: 0px;
+  border-radius: $border-radius;
 
   &__content {
     color: $font-color-footer;
