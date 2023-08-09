@@ -17061,13 +17061,24 @@ const replacer = (_key, val) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_toConsumableArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js */ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js");
-/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
-/* harmony import */ var core_js_modules_es_array_push_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.push.js */ "./node_modules/core-js/modules/es.array.push.js");
-/* harmony import */ var core_js_modules_es_array_push_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_push_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_ButtonsRow_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/ButtonsRow.vue */ "./src/components/ButtonsRow.vue");
-/* harmony import */ var _components_SelectExchanges_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/SelectExchanges.vue */ "./src/components/SelectExchanges.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js */ "./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js");
+/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_toConsumableArray_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js */ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js");
+/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/regeneratorRuntime.js */ "./node_modules/@babel/runtime/helpers/esm/regeneratorRuntime.js");
+/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
+/* harmony import */ var core_js_modules_es_array_push_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! core-js/modules/es.array.push.js */ "./node_modules/core-js/modules/es.array.push.js");
+/* harmony import */ var core_js_modules_es_array_push_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_push_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es_error_cause_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! core-js/modules/es.error.cause.js */ "./node_modules/core-js/modules/es.error.cause.js");
+/* harmony import */ var core_js_modules_es_error_cause_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_error_cause_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_ButtonsRow_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/ButtonsRow.vue */ "./src/components/ButtonsRow.vue");
+/* harmony import */ var _components_SelectExchanges_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/SelectExchanges.vue */ "./src/components/SelectExchanges.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+
+
+
+
+
 
 
 
@@ -17077,129 +17088,116 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'exchange',
   components: {
-    buttons_row: _components_ButtonsRow_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    select_exchanges: _components_SelectExchanges_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+    buttons_row: _components_ButtonsRow_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
+    select_exchanges: _components_SelectExchanges_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
   data: function data() {
     return {
+      active_item: {},
       arrayExchange: [],
       arrayBlock: [],
       arraySelect: [],
       selectExchanges: [],
-      mainExchange: {
-        id: 1,
-        name: 'Київ',
-        path: 'http://bases.imc.loc/imc/hs/exchange/',
-        isSelect: false,
-        nameExchange: 'ІМК'
-      },
+      mainExchange: {},
+      //mainExchange: {id: 1, name: 'Київ', path: 'http://i-shved.imc.loc/imc/hs/exchange/', isSelect: false, nameExchange: 'ІМК'},
       stopExchangeState: false,
       textSelectExchange: 'Немає даних для обміну',
       visibleAddExchange: false,
       visibleOperationExchange: false,
-      countSelect: 1
+      countSelect: 1,
+      operationExchangeProgress: false,
+      //=========== debug ================
+      tasks: ['завдання 1', 'завдання 2', 'завдання 3', 'завдання 4'],
+      completedTasks: []
+      //===================================
       //publicPath: process.env.BASE_URL,
     };
   },
   created: function created() {
-    var _this = this;
     this.$eventBus.$on('select_exchange', this.selectExchange);
     this.$eventBus.$on('delete_select_exchange', this.deleteSelectExchange);
-    this.arrayExchange = [{
-      id: 2,
-      name: 'БА',
-      path: 'http://serverpl.poltava.loc/ba/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'БуратАгро'
-    }, {
-      id: 3,
-      name: 'БТ',
-      path: 'http://serverpl.poltava.loc/bt/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'Бурат'
-    }, {
-      id: 4,
-      name: 'ЧІМК',
-      path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'ЧІМК'
-    }, {
-      id: 5,
-      name: 'МБ',
-      path: 'http://serverch.chernihiv.loc/mb/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'МЛИБОР'
-    }, {
-      id: 6,
-      name: 'СА',
-      path: 'http://bases.imc.loc/sa/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'СлобожанщинаАгро'
-    }, {
-      id: 7,
-      name: 'ВХПП',
-      path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'ВХПП'
-    }, {
-      id: 8,
-      name: 'АК',
-      path: 'http://serverpr.priluki.loc/ak/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'АгроКім'
-    }, {
-      id: 9,
-      name: 'АП',
-      path: 'http://serverns.nosovka.loc/ap/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'Агропрогрес'
-    }, {
-      id: 10,
-      name: 'БХПП',
-      path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'БХПП'
-    }, {
-      id: 11,
-      name: 'БХЗ',
-      path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/',
-      isSelect: false,
-      nameExchange: 'БХЗ'
-    }];
-    var chunkArray = this.chunkArray(this.arrayExchange, 3);
-    this.arrayBlock.push([this.mainExchange]);
-    chunkArray.map(function (item) {
-      _this.arrayBlock.push(item);
-    });
+    this.init_array();
   },
   beforeUnmount: function beforeUnmount() {
     this.$eventBus.$off('select_exchange', this.selectExchange);
     this.$eventBus.$off('delete_select_exchange', this.deleteSelectExchange);
   },
-  watch: {
-    arraySelect: {
-      deep: true,
-      handler: function handler(val, oldVal) {
-        if (this.arraySelect.length > 1) {
-          this.visibleAddExchange = true;
-        } else {
-          this.visibleAddExchange = false;
-        }
-      }
+  methods: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_5__["default"])((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_5__["default"])({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapActions)(['CHANGE_COUNT_EXCHANGE', 'ARRAY_SELECT_EXCHANGE'])), {}, {
+    // init_array_callback(callback) {
+    //   this.arrayExchange = [];
+    //   let self = this;
+    //
+    //   this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
+    //       .then(function (response) {
+    //         if (response.hasOwnProperty("data")) {
+    //           let items = response.data.data;
+    //           items.map(item => {
+    //             self.arrayExchange.push(item);
+    //           });
+    //           callback(items);
+    //         }
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error);
+    //       })
+    // },
+    init_array: function init_array() {
+      var _this = this;
+      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee() {
+        var self, chunkArray;
+        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _this.arrayExchange = [];
+              self = _this;
+              _this.operationProgress = true;
+              _context.next = 5;
+              return _this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo').then(function (response) {
+                if (response.hasOwnProperty("data")) {
+                  if (response.data.status = 'operation_success') {
+                    response.data.data.map(function (item, index) {
+                      if (index === 0) {
+                        self.mainExchange = item;
+                      } else {
+                        self.arrayExchange.push(item);
+                      }
+                    });
+                  } else {
+                    throw Error(response);
+                  }
+                }
+              })["catch"](function (error) {
+                console.log(error);
+              });
+            case 5:
+              if (_this.arrayExchange.length !== 0) {
+                chunkArray = _this.chunkArray(_this.arrayExchange, 3);
+                _this.arrayBlock.push([_this.mainExchange]);
+                chunkArray.map(function (item) {
+                  _this.arrayBlock.push(item);
+                });
+              }
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee);
+      }))();
     },
-    selectExchanges: {
-      deep: true,
-      handler: function handler(val, oldVal) {
-        if (this.selectExchanges.length > 0) {
-          this.visibleOperationExchange = true;
-        } else {
-          this.visibleOperationExchange = false;
-        }
-      }
-    }
-  },
-  computed: {},
-  methods: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_1__["default"])((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_1__["default"])({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapActions)(['CHANGE_COUNT_EXCHANGE', 'ARRAY_SELECT_EXCHANGE'])), {}, {
+    getArrayExchange: function getArrayExchange() {
+      // this.arrayExchange = [
+      //   {id: 2, name: 'БА', path: 'http://serverpl.poltava.loc/ba/hs/exchange/', isSelect: false, nameExchange: 'БуратАгро'},
+      //   {id: 3, name: 'БТ', path: 'http://serverpl.poltava.loc/bt/hs/exchange/', isSelect: false, nameExchange: 'Бурат'},
+      //   {id: 4, name: 'ЧІМК', path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/', isSelect: false, nameExchange: 'ЧІМК'},
+      //   {id: 5, name: 'МБ', path: 'http://serverch.chernihiv.loc/mb/hs/exchange/', isSelect: false, nameExchange: 'МЛИБОР'},
+      //   {id: 6, name: 'СА', path: 'http://bases.imc.loc/sa/hs/exchange/', isSelect: false, nameExchange: 'СлобожанщинаАгро'},
+      //   {id: 7, name: 'ВХПП', path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/', isSelect: false, nameExchange: 'ВХПП'},
+      //   {id: 8, name: 'АК', path: 'http://serverpr.priluki.loc/ak/hs/exchange/', isSelect: false, nameExchange: 'АгроКім'},
+      //   {id: 9, name: 'АП', path: 'http://serverns.nosovka.loc/ap/hs/exchange/', isSelect: false, nameExchange: 'Агропрогрес'},
+      //   {id: 10, name: 'БХПП', path: 'http://powerbb.bobrovica.loc/bhpp/hs/exchange/', isSelect: false, nameExchange: 'БХПП'},
+      //   {id: 11, name: 'БХЗ', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false, nameExchange: 'БХЗ'},
+      // ];
+    },
     chunkArray: function chunkArray(arr, size) {
       var chunkArray = [];
       for (var i = 0; i < arr.length; i += size) {
@@ -17277,14 +17275,15 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    addExchange: function addExchange() {
+    clickAddExchange: function clickAddExchange() {
       if (this.arraySelect.length <= 1) {
         return;
       }
       this.selectExchanges.push({
         id: this.countSelect,
-        selectArray: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_toConsumableArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(this.arraySelect),
-        status: 'виконується обмін'
+        selectArray: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_toConsumableArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this.arraySelect),
+        status: '',
+        inProgress: false
       });
       this.countSelect += 1;
       this.arraySelect.map(function (item) {
@@ -17304,62 +17303,299 @@ __webpack_require__.r(__webpack_exports__);
         this.selectExchanges.splice(indexExchange, 1);
       }
     },
+    clickRunExchange: function clickRunExchange() {
+      this.operationExchangeProgress = true;
+      this.runExchange();
+      this.operationExchangeProgress = false;
+    },
     runExchange: function runExchange() {
+      var arrayTasks = [];
+      var _iterator = (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.selectExchanges),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var itemExchange = _step.value;
+          if (!this.operationExchangeProgress) {
+            return;
+          }
+          var _iterator2 = (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.generateTasks(itemExchange)),
+            _step2;
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var item = _step2.value;
+              arrayTasks.push(item);
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      this.runArrayTasks(arrayTasks);
+    },
+    runArrayTasks: function runArrayTasks(arrayTasks) {
       var _this4 = this;
-      this.selectExchanges.forEach(function (itemExchange) {
-        var result = _this4.runSelectExchange(itemExchange);
-        if (result.status === 'error') {
-          return;
-        }
-      });
+      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee2() {
+        var _iterator3, _step3, task;
+        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _iterator3 = (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arrayTasks);
+              _context2.prev = 1;
+              _iterator3.s();
+            case 3:
+              if ((_step3 = _iterator3.n()).done) {
+                _context2.next = 10;
+                break;
+              }
+              task = _step3.value;
+              console.log('task', task);
+              _context2.next = 8;
+              return _this4.processRequest(task);
+            case 8:
+              _context2.next = 3;
+              break;
+            case 10:
+              _context2.next = 15;
+              break;
+            case 12:
+              _context2.prev = 12;
+              _context2.t0 = _context2["catch"](1);
+              _iterator3.e(_context2.t0);
+            case 15:
+              _context2.prev = 15;
+              _iterator3.f();
+              return _context2.finish(15);
+            case 18:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, null, [[1, 12, 15, 18]]);
+      }))();
     },
-    runSelectExchange: function runSelectExchange(itemExchange) {
+    generateTasks: function generateTasks(itemExchange) {
+      var index = 0;
+      var arrayTasks = [];
+      var _iterator4 = (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(itemExchange.selectArray),
+        _step4;
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var baseExchange = _step4.value;
+          if (index === 0) {
+            if (baseExchange !== this.mainExchange) {
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: this.mainExchange,
+                baseTo: baseExchange,
+                operation: 'upload'
+              });
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: baseExchange,
+                baseTo: this.mainExchange,
+                operation: 'download'
+              });
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: baseExchange,
+                baseTo: this.mainExchange,
+                operation: 'upload'
+              });
+            }
+          } else {
+            if (baseExchange === this.mainExchange) {
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: this.mainExchange,
+                baseTo: itemExchange.selectArray[index - 1],
+                operation: 'download'
+              });
+            } else {
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: this.mainExchange,
+                baseTo: baseExchange,
+                operation: 'upload'
+              });
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: baseExchange,
+                baseTo: this.mainExchange,
+                operation: 'download'
+              });
+            }
+          }
+          index += 1;
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+      return arrayTasks;
+    },
+    processRequest: function processRequest(parameters) {
       var _this5 = this;
-      itemExchange.selectArray.forEach(function (itemOperation, index) {
-        var resultRequest = _this5.runItemOperation(itemExchange, itemOperation, index);
-        if (resultRequest.status === 'error') {
-          return resultRequest;
+      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee3() {
+        var strOperationCur, strOperationPast, strOperationAfter, result, strStatus, resultStr;
+        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              if (_this5.operationExchangeProgress) {
+                _context3.next = 3;
+                break;
+              }
+              parameters.exchange.inProgress = false;
+              return _context3.abrupt("return");
+            case 3:
+              strOperationCur = '';
+              strOperationPast = '';
+              strOperationAfter = '';
+              if (parameters.operation === 'upload') {
+                strOperationCur = 'вивантаження';
+                strOperationPast = 'вивантаженні';
+                strOperationAfter = 'вивантаженню';
+              } else if (parameters.operation === 'download') {
+                strOperationCur = 'завантаження';
+                strOperationPast = 'завантаженні';
+                strOperationAfter = 'вивантаженню';
+              }
+              //parameters.exchange.inProgress = true;
+              //setTimeout(()=>{}, 3000);
+              parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + parameters.baseTo.name;
+              _context3.next = 10;
+              return _this5.getRequest(parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange).then(function (response) {
+                if (response.hasOwnProperty("data")) {
+                  return {
+                    status: 'success',
+                    data: JSON.parse(response.data.data)
+                  };
+                }
+                throw Error("Where is data in response ?");
+              })["catch"](function (error) {
+                if (error.hasOwnProperty("message")) {
+                  try {
+                    return {
+                      status: 'error',
+                      data: 'дивіться помилку в консолі браузера - ' + error.message
+                    };
+                  } catch (err_try) {
+                    console.log('err_try', err_try);
+                    return {
+                      status: 'error',
+                      data: err_try
+                    };
+                  }
+                }
+              });
+            case 10:
+              result = _context3.sent;
+              strStatus = '';
+              if (result.status === "error") {
+                if (result.hasOwnProperty('data')) {
+                  if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && result.hasOwnProperty('data') && result.hasOwnProperty('status')) {
+                    if (result.status === 'error') {
+                      resultStr = '';
+                      if (Array.isArray(result.data)) {
+                        result.data.forEach(function (item, index) {
+                          if (index === 0) {
+                            resultStr = item;
+                          } else {
+                            resultStr = resultStr + ' ' + item;
+                          }
+                        });
+                      } else if (typeof result.data === "string" || (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result.data) === "object" && result.data.constructor === String) {
+                        resultStr = result.data;
+                      }
+                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name + ' по причині: ' + resultStr;
+                    } else {
+                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name;
+                    }
+                  }
+                }
+              } else if (result.status === "success") {
+                strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + parameters.baseTo.name + ' виконана успішно';
+              }
+              parameters.exchange.status = strStatus;
+              //parameters.exchange.inProgress = false;
+            case 14:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
+    },
+    getRequest: function getRequest(urlRequest) {
+      var _this6 = this;
+      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee4() {
+        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return _this6.$axios.get(urlRequest);
+            case 2:
+              return _context4.abrupt("return", _context4.sent);
+            case 3:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
+      }))();
+    },
+    clickStopExchange: function clickStopExchange() {
+      this.operationExchangeProgress = false;
+    }
+  }),
+  computed: {
+    array_block: function array_block() {
+      var _this7 = this;
+      return this.arrayBlock.map(function (item) {
+        if (Array.isArray(item)) {
+          item.map(function (itemChild) {
+            if (!itemChild.hasOwnProperty("isSelect")) {
+              itemChild.isSelect = false;
+            }
+            if (_this7.selectExchanges.includes(itemChild)) {
+              itemChild.isSelect = true;
+            }
+            return itemChild;
+          });
         }
-      });
-    },
-    runItemOperation: function runItemOperation(itemExchange, itemOperation, index) {
-      if (index === 0) {
-        var nameOperation = 'upload';
-        itemExchange.status = 'Виконується вивантаження даних на ' + itemOperation.name;
-        var resultRequest = this.runRequest(nameOperation, itemOperation);
-        console.log(resultRequest);
-        // if (resultRequest.status === 'error') {
-        //   itemExchange.status = 'Вивантаження даних виконано з помилкою, тому обмін буде зупинено. Текст помилки: ' + resultRequest.data;
-        // } else {
-        //   console.log(resultRequest.data);
+
+        // if (parseInt(item.id) === parseInt(this.active_item.id)) {
+        //   item.isSelect = true;
         // }
-        return resultRequest;
-      } else if (index === 1) {}
-    },
-    runRequest: function runRequest(nameOperation, operation) {
-      this.$axios.get(operation.path + nameOperation + '/' + operation.nameExchange).then(function (response) {
-        console.log(response);
-        return {
-          status: 'success',
-          data: response
-        };
-      })["catch"](function (error) {
-        console.log(error);
-        return {
-          status: 'error',
-          data: error
-        };
+        return item;
       });
+    }
+  },
+  watch: {
+    arraySelect: {
+      deep: true,
+      handler: function handler(val, oldVal) {
+        if (this.arraySelect.length > 1) {
+          this.visibleAddExchange = true;
+        } else {
+          this.visibleAddExchange = false;
+        }
+      }
     },
-    // this.$axios.('/api/get_data_files_debug', {data: arrayRequest})
-    //     .then(response => {
-    //       this.arrayDataFiles.push(response.data.data);
-    //     })
-    //     .catch(err => {
-    //       console.log('error /api/get_data_files_debug', err.response.data);
-    //     })
-    stopExchange: function stopExchange() {}
-  })
+    selectExchanges: {
+      deep: true,
+      handler: function handler(val, oldVal) {
+        if (this.selectExchanges.length > 0) {
+          this.visibleOperationExchange = true;
+        } else {
+          this.visibleOperationExchange = false;
+        }
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -17393,13 +17629,6 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.changeClassSelect();
   },
-  watch: {
-    'curButton.isSelect': 'changeIsSelect'
-  },
-  computed: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_0__["default"])({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
-    countExchange: 'countExchange',
-    arraySelect: 'arraySelect'
-  })),
   methods: {
     changeIsSelect: function changeIsSelect(newValue, oldValue) {
       this.changeClassSelect();
@@ -17416,6 +17645,13 @@ __webpack_require__.r(__webpack_exports__);
         this.classButton['button-block__select'] = false;
       }
     }
+  },
+  computed: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_0__["default"])({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
+    countExchange: 'countExchange',
+    arraySelect: 'arraySelect'
+  })),
+  watch: {
+    'curButton.isSelect': 'changeIsSelect'
   }
 });
 
@@ -17475,8 +17711,20 @@ __webpack_require__.r(__webpack_exports__);
   props: ['selectExchangesProps'],
   data: function data() {
     return {
-      selectExchanges: this.selectExchangesProps
+      selectExchanges: this.selectExchangesProps,
+      inProgress: false
     };
+  },
+  methods: {
+    deleteExchange: function deleteExchange() {
+      this.$eventBus.emit('delete_select_exchange', {
+        id: this.selectExchanges.id,
+        exchange: this.selectExchanges
+      });
+    },
+    setInProgress: function setInProgress() {
+      this.inProgress = this.selectExchanges.inProgress;
+    }
   },
   computed: {
     selectArrayText: function selectArrayText() {
@@ -17494,13 +17742,8 @@ __webpack_require__.r(__webpack_exports__);
       return this.selectExchanges.status;
     }
   },
-  methods: {
-    deleteExchange: function deleteExchange() {
-      this.$eventBus.emit('delete_select_exchange', {
-        id: this.selectExchanges.id,
-        exchange: this.selectExchanges
-      });
-    }
+  watch: {
+    'selectExchanges.inProgress': 'setInProgress'
   }
 }));
 
@@ -17576,10 +17819,16 @@ var _hoisted_19 = {
   key: 0,
   "class": "block-text"
 };
+var _hoisted_20 = {
+  "class": "content-row"
+};
+var _hoisted_21 = {
+  "class": "block-text"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_buttons_row = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("buttons_row");
   var _component_select_exchanges = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("select_exchanges");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.arrayBlock, function (item, index) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.array_block, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_buttons_row, {
       key: 'buttonsRow' + String(index),
       arrButtonsProps: item,
@@ -17589,26 +17838,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "",
     "class": "button-block button-block__add-exchange",
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.addExchange && $options.addExchange.apply($options, arguments);
+      return $options.clickAddExchange && $options.clickAddExchange.apply($options, arguments);
     }, ["prevent"]))
   }, _hoisted_9)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
     "class": "button-block button-block__run-exchange",
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.runExchange && $options.runExchange.apply($options, arguments);
+      return $options.clickRunExchange && $options.clickRunExchange.apply($options, arguments);
     }, ["prevent"]))
   }, _hoisted_13)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
     "class": "button-block button-block__stop-exchange",
     onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.stopExchange && $options.stopExchange.apply($options, arguments);
+      return $options.clickStopExchange && $options.clickStopExchange.apply($options, arguments);
     }, ["prevent"]))
-  }, _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, "Вибраний план обміну:")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.selectExchanges, function (item) {
+  }, _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, "Вибраний план обміну:")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.selectExchanges, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_select_exchanges, {
       key: 'selectExchanges' + String(item.id),
       selectExchangesProps: item
     }, null, 8 /* PROPS */, ["selectExchangesProps"]);
-  }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.completedTasks, function (item) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item), 1 /* TEXT */);
+  }), 256 /* UNKEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -17694,13 +17945,17 @@ var _hoisted_3 = {
   "class": "block-text"
 };
 var _hoisted_4 = {
-  "class": "row-exchange"
+  key: 0,
+  "class": "loader"
 };
 var _hoisted_5 = {
+  "class": "row-exchange"
+};
+var _hoisted_6 = {
   "class": "block-text row-exchange__status"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.selectArrayText), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.statusExchange), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.selectArrayText), 1 /* TEXT */), _ctx.inProgress ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.statusExchange), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
     "class": "button-block icon-trash-can",
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
@@ -19796,6 +20051,25 @@ module.exports = function (argument) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/a-possible-prototype.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/core-js/internals/a-possible-prototype.js ***!
+  \****************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
+
+var $String = String;
+var $TypeError = TypeError;
+
+module.exports = function (argument) {
+  if (typeof argument == 'object' || isCallable(argument)) return argument;
+  throw $TypeError("Can't set " + $String(argument) + ' as a prototype');
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/an-object.js":
 /*!*****************************************************!*\
   !*** ./node_modules/core-js/internals/an-object.js ***!
@@ -19909,6 +20183,45 @@ var stringSlice = uncurryThis(''.slice);
 
 module.exports = function (it) {
   return stringSlice(toString(it), 8, -1);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/classof.js":
+/*!***************************************************!*\
+  !*** ./node_modules/core-js/internals/classof.js ***!
+  \***************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var TO_STRING_TAG_SUPPORT = __webpack_require__(/*! ../internals/to-string-tag-support */ "./node_modules/core-js/internals/to-string-tag-support.js");
+var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
+var classofRaw = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+var $Object = Object;
+
+// ES3 wrong here
+var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
+
+// fallback for IE11 Script Access Denied error
+var tryGet = function (it, key) {
+  try {
+    return it[key];
+  } catch (error) { /* empty */ }
+};
+
+// getting tag from ES6+ `Object.prototype.toString`
+module.exports = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
+  var O, tag, result;
+  return it === undefined ? 'Undefined' : it === null ? 'Null'
+    // @@toStringTag case
+    : typeof (tag = tryGet(O = $Object(it), TO_STRING_TAG)) == 'string' ? tag
+    // builtinTag case
+    : CORRECT_ARGUMENTS ? classofRaw(O)
+    // ES3 arguments fallback
+    : (result = classofRaw(O)) == 'Object' && isCallable(O.callee) ? 'Arguments' : result;
 };
 
 
@@ -20179,6 +20492,74 @@ module.exports = [
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/error-stack-clear.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/error-stack-clear.js ***!
+  \*************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+
+var $Error = Error;
+var replace = uncurryThis(''.replace);
+
+var TEST = (function (arg) { return String($Error(arg).stack); })('zxcasd');
+// eslint-disable-next-line redos/no-vulnerable -- safe
+var V8_OR_CHAKRA_STACK_ENTRY = /\n\s*at [^:]*:[^\n]*/;
+var IS_V8_OR_CHAKRA_STACK = V8_OR_CHAKRA_STACK_ENTRY.test(TEST);
+
+module.exports = function (stack, dropEntries) {
+  if (IS_V8_OR_CHAKRA_STACK && typeof stack == 'string' && !$Error.prepareStackTrace) {
+    while (dropEntries--) stack = replace(stack, V8_OR_CHAKRA_STACK_ENTRY, '');
+  } return stack;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/error-stack-install.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js/internals/error-stack-install.js ***!
+  \***************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
+var clearErrorStack = __webpack_require__(/*! ../internals/error-stack-clear */ "./node_modules/core-js/internals/error-stack-clear.js");
+var ERROR_STACK_INSTALLABLE = __webpack_require__(/*! ../internals/error-stack-installable */ "./node_modules/core-js/internals/error-stack-installable.js");
+
+// non-standard V8
+var captureStackTrace = Error.captureStackTrace;
+
+module.exports = function (error, C, stack, dropEntries) {
+  if (ERROR_STACK_INSTALLABLE) {
+    if (captureStackTrace) captureStackTrace(error, C);
+    else createNonEnumerableProperty(error, 'stack', clearErrorStack(stack, dropEntries));
+  }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/error-stack-installable.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js/internals/error-stack-installable.js ***!
+  \*******************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+var createPropertyDescriptor = __webpack_require__(/*! ../internals/create-property-descriptor */ "./node_modules/core-js/internals/create-property-descriptor.js");
+
+module.exports = !fails(function () {
+  var error = Error('a');
+  if (!('stack' in error)) return true;
+  // eslint-disable-next-line es/no-object-defineproperty -- safe
+  Object.defineProperty(error, 'stack', createPropertyDescriptor(1, 7));
+  return error.stack !== 7;
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/export.js":
 /*!**************************************************!*\
   !*** ./node_modules/core-js/internals/export.js ***!
@@ -20260,6 +20641,26 @@ module.exports = function (exec) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/function-apply.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/internals/function-apply.js ***!
+  \**********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "./node_modules/core-js/internals/function-bind-native.js");
+
+var FunctionPrototype = Function.prototype;
+var apply = FunctionPrototype.apply;
+var call = FunctionPrototype.call;
+
+// eslint-disable-next-line es/no-reflect -- safe
+module.exports = typeof Reflect == 'object' && Reflect.apply || (NATIVE_BIND ? call.bind(apply) : function () {
+  return call.apply(apply, arguments);
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/function-bind-native.js":
 /*!****************************************************************!*\
   !*** ./node_modules/core-js/internals/function-bind-native.js ***!
@@ -20317,6 +20718,25 @@ module.exports = {
   EXISTS: EXISTS,
   PROPER: PROPER,
   CONFIGURABLE: CONFIGURABLE
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/function-uncurry-this-accessor.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/core-js/internals/function-uncurry-this-accessor.js ***!
+  \**************************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var uncurryThis = __webpack_require__(/*! ../internals/function-uncurry-this */ "./node_modules/core-js/internals/function-uncurry-this.js");
+var aCallable = __webpack_require__(/*! ../internals/a-callable */ "./node_modules/core-js/internals/a-callable.js");
+
+module.exports = function (object, key, method) {
+  try {
+    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+    return uncurryThis(aCallable(Object.getOwnPropertyDescriptor(object, key)[method]));
+  } catch (error) { /* empty */ }
 };
 
 
@@ -20484,6 +20904,34 @@ module.exports = fails(function () {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/inherit-if-required.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js/internals/inherit-if-required.js ***!
+  \***************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var setPrototypeOf = __webpack_require__(/*! ../internals/object-set-prototype-of */ "./node_modules/core-js/internals/object-set-prototype-of.js");
+
+// makes subclassing work correct for wrapped built-ins
+module.exports = function ($this, dummy, Wrapper) {
+  var NewTarget, NewTargetPrototype;
+  if (
+    // it can work only with native `setPrototypeOf`
+    setPrototypeOf &&
+    // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
+    isCallable(NewTarget = dummy.constructor) &&
+    NewTarget !== Wrapper &&
+    isObject(NewTargetPrototype = NewTarget.prototype) &&
+    NewTargetPrototype !== Wrapper.prototype
+  ) setPrototypeOf($this, NewTargetPrototype);
+  return $this;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/inspect-source.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/internals/inspect-source.js ***!
@@ -20504,6 +20952,26 @@ if (!isCallable(store.inspectSource)) {
 }
 
 module.exports = store.inspectSource;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/install-error-cause.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js/internals/install-error-cause.js ***!
+  \***************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
+
+// `InstallErrorCause` abstract operation
+// https://tc39.es/proposal-error-cause/#sec-errorobjects-install-error-cause
+module.exports = function (O, options) {
+  if (isObject(options) && 'cause' in options) {
+    createNonEnumerableProperty(O, 'cause', options.cause);
+  }
+};
 
 
 /***/ }),
@@ -20829,6 +21297,21 @@ module.exports = Math.trunc || function trunc(x) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/normalize-string-argument.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/core-js/internals/normalize-string-argument.js ***!
+  \*********************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js/internals/to-string.js");
+
+module.exports = function (argument, $default) {
+  return argument === undefined ? arguments.length < 2 ? '' : $default : toString(argument);
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/object-define-property.js":
 /*!******************************************************************!*\
   !*** ./node_modules/core-js/internals/object-define-property.js ***!
@@ -21015,6 +21498,42 @@ exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/object-set-prototype-of.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js/internals/object-set-prototype-of.js ***!
+  \*******************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+/* eslint-disable no-proto -- safe */
+var uncurryThisAccessor = __webpack_require__(/*! ../internals/function-uncurry-this-accessor */ "./node_modules/core-js/internals/function-uncurry-this-accessor.js");
+var anObject = __webpack_require__(/*! ../internals/an-object */ "./node_modules/core-js/internals/an-object.js");
+var aPossiblePrototype = __webpack_require__(/*! ../internals/a-possible-prototype */ "./node_modules/core-js/internals/a-possible-prototype.js");
+
+// `Object.setPrototypeOf` method
+// https://tc39.es/ecma262/#sec-object.setprototypeof
+// Works with __proto__ only. Old v8 can't work with null proto objects.
+// eslint-disable-next-line es/no-object-setprototypeof -- safe
+module.exports = Object.setPrototypeOf || ('__proto__' in {} ? function () {
+  var CORRECT_SETTER = false;
+  var test = {};
+  var setter;
+  try {
+    setter = uncurryThisAccessor(Object.prototype, '__proto__', 'set');
+    setter(test, []);
+    CORRECT_SETTER = test instanceof Array;
+  } catch (error) { /* empty */ }
+  return function setPrototypeOf(O, proto) {
+    anObject(O);
+    aPossiblePrototype(proto);
+    if (CORRECT_SETTER) setter(O, proto);
+    else O.__proto__ = proto;
+    return O;
+  };
+}() : undefined);
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/ordinary-to-primitive.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/core-js/internals/ordinary-to-primitive.js ***!
@@ -21059,6 +21578,25 @@ module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
   var keys = getOwnPropertyNamesModule.f(anObject(it));
   var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
   return getOwnPropertySymbols ? concat(keys, getOwnPropertySymbols(it)) : keys;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/proxy-accessor.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/internals/proxy-accessor.js ***!
+  \**********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var defineProperty = (__webpack_require__(/*! ../internals/object-define-property */ "./node_modules/core-js/internals/object-define-property.js").f);
+
+module.exports = function (Target, Source, key) {
+  key in Target || defineProperty(Target, key, {
+    configurable: true,
+    get: function () { return Source[key]; },
+    set: function (it) { Source[key] = it; }
+  });
 };
 
 
@@ -21319,6 +21857,42 @@ module.exports = function (argument) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/to-string-tag-support.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js/internals/to-string-tag-support.js ***!
+  \*****************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+var test = {};
+
+test[TO_STRING_TAG] = 'z';
+
+module.exports = String(test) === '[object z]';
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/to-string.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js/internals/to-string.js ***!
+  \*****************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var classof = __webpack_require__(/*! ../internals/classof */ "./node_modules/core-js/internals/classof.js");
+
+var $String = String;
+
+module.exports = function (argument) {
+  if (classof(argument) === 'Symbol') throw TypeError('Cannot convert a Symbol value to a string');
+  return $String(argument);
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/try-to-string.js":
 /*!*********************************************************!*\
   !*** ./node_modules/core-js/internals/try-to-string.js ***!
@@ -21439,6 +22013,82 @@ module.exports = function (name) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/wrap-error-constructor-with-cause.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/core-js/internals/wrap-error-constructor-with-cause.js ***!
+  \*****************************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+var getBuiltIn = __webpack_require__(/*! ../internals/get-built-in */ "./node_modules/core-js/internals/get-built-in.js");
+var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "./node_modules/core-js/internals/has-own-property.js");
+var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
+var isPrototypeOf = __webpack_require__(/*! ../internals/object-is-prototype-of */ "./node_modules/core-js/internals/object-is-prototype-of.js");
+var setPrototypeOf = __webpack_require__(/*! ../internals/object-set-prototype-of */ "./node_modules/core-js/internals/object-set-prototype-of.js");
+var copyConstructorProperties = __webpack_require__(/*! ../internals/copy-constructor-properties */ "./node_modules/core-js/internals/copy-constructor-properties.js");
+var proxyAccessor = __webpack_require__(/*! ../internals/proxy-accessor */ "./node_modules/core-js/internals/proxy-accessor.js");
+var inheritIfRequired = __webpack_require__(/*! ../internals/inherit-if-required */ "./node_modules/core-js/internals/inherit-if-required.js");
+var normalizeStringArgument = __webpack_require__(/*! ../internals/normalize-string-argument */ "./node_modules/core-js/internals/normalize-string-argument.js");
+var installErrorCause = __webpack_require__(/*! ../internals/install-error-cause */ "./node_modules/core-js/internals/install-error-cause.js");
+var installErrorStack = __webpack_require__(/*! ../internals/error-stack-install */ "./node_modules/core-js/internals/error-stack-install.js");
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js/internals/descriptors.js");
+var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js/internals/is-pure.js");
+
+module.exports = function (FULL_NAME, wrapper, FORCED, IS_AGGREGATE_ERROR) {
+  var STACK_TRACE_LIMIT = 'stackTraceLimit';
+  var OPTIONS_POSITION = IS_AGGREGATE_ERROR ? 2 : 1;
+  var path = FULL_NAME.split('.');
+  var ERROR_NAME = path[path.length - 1];
+  var OriginalError = getBuiltIn.apply(null, path);
+
+  if (!OriginalError) return;
+
+  var OriginalErrorPrototype = OriginalError.prototype;
+
+  // V8 9.3- bug https://bugs.chromium.org/p/v8/issues/detail?id=12006
+  if (!IS_PURE && hasOwn(OriginalErrorPrototype, 'cause')) delete OriginalErrorPrototype.cause;
+
+  if (!FORCED) return OriginalError;
+
+  var BaseError = getBuiltIn('Error');
+
+  var WrappedError = wrapper(function (a, b) {
+    var message = normalizeStringArgument(IS_AGGREGATE_ERROR ? b : a, undefined);
+    var result = IS_AGGREGATE_ERROR ? new OriginalError(a) : new OriginalError();
+    if (message !== undefined) createNonEnumerableProperty(result, 'message', message);
+    installErrorStack(result, WrappedError, result.stack, 2);
+    if (this && isPrototypeOf(OriginalErrorPrototype, this)) inheritIfRequired(result, this, WrappedError);
+    if (arguments.length > OPTIONS_POSITION) installErrorCause(result, arguments[OPTIONS_POSITION]);
+    return result;
+  });
+
+  WrappedError.prototype = OriginalErrorPrototype;
+
+  if (ERROR_NAME !== 'Error') {
+    if (setPrototypeOf) setPrototypeOf(WrappedError, BaseError);
+    else copyConstructorProperties(WrappedError, BaseError, { name: true });
+  } else if (DESCRIPTORS && STACK_TRACE_LIMIT in OriginalError) {
+    proxyAccessor(WrappedError, OriginalError, STACK_TRACE_LIMIT);
+    proxyAccessor(WrappedError, OriginalError, 'prepareStackTrace');
+  }
+
+  copyConstructorProperties(WrappedError, OriginalError);
+
+  if (!IS_PURE) try {
+    // Safari 13- bug: WebAssembly errors does not have a proper `.name`
+    if (OriginalErrorPrototype.name !== ERROR_NAME) {
+      createNonEnumerableProperty(OriginalErrorPrototype, 'name', ERROR_NAME);
+    }
+    OriginalErrorPrototype.constructor = WrappedError;
+  } catch (error) { /* empty */ }
+
+  return WrappedError;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.array.push.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js/modules/es.array.push.js ***!
@@ -21487,6 +22137,73 @@ $({ target: 'Array', proto: true, arity: 1, forced: FORCED }, {
     setArrayLength(O, len);
     return len;
   }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.error.cause.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.error.cause.js ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+/* eslint-disable no-unused-vars -- required for functions `.length` */
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var apply = __webpack_require__(/*! ../internals/function-apply */ "./node_modules/core-js/internals/function-apply.js");
+var wrapErrorConstructorWithCause = __webpack_require__(/*! ../internals/wrap-error-constructor-with-cause */ "./node_modules/core-js/internals/wrap-error-constructor-with-cause.js");
+
+var WEB_ASSEMBLY = 'WebAssembly';
+var WebAssembly = global[WEB_ASSEMBLY];
+
+var FORCED = Error('e', { cause: 7 }).cause !== 7;
+
+var exportGlobalErrorCauseWrapper = function (ERROR_NAME, wrapper) {
+  var O = {};
+  O[ERROR_NAME] = wrapErrorConstructorWithCause(ERROR_NAME, wrapper, FORCED);
+  $({ global: true, constructor: true, arity: 1, forced: FORCED }, O);
+};
+
+var exportWebAssemblyErrorCauseWrapper = function (ERROR_NAME, wrapper) {
+  if (WebAssembly && WebAssembly[ERROR_NAME]) {
+    var O = {};
+    O[ERROR_NAME] = wrapErrorConstructorWithCause(WEB_ASSEMBLY + '.' + ERROR_NAME, wrapper, FORCED);
+    $({ target: WEB_ASSEMBLY, stat: true, constructor: true, arity: 1, forced: FORCED }, O);
+  }
+};
+
+// https://tc39.es/ecma262/#sec-nativeerror
+// https://github.com/tc39/proposal-error-cause
+exportGlobalErrorCauseWrapper('Error', function (init) {
+  return function Error(message) { return apply(init, this, arguments); };
+});
+exportGlobalErrorCauseWrapper('EvalError', function (init) {
+  return function EvalError(message) { return apply(init, this, arguments); };
+});
+exportGlobalErrorCauseWrapper('RangeError', function (init) {
+  return function RangeError(message) { return apply(init, this, arguments); };
+});
+exportGlobalErrorCauseWrapper('ReferenceError', function (init) {
+  return function ReferenceError(message) { return apply(init, this, arguments); };
+});
+exportGlobalErrorCauseWrapper('SyntaxError', function (init) {
+  return function SyntaxError(message) { return apply(init, this, arguments); };
+});
+exportGlobalErrorCauseWrapper('TypeError', function (init) {
+  return function TypeError(message) { return apply(init, this, arguments); };
+});
+exportGlobalErrorCauseWrapper('URIError', function (init) {
+  return function URIError(message) { return apply(init, this, arguments); };
+});
+exportWebAssemblyErrorCauseWrapper('CompileError', function (init) {
+  return function CompileError(message) { return apply(init, this, arguments); };
+});
+exportWebAssemblyErrorCauseWrapper('LinkError', function (init) {
+  return function LinkError(message) { return apply(init, this, arguments); };
+});
+exportWebAssemblyErrorCauseWrapper('RuntimeError', function (init) {
+  return function RuntimeError(message) { return apply(init, this, arguments); };
 });
 
 
@@ -23704,6 +24421,117 @@ function _arrayWithoutHoles(arr) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js ***!
+  \*********************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ _asyncToGenerator; }
+/* harmony export */ });
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+      args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+      _next(undefined);
+    });
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js ***!
+  \******************************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ _createForOfIteratorHelper; }
+/* harmony export */ });
+/* harmony import */ var _unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js");
+
+function _createForOfIteratorHelper(o, allowArrayLike) {
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+  if (!it) {
+    if (Array.isArray(o) || (it = (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_0__["default"])(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+      var F = function F() {};
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+  var normalCompletion = true,
+    didErr = false,
+    err;
+  return {
+    s: function s() {
+      it = it.call(o);
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
@@ -23801,6 +24629,324 @@ function _objectSpread2(target) {
     });
   }
   return target;
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/regeneratorRuntime.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/regeneratorRuntime.js ***!
+  \***********************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ _regeneratorRuntime; }
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+
+function _regeneratorRuntime() {
+  "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+  _regeneratorRuntime = function _regeneratorRuntime() {
+    return exports;
+  };
+  var exports = {},
+    Op = Object.prototype,
+    hasOwn = Op.hasOwnProperty,
+    defineProperty = Object.defineProperty || function (obj, key, desc) {
+      obj[key] = desc.value;
+    },
+    $Symbol = "function" == typeof Symbol ? Symbol : {},
+    iteratorSymbol = $Symbol.iterator || "@@iterator",
+    asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
+    toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+  function define(obj, key, value) {
+    return Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }), obj[key];
+  }
+  try {
+    define({}, "");
+  } catch (err) {
+    define = function define(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
+      generator = Object.create(protoGenerator.prototype),
+      context = new Context(tryLocsList || []);
+    return defineProperty(generator, "_invoke", {
+      value: makeInvokeMethod(innerFn, self, context)
+    }), generator;
+  }
+  function tryCatch(fn, obj, arg) {
+    try {
+      return {
+        type: "normal",
+        arg: fn.call(obj, arg)
+      };
+    } catch (err) {
+      return {
+        type: "throw",
+        arg: err
+      };
+    }
+  }
+  exports.wrap = wrap;
+  var ContinueSentinel = {};
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+  var IteratorPrototype = {};
+  define(IteratorPrototype, iteratorSymbol, function () {
+    return this;
+  });
+  var getProto = Object.getPrototypeOf,
+    NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
+  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function (method) {
+      define(prototype, method, function (arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if ("throw" !== record.type) {
+        var result = record.arg,
+          value = result.value;
+        return value && "object" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) {
+          invoke("next", value, resolve, reject);
+        }, function (err) {
+          invoke("throw", err, resolve, reject);
+        }) : PromiseImpl.resolve(value).then(function (unwrapped) {
+          result.value = unwrapped, resolve(result);
+        }, function (error) {
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+      reject(record.arg);
+    }
+    var previousPromise;
+    defineProperty(this, "_invoke", {
+      value: function value(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new PromiseImpl(function (resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+        return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+      }
+    });
+  }
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = "suspendedStart";
+    return function (method, arg) {
+      if ("executing" === state) throw new Error("Generator is already running");
+      if ("completed" === state) {
+        if ("throw" === method) throw arg;
+        return doneResult();
+      }
+      for (context.method = method, context.arg = arg;;) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+        if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
+          if ("suspendedStart" === state) throw state = "completed", context.arg;
+          context.dispatchException(context.arg);
+        } else "return" === context.method && context.abrupt("return", context.arg);
+        state = "executing";
+        var record = tryCatch(innerFn, self, context);
+        if ("normal" === record.type) {
+          if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        }
+        "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
+      }
+    };
+  }
+  function maybeInvokeDelegate(delegate, context) {
+    var methodName = context.method,
+      method = delegate.iterator[methodName];
+    if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel;
+    var record = tryCatch(method, delegate.iterator, context.arg);
+    if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
+    var info = record.arg;
+    return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
+  }
+  function pushTryEntry(locs) {
+    var entry = {
+      tryLoc: locs[0]
+    };
+    1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
+  }
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal", delete record.arg, entry.completion = record;
+  }
+  function Context(tryLocsList) {
+    this.tryEntries = [{
+      tryLoc: "root"
+    }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
+  }
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) return iteratorMethod.call(iterable);
+      if ("function" == typeof iterable.next) return iterable;
+      if (!isNaN(iterable.length)) {
+        var i = -1,
+          next = function next() {
+            for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
+            return next.value = undefined, next.done = !0, next;
+          };
+        return next.next = next;
+      }
+    }
+    return {
+      next: doneResult
+    };
+  }
+  function doneResult() {
+    return {
+      value: undefined,
+      done: !0
+    };
+  }
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
+    value: GeneratorFunctionPrototype,
+    configurable: !0
+  }), defineProperty(GeneratorFunctionPrototype, "constructor", {
+    value: GeneratorFunction,
+    configurable: !0
+  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
+    var ctor = "function" == typeof genFun && genFun.constructor;
+    return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
+  }, exports.mark = function (genFun) {
+    return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
+  }, exports.awrap = function (arg) {
+    return {
+      __await: arg
+    };
+  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
+    return this;
+  }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    void 0 === PromiseImpl && (PromiseImpl = Promise);
+    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
+    return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) {
+      return result.done ? result.value : iter.next();
+    });
+  }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () {
+    return this;
+  }), define(Gp, "toString", function () {
+    return "[object Generator]";
+  }), exports.keys = function (val) {
+    var object = Object(val),
+      keys = [];
+    for (var key in object) keys.push(key);
+    return keys.reverse(), function next() {
+      for (; keys.length;) {
+        var key = keys.pop();
+        if (key in object) return next.value = key, next.done = !1, next;
+      }
+      return next.done = !0, next;
+    };
+  }, exports.values = values, Context.prototype = {
+    constructor: Context,
+    reset: function reset(skipTempReset) {
+      if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
+    },
+    stop: function stop() {
+      this.done = !0;
+      var rootRecord = this.tryEntries[0].completion;
+      if ("throw" === rootRecord.type) throw rootRecord.arg;
+      return this.rval;
+    },
+    dispatchException: function dispatchException(exception) {
+      if (this.done) throw exception;
+      var context = this;
+      function handle(loc, caught) {
+        return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
+      }
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i],
+          record = entry.completion;
+        if ("root" === entry.tryLoc) return handle("end");
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc"),
+            hasFinally = hasOwn.call(entry, "finallyLoc");
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
+            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
+          } else {
+            if (!hasFinally) throw new Error("try statement without catch or finally");
+            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
+          }
+        }
+      }
+    },
+    abrupt: function abrupt(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+      finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
+      var record = finallyEntry ? finallyEntry.completion : {};
+      return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
+    },
+    complete: function complete(record, afterLoc) {
+      if ("throw" === record.type) throw record.arg;
+      return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
+    },
+    finish: function finish(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
+      }
+    },
+    "catch": function _catch(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if ("throw" === record.type) {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+      throw new Error("illegal catch attempt");
+    },
+    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+      return this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
+    }
+  }, exports;
 }
 
 /***/ }),

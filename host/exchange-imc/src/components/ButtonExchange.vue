@@ -1,3 +1,13 @@
+<template>
+  <div :class="[classRowButtonProps]">
+    <a href="" :class="classButton" @click.prevent="selectExchange">
+      <div class="button-block__text">
+        {{ curButton.name }}
+      </div>
+    </a>
+  </div>
+</template>
+
 <script>
 import {mapState} from "vuex";
 
@@ -18,15 +28,6 @@ export default {
   created() {
     this.changeClassSelect();
   },
-  watch:{
-    'curButton.isSelect': 'changeIsSelect'
-  },
-  computed: {
-    ...mapState({
-      countExchange: 'countExchange',
-      arraySelect: 'arraySelect',
-    }),
-  },
   methods: {
     changeIsSelect(newValue, oldValue){
       this.changeClassSelect();
@@ -44,15 +45,15 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      countExchange: 'countExchange',
+      arraySelect: 'arraySelect',
+    }),
+  },
+  watch:{
+    'curButton.isSelect': 'changeIsSelect'
+  },
 }
 </script>
 
-<template>
-  <div :class="[classRowButtonProps]">
-    <a href="" :class="classButton" @click.prevent="selectExchange">
-      <div class="button-block__text">
-        {{ curButton.name }}
-      </div>
-    </a>
-  </div>
-</template>

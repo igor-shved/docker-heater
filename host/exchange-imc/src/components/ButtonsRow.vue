@@ -1,3 +1,13 @@
+<template>
+  <div :class="classRow">
+    <button_exchange v-for="(item, index) in arrButtons"
+                     :buttonProps="item"
+                     :classRowButtonProps="classRowButton"
+                     :key="'button' + String(indexProps) + String(index)"
+    />
+  </div>
+</template>
+
 <script>
 import button_exchange from "./ButtonExchange.vue";
 
@@ -28,17 +38,3 @@ export default {
 }
 </script>
 
-<template>
-  <div :class="classRow">
-    <button_exchange v-for="(item, index) in arrButtons"
-                     :buttonProps="item"
-                     :classRowButtonProps="classRowButton"
-                     :key="'button' + String(indexProps) + String(index)"
-    >
-    </button_exchange>
-  </div>
-</template>
-
-<style scoped>
-
-</style>

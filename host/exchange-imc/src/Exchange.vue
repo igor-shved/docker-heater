@@ -1,3 +1,58 @@
+<template>
+  <div class="block-text">Виберіть бази 1С</div>
+  <buttons_row v-for="(item, index) in this.array_block"
+               :key="'buttonsRow' + String(index)"
+               :arrButtonsProps="item"
+               :indexProps="index"
+  />
+
+  <div class="content-row content-flex-center">
+    <div class="block-text">Вибраний план обміну:</div>
+  </div>
+  <div class="content-row content-flex-center">
+    <div class="block-text text-select-exchange">{{ textSelectExchange }}</div>
+  </div>
+  <div class="list-buttons">
+    <div class="content-row content-flex-center">
+      <div v-if="visibleAddExchange" class="content-row__block-center">
+        <a href="" class="button-block button-block__add-exchange" @click.prevent="clickAddExchange">
+          <div class="button-block__text">
+            Додати обмін в список
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="content-row content-flex-center">
+      <div v-if="visibleOperationExchange" class="content-row__block-center">
+        <a href="" class="button-block button-block__run-exchange" @click.prevent="clickRunExchange">
+          <div class="button-block__text">
+            Виконати обмін
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="content-row content-flex-center">
+      <div v-if="visibleOperationExchange" class="content-row__block-center">
+        <a href="" class="button-block button-block__stop-exchange" @click.prevent="clickStopExchange">
+          <div class="button-block__text">
+            Зупинити обмін
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="content-row content-flex-center">
+    <div v-if="visibleOperationExchange" class="block-text">Вибраний план обміну:</div>
+  </div>
+  <select_exchanges v-for="item in selectExchanges"
+                    :key="'selectExchanges'+String(item.id)"
+                    :selectExchangesProps=item
+  />
+  <div class="content-row">
+    <div class="block-text" v-for="item in completedTasks">{{ item }}</div>
+  </div>
+</template>
+
 <script>
 import buttons_row from "./components/ButtonsRow.vue";
 import select_exchanges from "./components/SelectExchanges.vue";
@@ -8,71 +63,102 @@ export default {
   components: {buttons_row, select_exchanges},
   data() {
     return {
+      active_item: {},
       arrayExchange: [],
       arrayBlock: [],
       arraySelect: [],
       selectExchanges: [],
-      mainExchange: {id: 1, name: 'Київ', path: 'http://bases.imc.loc/imc/hs/exchange/', isSelect: false, nameExchange: 'ІМК'},
+      mainExchange: {},
+      //mainExchange: {id: 1, name: 'Київ', path: 'http://i-shved.imc.loc/imc/hs/exchange/', isSelect: false, nameExchange: 'ІМК'},
       stopExchangeState: false,
       textSelectExchange: 'Немає даних для обміну',
       visibleAddExchange: false,
       visibleOperationExchange: false,
       countSelect: 1,
+      operationExchangeProgress: false,
+      //=========== debug ================
+      tasks: ['завдання 1', 'завдання 2', 'завдання 3', 'завдання 4'],
+      completedTasks: [],
+      //===================================
       //publicPath: process.env.BASE_URL,
     }
   },
   created() {
     this.$eventBus.$on('select_exchange', this.selectExchange);
     this.$eventBus.$on('delete_select_exchange', this.deleteSelectExchange);
-    this.arrayExchange = [
-      {id: 2, name: 'БА', path: 'http://serverpl.poltava.loc/ba/hs/exchange/', isSelect: false, nameExchange: 'БуратАгро'},
-      {id: 3, name: 'БТ', path: 'http://serverpl.poltava.loc/bt/hs/exchange/', isSelect: false, nameExchange: 'Бурат'},
-      {id: 4, name: 'ЧІМК', path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/', isSelect: false, nameExchange: 'ЧІМК'},
-      {id: 5, name: 'МБ', path: 'http://serverch.chernihiv.loc/mb/hs/exchange/', isSelect: false, nameExchange: 'МЛИБОР'},
-      {id: 6, name: 'СА', path: 'http://bases.imc.loc/sa/hs/exchange/', isSelect: false, nameExchange: 'СлобожанщинаАгро'},
-      {id: 7, name: 'ВХПП', path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/', isSelect: false, nameExchange: 'ВХПП'},
-      {id: 8, name: 'АК', path: 'http://serverpr.priluki.loc/ak/hs/exchange/', isSelect: false, nameExchange: 'АгроКім'},
-      {id: 9, name: 'АП', path: 'http://serverns.nosovka.loc/ap/hs/exchange/', isSelect: false, nameExchange: 'Агропрогрес'},
-      {id: 10, name: 'БХПП', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false, nameExchange: 'БХПП'},
-      {id: 11, name: 'БХЗ', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false, nameExchange: 'БХЗ'},
-    ];
-    let chunkArray = this.chunkArray(this.arrayExchange, 3);
-    this.arrayBlock.push([this.mainExchange]);
-    chunkArray.map(item => {
-      this.arrayBlock.push(item);
-    });
+    this.init_array();
   },
   beforeUnmount() {
     this.$eventBus.$off('select_exchange', this.selectExchange);
     this.$eventBus.$off('delete_select_exchange', this.deleteSelectExchange);
   },
-  watch: {
-    arraySelect: {
-      deep: true,
-      handler(val, oldVal) {
-        if (this.arraySelect.length > 1) {
-          this.visibleAddExchange = true;
-        } else {
-          this.visibleAddExchange = false;
-        }
-
-      }
-    },
-    selectExchanges: {
-      deep: true,
-      handler(val, oldVal) {
-        if (this.selectExchanges.length > 0) {
-          this.visibleOperationExchange = true;
-        } else {
-          this.visibleOperationExchange = false;
-        }
-
-      }
-    },
-  },
-  computed: {},
   methods: {
     ...mapActions(['CHANGE_COUNT_EXCHANGE', 'ARRAY_SELECT_EXCHANGE']),
+
+    // init_array_callback(callback) {
+    //   this.arrayExchange = [];
+    //   let self = this;
+    //
+    //   this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
+    //       .then(function (response) {
+    //         if (response.hasOwnProperty("data")) {
+    //           let items = response.data.data;
+    //           items.map(item => {
+    //             self.arrayExchange.push(item);
+    //           });
+    //           callback(items);
+    //         }
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error);
+    //       })
+    // },
+    async init_array() {
+      this.arrayExchange = [];
+      let self = this;
+      this.operationProgress = true;
+      await this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
+          .then(function (response) {
+            if (response.hasOwnProperty("data")) {
+              if (response.data.status = 'operation_success') {
+                response.data.data.map((item, index) => {
+                  if (index === 0) {
+                    self.mainExchange = item;
+                  } else {
+                    self.arrayExchange.push(item);
+                  }
+                });
+              } else {
+                throw Error(response);
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+      if (this.arrayExchange.length !== 0) {
+        let chunkArray = this.chunkArray(this.arrayExchange, 3);
+        this.arrayBlock.push([this.mainExchange]);
+        chunkArray.map(item => {
+          this.arrayBlock.push(item);
+        });
+      }
+    },
+    getArrayExchange() {
+      // this.arrayExchange = [
+      //   {id: 2, name: 'БА', path: 'http://serverpl.poltava.loc/ba/hs/exchange/', isSelect: false, nameExchange: 'БуратАгро'},
+      //   {id: 3, name: 'БТ', path: 'http://serverpl.poltava.loc/bt/hs/exchange/', isSelect: false, nameExchange: 'Бурат'},
+      //   {id: 4, name: 'ЧІМК', path: 'http://serverch.chernihiv.loc/chimc/hs/exchange/', isSelect: false, nameExchange: 'ЧІМК'},
+      //   {id: 5, name: 'МБ', path: 'http://serverch.chernihiv.loc/mb/hs/exchange/', isSelect: false, nameExchange: 'МЛИБОР'},
+      //   {id: 6, name: 'СА', path: 'http://bases.imc.loc/sa/hs/exchange/', isSelect: false, nameExchange: 'СлобожанщинаАгро'},
+      //   {id: 7, name: 'ВХПП', path: 'http://powervh.vhpp.loc/vhpp/hs/exchange/', isSelect: false, nameExchange: 'ВХПП'},
+      //   {id: 8, name: 'АК', path: 'http://serverpr.priluki.loc/ak/hs/exchange/', isSelect: false, nameExchange: 'АгроКім'},
+      //   {id: 9, name: 'АП', path: 'http://serverns.nosovka.loc/ap/hs/exchange/', isSelect: false, nameExchange: 'Агропрогрес'},
+      //   {id: 10, name: 'БХПП', path: 'http://powerbb.bobrovica.loc/bhpp/hs/exchange/', isSelect: false, nameExchange: 'БХПП'},
+      //   {id: 11, name: 'БХЗ', path: 'http://powerbb.bobrovica.loc/bhz/hs/exchange/', isSelect: false, nameExchange: 'БХЗ'},
+      // ];
+    },
+
     chunkArray(arr, size) {
       const chunkArray = [];
       for (let i = 0; i < arr.length; i += size) {
@@ -148,14 +234,15 @@ export default {
         })
       }
     },
-    addExchange() {
+    clickAddExchange() {
       if (this.arraySelect.length <= 1) {
         return;
       }
       this.selectExchanges.push({
         id: this.countSelect,
         selectArray: [...this.arraySelect],
-        status: 'виконується обмін'
+        status: '',
+        inProgress: false,
       });
       this.countSelect += 1;
       this.arraySelect.map(item => {
@@ -175,121 +262,210 @@ export default {
         this.selectExchanges.splice(indexExchange, 1);
       }
     },
+    clickRunExchange() {
+      this.operationExchangeProgress = true;
+      this.runExchange();
+      this.operationExchangeProgress = false;
+    },
     runExchange() {
-      this.selectExchanges.forEach(itemExchange => {
-        let result = this.runSelectExchange(itemExchange);
-        if (result.status === 'error'){
+      let arrayTasks = [];
+      for (let itemExchange of this.selectExchanges) {
+        if (!this.operationExchangeProgress) {
           return;
         }
-      });
-    },
-    runSelectExchange(itemExchange) {
-      itemExchange.selectArray.forEach((itemOperation, index) => {
-        let resultRequest = this.runItemOperation(itemExchange, itemOperation, index);
-        if (resultRequest.status === 'error') {
-          return resultRequest;
+        for (let item of this.generateTasks(itemExchange)) {
+          arrayTasks.push(item);
         }
+      }
+      this.runArrayTasks(arrayTasks);
+    },
+    async runArrayTasks(arrayTasks) {
+      for (let task of arrayTasks) {
+        console.log('task', task);
+        await this.processRequest(task);
+      }
+    },
+    generateTasks(itemExchange) {
+      let index = 0;
+      let arrayTasks = [];
+      for (let baseExchange of itemExchange.selectArray) {
+        if (index === 0) {
+          if (baseExchange !== this.mainExchange) {
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: this.mainExchange,
+              baseTo: baseExchange,
+              operation: 'upload',
+            });
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: baseExchange,
+              baseTo: this.mainExchange,
+              operation: 'download',
+            });
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: baseExchange,
+              baseTo: this.mainExchange,
+              operation: 'upload',
+            });
+          }
+        } else {
+          if (baseExchange === this.mainExchange) {
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: this.mainExchange,
+              baseTo: itemExchange.selectArray[index - 1],
+              operation: 'download',
+            });
+          } else {
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: this.mainExchange,
+              baseTo: baseExchange,
+              operation: 'upload',
+            });
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: baseExchange,
+              baseTo: this.mainExchange,
+              operation: 'download',
+            });
+          }
+        }
+        index += 1;
+      }
+      return arrayTasks;
+    },
+    async processRequest(parameters) {
+        if (!this.operationExchangeProgress) {
+          parameters.exchange.inProgress = false;
+          return;
+        }
+        let strOperationCur = '';
+        let strOperationPast = '';
+        let strOperationAfter = '';
+        if (parameters.operation === 'upload') {
+          strOperationCur = 'вивантаження';
+          strOperationPast = 'вивантаженні';
+          strOperationAfter = 'вивантаженню';
+        } else if (parameters.operation === 'download') {
+          strOperationCur = 'завантаження';
+          strOperationPast = 'завантаженні';
+          strOperationAfter = 'вивантаженню';
+        }
+        //parameters.exchange.inProgress = true;
+        //setTimeout(()=>{}, 3000);
+        parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + parameters.baseTo.name;
+        let result = await this.getRequest(parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange)
+            .then(function (response) {
+              if (response.hasOwnProperty("data")) {
+                return {
+                  status: 'success',
+                  data: JSON.parse(response.data.data),
+                }
+              }
+              throw  Error("Where is data in response ?");
+            })
+            .catch(function (error) {
+              if (error.hasOwnProperty("message")) {
+                try {
+                  return {
+                    status: 'error',
+                    data: 'дивіться помилку в консолі браузера - ' + error.message,
+                  }
+                } catch (err_try) {
+                  console.log('err_try', err_try);
+                  return {
+                    status: 'error',
+                    data: err_try,
+                  }
+                }
+              }
+            });
+        let strStatus = '';
+        if (result.status === "error") {
+          if (result.hasOwnProperty('data')) {
+            if (typeof result === 'object' && result.hasOwnProperty('data') && result.hasOwnProperty('status')) {
+              if (result.status === 'error') {
+                let resultStr = '';
+                if (Array.isArray(result.data)) {
+                  result.data.forEach((item, index) => {
+                    if (index === 0) {
+                      resultStr = item;
+                    } else {
+                      resultStr = resultStr + ' ' + item;
+                    }
+                  });
+                } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
+                  resultStr = result.data;
+                }
+                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name + ' по причині: ' + resultStr;
+              } else {
+                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name;
+              }
+            }
+          }
+        } else if (result.status === "success") {
+          strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + parameters.baseTo.name + ' виконана успішно';
+        }
+        parameters.exchange.status = strStatus;
+        //parameters.exchange.inProgress = false;
+    },
+    async getRequest(urlRequest) {
+      return await this.$axios.get(urlRequest);
+    },
+    clickStopExchange() {
+      this.operationExchangeProgress = false;
+    },
+  },
+  computed: {
+    array_block() {
+      return this.arrayBlock.map(item => {
+        if (Array.isArray(item)) {
+          item.map(itemChild => {
+            if (!itemChild.hasOwnProperty("isSelect")) {
+              itemChild.isSelect = false;
+            }
+            if (this.selectExchanges.includes(itemChild)) {
+              itemChild.isSelect = true;
+            }
+            return itemChild;
+          });
+        }
+
+        // if (parseInt(item.id) === parseInt(this.active_item.id)) {
+        //   item.isSelect = true;
+        // }
+        return item;
       });
     },
-    runItemOperation(itemExchange, itemOperation, index) {
-      if (index === 0) {
-        let nameOperation = 'upload';
-        itemExchange.status = 'Виконується вивантаження даних на ' + itemOperation.name;
-        let resultRequest = this.runRequest(nameOperation, itemOperation);
-        console.log(resultRequest);
-        // if (resultRequest.status === 'error') {
-        //   itemExchange.status = 'Вивантаження даних виконано з помилкою, тому обмін буде зупинено. Текст помилки: ' + resultRequest.data;
-        // } else {
-        //   console.log(resultRequest.data);
-        // }
-        return resultRequest;
-      } else if(index === 1) {
+
+  },
+  watch: {
+    arraySelect: {
+      deep: true,
+      handler(val, oldVal) {
+        if (this.arraySelect.length > 1) {
+          this.visibleAddExchange = true;
+        } else {
+          this.visibleAddExchange = false;
+        }
+      }
+    },
+    selectExchanges: {
+      deep: true,
+      handler(val, oldVal) {
+        if (this.selectExchanges.length > 0) {
+          this.visibleOperationExchange = true;
+        } else {
+          this.visibleOperationExchange = false;
+        }
 
       }
     },
-    runRequest(nameOperation, operation) {
-      this.$axios.get(operation.path + nameOperation + '/' + operation.nameExchange)
-          .then(function (response){
-            console.log(response);
-            return {
-              status: 'success',
-              data: response,
-            }
-          })
-          .catch(function (error){
-            console.log(error);
-            return {
-              status: 'error',
-              data: error,
-            }
-          })
-    },
-
-    // this.$axios.('/api/get_data_files_debug', {data: arrayRequest})
-    //     .then(response => {
-    //       this.arrayDataFiles.push(response.data.data);
-    //     })
-    //     .catch(err => {
-    //       console.log('error /api/get_data_files_debug', err.response.data);
-    //     })
-
-    stopExchange() {
-    },
-  }
+  },
 }
 </script>
-
-<template>
-  <div class="block-text">Виберіть бази 1С</div>
-  <buttons_row v-for="(item, index) in this.arrayBlock"
-               :key="'buttonsRow' + String(index)"
-               :arrButtonsProps="item"
-               :indexProps="index"
-  >
-  </buttons_row>
-
-  <div class="content-row content-flex-center">
-    <div class="block-text">Вибраний план обміну:</div>
-  </div>
-  <div class="content-row content-flex-center">
-    <div class="block-text text-select-exchange">{{ textSelectExchange }}</div>
-  </div>
-  <div class="list-buttons">
-    <div class="content-row content-flex-center">
-      <div v-if="visibleAddExchange" class="content-row__block-center">
-        <a href="" class="button-block button-block__add-exchange" @click.prevent="addExchange">
-          <div class="button-block__text">
-            Додати обмін в список
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="content-row content-flex-center">
-      <div v-if="visibleOperationExchange" class="content-row__block-center">
-        <a href="" class="button-block button-block__run-exchange" @click.prevent="runExchange">
-          <div class="button-block__text">
-            Виконати обмін
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="content-row content-flex-center">
-      <div v-if="visibleOperationExchange" class="content-row__block-center">
-        <a href="" class="button-block button-block__stop-exchange" @click.prevent="stopExchange">
-          <div class="button-block__text">
-            Зупинити обмін
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="content-row content-flex-center">
-    <div v-if="visibleOperationExchange" class="block-text">Вибраний план обміну:</div>
-  </div>
-  <select_exchanges v-for="item in this.selectExchanges"
-                    :key="'selectExchanges'+String(item.id)"
-                    :selectExchangesProps=item
-  >
-
-  </select_exchanges>
-</template>
+<script setup>
+</script>
