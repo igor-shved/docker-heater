@@ -42,24 +42,33 @@
     </div>
   </div>
   <div class="content-row content-flex-center">
+    <div v-if="visibleOperationExchange" class="check-box">
+      <div>
+        <input type="checkbox" id="idUpload" v-model="checkUpload">
+        <label class="check-box__label" for="idUpload">вивантаження даних</label>
+      </div>
+      <div>
+        <input type="checkbox" id="idDownload" v-model="checkDownload">
+        <label class="check-box__label" for="idDownload">завантаження даних</label>
+      </div>
+    </div>
+  </div>
+  <div class="content-row content-flex-center">
     <div v-if="visibleOperationExchange" class="block-text">Вибраний план обміну:</div>
   </div>
   <select_exchanges v-for="item in selectExchanges"
                     :key="'selectExchanges'+String(item.id)"
                     :selectExchangesProps=item
   />
-  <div class="content-row">
-    <div class="block-text" v-for="item in completedTasks">{{ item }}</div>
-  </div>
 </template>
 
 <script>
 import buttons_row from "./components/ButtonsRow.vue";
 import select_exchanges from "./components/SelectExchanges.vue";
-import {mapActions, mapState} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
-  name: 'exchange',
+  name: 'exchange_base',
   components: {buttons_row, select_exchanges},
   data() {
     return {
@@ -79,6 +88,8 @@ export default {
       //=========== debug ================
       tasks: ['завдання 1', 'завдання 2', 'завдання 3', 'завдання 4'],
       completedTasks: [],
+      checkUpload: true,
+      checkDownload: true,
       //===================================
       //publicPath: process.env.BASE_URL,
     }
@@ -94,33 +105,14 @@ export default {
   },
   methods: {
     ...mapActions(['CHANGE_COUNT_EXCHANGE', 'ARRAY_SELECT_EXCHANGE']),
-
-    // init_array_callback(callback) {
-    //   this.arrayExchange = [];
-    //   let self = this;
-    //
-    //   this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
-    //       .then(function (response) {
-    //         if (response.hasOwnProperty("data")) {
-    //           let items = response.data.data;
-    //           items.map(item => {
-    //             self.arrayExchange.push(item);
-    //           });
-    //           callback(items);
-    //         }
-    //       })
-    //       .catch(function (error) {
-    //         console.log(error);
-    //       })
-    // },
     async init_array() {
       this.arrayExchange = [];
       let self = this;
       this.operationProgress = true;
       await this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
           .then(function (response) {
-            if (response.hasOwnProperty("data")) {
-              if (response.data.status = 'operation_success') {
+            if (Object.prototype.hasOwnProperty.call(response,"data")) {
+              if (response.data.status === 'operation_success') {
                 response.data.data.map((item, index) => {
                   if (index === 0) {
                     self.mainExchange = item;
@@ -263,27 +255,27 @@ export default {
       }
     },
     clickRunExchange() {
-      this.operationExchangeProgress = true;
       this.runExchange();
-      this.operationExchangeProgress = false;
     },
     runExchange() {
       let arrayTasks = [];
       for (let itemExchange of this.selectExchanges) {
-        if (!this.operationExchangeProgress) {
-          return;
-        }
         for (let item of this.generateTasks(itemExchange)) {
-          arrayTasks.push(item);
+          if (item.operation === 'upload' && this.checkUpload) {
+            arrayTasks.push(item);
+          } else if (item.operation === 'download' && this.checkDownload) {
+            arrayTasks.push(item);
+          }
         }
       }
       this.runArrayTasks(arrayTasks);
     },
     async runArrayTasks(arrayTasks) {
+      this.operationExchangeProgress = true;
       for (let task of arrayTasks) {
-        console.log('task', task);
         await this.processRequest(task);
       }
+      this.operationExchangeProgress = false;
     },
     generateTasks(itemExchange) {
       let index = 0;
@@ -338,37 +330,59 @@ export default {
       return arrayTasks;
     },
     async processRequest(parameters) {
-        if (!this.operationExchangeProgress) {
-          parameters.exchange.inProgress = false;
-          return;
-        }
-        let strOperationCur = '';
-        let strOperationPast = '';
-        let strOperationAfter = '';
-        if (parameters.operation === 'upload') {
-          strOperationCur = 'вивантаження';
-          strOperationPast = 'вивантаженні';
-          strOperationAfter = 'вивантаженню';
-        } else if (parameters.operation === 'download') {
-          strOperationCur = 'завантаження';
-          strOperationPast = 'завантаженні';
-          strOperationAfter = 'вивантаженню';
-        }
-        //parameters.exchange.inProgress = true;
-        //setTimeout(()=>{}, 3000);
-        parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + parameters.baseTo.name;
-        let result = await this.getRequest(parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange)
-            .then(function (response) {
-              if (response.hasOwnProperty("data")) {
+      if (!this.operationExchangeProgress) {
+        parameters.exchange.inProgress = false;
+        return;
+      }
+      parameters.exchange.inProgress = true;
+      let strOperationCur = '';
+      let strOperationPast = '';
+      let strOperationAfter = '';
+      let baseName = '';
+      if (parameters.operation === 'upload') {
+        baseName = parameters.baseTo.name;
+        strOperationCur = 'вивантаження';
+        strOperationPast = 'вивантаженні';
+        strOperationAfter = 'вивантаженню';
+      } else if (parameters.operation === 'download') {
+        baseName = parameters.baseFrom.name;
+        strOperationCur = 'завантаження';
+        strOperationPast = 'завантаженні';
+        strOperationAfter = 'завантаженню';
+      }
+      //parameters.exchange.inProgress = true;
+      //setTimeout(()=>{}, 3000);
+      parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
+      let urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
+      let result = await this.getRequest(urlRequest)
+          .then(function (response) {
+            console.log('response', response);
+            if (Object.prototype.hasOwnProperty.call(response,"data")) {
+              if (Object.prototype.hasOwnProperty.call(response.data,"data")) {
                 return {
                   status: 'success',
                   data: JSON.parse(response.data.data),
                 }
               }
-              throw  Error("Where is data in response ?");
-            })
-            .catch(function (error) {
-              if (error.hasOwnProperty("message")) {
+            }
+            throw  Error("Where is data in response ?");
+          })
+          .catch(function (error) {
+            if (Object.prototype.hasOwnProperty.call(error,"response")) {
+              if (Object.prototype.hasOwnProperty.call(error.response,"data")) {
+                try {
+                  return {
+                    status: 'error',
+                    data: JSON.parse(error.response.data.data),
+                  }
+                } catch (err_try) {
+                  console.log('err_try', err_try);
+                  return {
+                    status: 'error',
+                    data: err_try,
+                  }
+                }
+              } else {
                 try {
                   return {
                     status: 'error',
@@ -382,35 +396,49 @@ export default {
                   }
                 }
               }
-            });
-        let strStatus = '';
-        if (result.status === "error") {
-          if (result.hasOwnProperty('data')) {
-            if (typeof result === 'object' && result.hasOwnProperty('data') && result.hasOwnProperty('status')) {
-              if (result.status === 'error') {
-                let resultStr = '';
-                if (Array.isArray(result.data)) {
-                  result.data.forEach((item, index) => {
-                    if (index === 0) {
-                      resultStr = item;
-                    } else {
-                      resultStr = resultStr + ' ' + item;
-                    }
-                  });
-                } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
-                  resultStr = result.data;
+            } else if (Object.prototype.hasOwnProperty.call(error,"message")) {
+              try {
+                return {
+                  status: 'error',
+                  data: 'дивіться помилку в консолі браузера - ' + error.message,
                 }
-                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name + ' по причині: ' + resultStr;
-              } else {
-                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name;
+              } catch (err_try) {
+                console.log('err_try', err_try);
+                return {
+                  status: 'error',
+                  data: err_try,
+                }
               }
             }
+          });
+      let strStatus = '';
+      if (result.status === "error") {
+        if (Object.prototype.hasOwnProperty.call(result,"data")) {
+          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result,"data") && Object.prototype.hasOwnProperty.call(result,"status")) {
+            if (result.status === 'error') {
+              let resultStr = '';
+              if (Array.isArray(result.data)) {
+                result.data.forEach((item, index) => {
+                  if (index === 0) {
+                    resultStr = item;
+                  } else {
+                    resultStr = resultStr + ' ' + item;
+                  }
+                });
+              } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
+                resultStr = result.data;
+              }
+              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
+            } else {
+              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+            }
           }
-        } else if (result.status === "success") {
-          strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + parameters.baseTo.name + ' виконана успішно';
         }
-        parameters.exchange.status = strStatus;
-        //parameters.exchange.inProgress = false;
+      } else if (result.status === "success") {
+        strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
+      }
+      parameters.exchange.status = strStatus;
+      parameters.exchange.inProgress = false;
     },
     async getRequest(urlRequest) {
       return await this.$axios.get(urlRequest);
@@ -424,7 +452,7 @@ export default {
       return this.arrayBlock.map(item => {
         if (Array.isArray(item)) {
           item.map(itemChild => {
-            if (!itemChild.hasOwnProperty("isSelect")) {
+            if (!Object.prototype.hasOwnProperty.call(itemChild,"isSelect")) {
               itemChild.isSelect = false;
             }
             if (this.selectExchanges.includes(itemChild)) {
@@ -445,7 +473,7 @@ export default {
   watch: {
     arraySelect: {
       deep: true,
-      handler(val, oldVal) {
+      handler() {
         if (this.arraySelect.length > 1) {
           this.visibleAddExchange = true;
         } else {
@@ -455,7 +483,7 @@ export default {
     },
     selectExchanges: {
       deep: true,
-      handler(val, oldVal) {
+      handler() {
         if (this.selectExchanges.length > 0) {
           this.visibleOperationExchange = true;
         } else {

@@ -29,7 +29,7 @@ export default {
     this.changeClassSelect();
   },
   methods: {
-    changeIsSelect(newValue, oldValue){
+    changeIsSelect(){
       this.changeClassSelect();
     },
     selectExchange() {

@@ -17053,10 +17053,10 @@ const replacer = (_key, val) => {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/Exchange.vue?vue&type=script&lang=js":
-/*!******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/Exchange.vue?vue&type=script&lang=js ***!
-  \******************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/ExchangeBase.vue?vue&type=script&lang=js":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/ExchangeBase.vue?vue&type=script&lang=js ***!
+  \**********************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17086,7 +17086,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'exchange',
+  name: 'exchange_base',
   components: {
     buttons_row: _components_ButtonsRow_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
     select_exchanges: _components_SelectExchanges_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
@@ -17108,7 +17108,9 @@ __webpack_require__.r(__webpack_exports__);
       operationExchangeProgress: false,
       //=========== debug ================
       tasks: ['завдання 1', 'завдання 2', 'завдання 3', 'завдання 4'],
-      completedTasks: []
+      completedTasks: [],
+      checkUpload: true,
+      checkDownload: true
       //===================================
       //publicPath: process.env.BASE_URL,
     };
@@ -17123,24 +17125,6 @@ __webpack_require__.r(__webpack_exports__);
     this.$eventBus.$off('delete_select_exchange', this.deleteSelectExchange);
   },
   methods: (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_5__["default"])((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_objectSpread2_js__WEBPACK_IMPORTED_MODULE_5__["default"])({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapActions)(['CHANGE_COUNT_EXCHANGE', 'ARRAY_SELECT_EXCHANGE'])), {}, {
-    // init_array_callback(callback) {
-    //   this.arrayExchange = [];
-    //   let self = this;
-    //
-    //   this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
-    //       .then(function (response) {
-    //         if (response.hasOwnProperty("data")) {
-    //           let items = response.data.data;
-    //           items.map(item => {
-    //             self.arrayExchange.push(item);
-    //           });
-    //           callback(items);
-    //         }
-    //       })
-    //       .catch(function (error) {
-    //         console.log(error);
-    //       })
-    // },
     init_array: function init_array() {
       var _this = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee() {
@@ -17153,8 +17137,8 @@ __webpack_require__.r(__webpack_exports__);
               _this.operationProgress = true;
               _context.next = 5;
               return _this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo').then(function (response) {
-                if (response.hasOwnProperty("data")) {
-                  if (response.data.status = 'operation_success') {
+                if (Object.prototype.hasOwnProperty.call(response, "data")) {
+                  if (response.data.status === 'operation_success') {
                     response.data.data.map(function (item, index) {
                       if (index === 0) {
                         self.mainExchange = item;
@@ -17304,9 +17288,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     clickRunExchange: function clickRunExchange() {
-      this.operationExchangeProgress = true;
       this.runExchange();
-      this.operationExchangeProgress = false;
     },
     runExchange: function runExchange() {
       var arrayTasks = [];
@@ -17315,15 +17297,16 @@ __webpack_require__.r(__webpack_exports__);
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var itemExchange = _step.value;
-          if (!this.operationExchangeProgress) {
-            return;
-          }
           var _iterator2 = (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.generateTasks(itemExchange)),
             _step2;
           try {
             for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
               var item = _step2.value;
-              arrayTasks.push(item);
+              if (item.operation === 'upload' && this.checkUpload) {
+                arrayTasks.push(item);
+              } else if (item.operation === 'download' && this.checkDownload) {
+                arrayTasks.push(item);
+              }
             }
           } catch (err) {
             _iterator2.e(err);
@@ -17345,37 +17328,39 @@ __webpack_require__.r(__webpack_exports__);
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
+              _this4.operationExchangeProgress = true;
               _iterator3 = (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_createForOfIteratorHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arrayTasks);
-              _context2.prev = 1;
+              _context2.prev = 2;
               _iterator3.s();
-            case 3:
+            case 4:
               if ((_step3 = _iterator3.n()).done) {
                 _context2.next = 10;
                 break;
               }
               task = _step3.value;
-              console.log('task', task);
               _context2.next = 8;
               return _this4.processRequest(task);
             case 8:
-              _context2.next = 3;
+              _context2.next = 4;
               break;
             case 10:
               _context2.next = 15;
               break;
             case 12:
               _context2.prev = 12;
-              _context2.t0 = _context2["catch"](1);
+              _context2.t0 = _context2["catch"](2);
               _iterator3.e(_context2.t0);
             case 15:
               _context2.prev = 15;
               _iterator3.f();
               return _context2.finish(15);
             case 18:
+              _this4.operationExchangeProgress = false;
+            case 19:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[1, 12, 15, 18]]);
+        }, _callee2, null, [[2, 12, 15, 18]]);
       }))();
     },
     generateTasks: function generateTasks(itemExchange) {
@@ -17442,7 +17427,7 @@ __webpack_require__.r(__webpack_exports__);
     processRequest: function processRequest(parameters) {
       var _this5 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee3() {
-        var strOperationCur, strOperationPast, strOperationAfter, result, strStatus, resultStr;
+        var strOperationCur, strOperationPast, strOperationAfter, baseName, urlRequest, result, strStatus, resultStr;
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
@@ -17453,32 +17438,68 @@ __webpack_require__.r(__webpack_exports__);
               parameters.exchange.inProgress = false;
               return _context3.abrupt("return");
             case 3:
+              parameters.exchange.inProgress = true;
               strOperationCur = '';
               strOperationPast = '';
               strOperationAfter = '';
+              baseName = '';
               if (parameters.operation === 'upload') {
+                baseName = parameters.baseTo.name;
                 strOperationCur = 'вивантаження';
                 strOperationPast = 'вивантаженні';
                 strOperationAfter = 'вивантаженню';
               } else if (parameters.operation === 'download') {
+                baseName = parameters.baseFrom.name;
                 strOperationCur = 'завантаження';
                 strOperationPast = 'завантаженні';
-                strOperationAfter = 'вивантаженню';
+                strOperationAfter = 'завантаженню';
               }
               //parameters.exchange.inProgress = true;
               //setTimeout(()=>{}, 3000);
-              parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + parameters.baseTo.name;
-              _context3.next = 10;
-              return _this5.getRequest(parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange).then(function (response) {
-                if (response.hasOwnProperty("data")) {
-                  return {
-                    status: 'success',
-                    data: JSON.parse(response.data.data)
-                  };
+              parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
+              urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
+              _context3.next = 13;
+              return _this5.getRequest(urlRequest).then(function (response) {
+                console.log('response', response);
+                if (Object.prototype.hasOwnProperty.call(response, "data")) {
+                  if (Object.prototype.hasOwnProperty.call(response.data, "data")) {
+                    return {
+                      status: 'success',
+                      data: JSON.parse(response.data.data)
+                    };
+                  }
                 }
                 throw Error("Where is data in response ?");
               })["catch"](function (error) {
-                if (error.hasOwnProperty("message")) {
+                if (Object.prototype.hasOwnProperty.call(error, "response")) {
+                  if (Object.prototype.hasOwnProperty.call(error.response, "data")) {
+                    try {
+                      return {
+                        status: 'error',
+                        data: JSON.parse(error.response.data.data)
+                      };
+                    } catch (err_try) {
+                      console.log('err_try', err_try);
+                      return {
+                        status: 'error',
+                        data: err_try
+                      };
+                    }
+                  } else {
+                    try {
+                      return {
+                        status: 'error',
+                        data: 'дивіться помилку в консолі браузера - ' + error.message
+                      };
+                    } catch (err_try) {
+                      console.log('err_try', err_try);
+                      return {
+                        status: 'error',
+                        data: err_try
+                      };
+                    }
+                  }
+                } else if (Object.prototype.hasOwnProperty.call(error, "message")) {
                   try {
                     return {
                       status: 'error',
@@ -17493,12 +17514,12 @@ __webpack_require__.r(__webpack_exports__);
                   }
                 }
               });
-            case 10:
+            case 13:
               result = _context3.sent;
               strStatus = '';
               if (result.status === "error") {
-                if (result.hasOwnProperty('data')) {
-                  if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && result.hasOwnProperty('data') && result.hasOwnProperty('status')) {
+                if (Object.prototype.hasOwnProperty.call(result, "data")) {
+                  if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
                     if (result.status === 'error') {
                       resultStr = '';
                       if (Array.isArray(result.data)) {
@@ -17512,18 +17533,18 @@ __webpack_require__.r(__webpack_exports__);
                       } else if (typeof result.data === "string" || (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result.data) === "object" && result.data.constructor === String) {
                         resultStr = result.data;
                       }
-                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name + ' по причині: ' + resultStr;
+                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
                     } else {
-                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + parameters.baseTo.name;
+                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
                     }
                   }
                 }
               } else if (result.status === "success") {
-                strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + parameters.baseTo.name + ' виконана успішно';
+                strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
               }
               parameters.exchange.status = strStatus;
-              //parameters.exchange.inProgress = false;
-            case 14:
+              parameters.exchange.inProgress = false;
+            case 18:
             case "end":
               return _context3.stop();
           }
@@ -17557,7 +17578,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.arrayBlock.map(function (item) {
         if (Array.isArray(item)) {
           item.map(function (itemChild) {
-            if (!itemChild.hasOwnProperty("isSelect")) {
+            if (!Object.prototype.hasOwnProperty.call(itemChild, "isSelect")) {
               itemChild.isSelect = false;
             }
             if (_this7.selectExchanges.includes(itemChild)) {
@@ -17577,7 +17598,7 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     arraySelect: {
       deep: true,
-      handler: function handler(val, oldVal) {
+      handler: function handler() {
         if (this.arraySelect.length > 1) {
           this.visibleAddExchange = true;
         } else {
@@ -17587,7 +17608,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectExchanges: {
       deep: true,
-      handler: function handler(val, oldVal) {
+      handler: function handler() {
         if (this.selectExchanges.length > 0) {
           this.visibleOperationExchange = true;
         } else {
@@ -17630,7 +17651,7 @@ __webpack_require__.r(__webpack_exports__);
     this.changeClassSelect();
   },
   methods: {
-    changeIsSelect: function changeIsSelect(newValue, oldValue) {
+    changeIsSelect: function changeIsSelect() {
       this.changeClassSelect();
     },
     selectExchange: function selectExchange() {
@@ -17749,10 +17770,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/Exchange.vue?vue&type=template&id=486cd19c":
-/*!**********************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/Exchange.vue?vue&type=template&id=486cd19c ***!
-  \**********************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/ExchangeBase.vue?vue&type=template&id=7f944a0d":
+/*!**************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/ExchangeBase.vue?vue&type=template&id=7f944a0d ***!
+  \**************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17817,12 +17838,21 @@ var _hoisted_18 = {
 };
 var _hoisted_19 = {
   key: 0,
-  "class": "block-text"
+  "class": "check-box"
 };
-var _hoisted_20 = {
-  "class": "content-row"
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "check-box__label",
+  "for": "idUpload"
+}, "вивантаження даних", -1 /* HOISTED */);
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "check-box__label",
+  "for": "idDownload"
+}, "завантаження даних", -1 /* HOISTED */);
+var _hoisted_22 = {
+  "class": "content-row content-flex-center"
 };
-var _hoisted_21 = {
+var _hoisted_23 = {
+  key: 0,
   "class": "block-text"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -17852,14 +17882,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.clickStopExchange && $options.clickStopExchange.apply($options, arguments);
     }, ["prevent"]))
-  }, _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, "Вибраний план обміну:")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.selectExchanges, function (item) {
+  }, _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    id: "idUpload",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.checkUpload = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkUpload]]), _hoisted_20]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    id: "idDownload",
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $data.checkDownload = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkDownload]]), _hoisted_21])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, "Вибраний план обміну:")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.selectExchanges, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_select_exchanges, {
       key: 'selectExchanges' + String(item.id),
       selectExchangesProps: item
     }, null, 8 /* PROPS */, ["selectExchangesProps"]);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.completedTasks, function (item) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item), 1 /* TEXT */);
-  }), 256 /* UNKEYED_FRAGMENT */))])], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -17975,7 +18015,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _Exchange_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Exchange.vue */ "./src/Exchange.vue");
+/* harmony import */ var _ExchangeBase_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ././ExchangeBase.vue */ "./src/ExchangeBase.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var vue_eventer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-eventer */ "./node_modules/vue-eventer/index.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./src/store/index.js");
@@ -17984,7 +18024,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_Exchange_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_ExchangeBase_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 app.config.globalProperties.$eventBus = new vue_eventer__WEBPACK_IMPORTED_MODULE_2__["default"]();
 app.config.globalProperties.$axios = axios__WEBPACK_IMPORTED_MODULE_4__["default"];
 app.config.globalProperties.$store = _store__WEBPACK_IMPORTED_MODULE_3__["default"];
@@ -22406,23 +22446,23 @@ exports["default"] = (sfc, props) => {
 
 /***/ }),
 
-/***/ "./src/Exchange.vue":
-/*!**************************!*\
-  !*** ./src/Exchange.vue ***!
-  \**************************/
+/***/ "./src/ExchangeBase.vue":
+/*!******************************!*\
+  !*** ./src/ExchangeBase.vue ***!
+  \******************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Exchange_vue_vue_type_template_id_486cd19c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Exchange.vue?vue&type=template&id=486cd19c */ "./src/Exchange.vue?vue&type=template&id=486cd19c");
-/* harmony import */ var _Exchange_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Exchange.vue?vue&type=script&lang=js */ "./src/Exchange.vue?vue&type=script&lang=js");
+/* harmony import */ var _ExchangeBase_vue_vue_type_template_id_7f944a0d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ExchangeBase.vue?vue&type=template&id=7f944a0d */ "./src/ExchangeBase.vue?vue&type=template&id=7f944a0d");
+/* harmony import */ var _ExchangeBase_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ExchangeBase.vue?vue&type=script&lang=js */ "./src/ExchangeBase.vue?vue&type=script&lang=js");
 /* harmony import */ var _var_www_exchange_imc_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Exchange_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Exchange_vue_vue_type_template_id_486cd19c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"src/Exchange.vue"]])
+const __exports__ = /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ExchangeBase_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ExchangeBase_vue_vue_type_template_id_7f944a0d__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"src/ExchangeBase.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -22506,18 +22546,18 @@ if (false) {}
 
 /***/ }),
 
-/***/ "./src/Exchange.vue?vue&type=script&lang=js":
-/*!**************************************************!*\
-  !*** ./src/Exchange.vue?vue&type=script&lang=js ***!
-  \**************************************************/
+/***/ "./src/ExchangeBase.vue?vue&type=script&lang=js":
+/*!******************************************************!*\
+  !*** ./src/ExchangeBase.vue?vue&type=script&lang=js ***!
+  \******************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Exchange_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]; }
+/* harmony export */   "default": function() { return /* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExchangeBase_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]; }
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Exchange_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Exchange.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/Exchange.vue?vue&type=script&lang=js");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExchangeBase_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ExchangeBase.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/ExchangeBase.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -22570,18 +22610,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/Exchange.vue?vue&type=template&id=486cd19c":
-/*!********************************************************!*\
-  !*** ./src/Exchange.vue?vue&type=template&id=486cd19c ***!
-  \********************************************************/
+/***/ "./src/ExchangeBase.vue?vue&type=template&id=7f944a0d":
+/*!************************************************************!*\
+  !*** ./src/ExchangeBase.vue?vue&type=template&id=7f944a0d ***!
+  \************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   render: function() { return /* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Exchange_vue_vue_type_template_id_486cd19c__WEBPACK_IMPORTED_MODULE_0__.render; }
+/* harmony export */   render: function() { return /* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExchangeBase_vue_vue_type_template_id_7f944a0d__WEBPACK_IMPORTED_MODULE_0__.render; }
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Exchange_vue_vue_type_template_id_486cd19c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Exchange.vue?vue&type=template&id=486cd19c */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/Exchange.vue?vue&type=template&id=486cd19c");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExchangeBase_vue_vue_type_template_id_7f944a0d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ExchangeBase.vue?vue&type=template&id=7f944a0d */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/ExchangeBase.vue?vue&type=template&id=7f944a0d");
 
 
 /***/ }),

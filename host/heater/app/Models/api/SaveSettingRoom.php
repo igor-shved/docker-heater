@@ -8,14 +8,14 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 
-
 class SaveSettingRoom extends Model
 {
     use HasFactory;
+
     public function saveSetting($requestRoom)
     {
         $requestData = collect($requestRoom);
-        //dd($requestRoom);
-        return response()->json(['success' => true, 'data' => $requestRoom->id, 'status' => 200]);
+        //dd($requestData);
+        return response()->json(['success' => true, 'data' => $requestData, 'status' => 200]);
     }
 }

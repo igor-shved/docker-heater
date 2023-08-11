@@ -3298,7 +3298,7 @@ ws = new WebSocket("ws://house4u.com.ua:789");
                             var reload_X = partsTmp[4]; //
 
                             //alert(partsTmp);
-
+                            console.log('partsTmp[2]', partsTmp[2], 'reload_X = partsTmp[4]', partsTmp[4])
                             if (reload_X * 1 == 1) {
                                 //alert("Требуется перезагрузка 1");
                                 //console.log('clearReloadX call...');
