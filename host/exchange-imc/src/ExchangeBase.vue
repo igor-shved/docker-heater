@@ -350,11 +350,45 @@ export default {
         strOperationPast = 'завантаженні';
         strOperationAfter = 'завантаженню';
       }
-      //parameters.exchange.inProgress = true;
-      //setTimeout(()=>{}, 3000);
       parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
       let urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
-      let result = await this.getRequest(urlRequest)
+      //let result = await this.getResultGetRequest(urlRequest);
+      let result = await this.getResultPythonRequest(urlRequest);
+      //console.log('urlRequest',urlRequest);
+      let strStatus = '';
+      if (result.status === "error") {
+        if (Object.prototype.hasOwnProperty.call(result,"data")) {
+          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result,"data") && Object.prototype.hasOwnProperty.call(result,"status")) {
+            if (result.status === 'error') {
+              let resultStr = '';
+              if (Array.isArray(result.data)) {
+                result.data.forEach((item, index) => {
+                  if (index === 0) {
+                    resultStr = item;
+                  } else {
+                    resultStr = resultStr + ' ' + item;
+                  }
+                });
+              } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
+                resultStr = result.data;
+              }
+              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
+            } else {
+              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+            }
+          }
+        }
+      } else if (result.status === "success") {
+        strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
+      }
+      parameters.exchange.status = strStatus;
+      parameters.exchange.inProgress = false;
+    },
+    async getResultPythonRequest(urlRequest){
+      return await this.postRequest({url: 'https://bot.imcagro.com.ua/web/api/exchange1c', data: urlRequest})
+    },
+    async getResultGetRequest(urlRequest){
+      return await this.getRequest(urlRequest)
           .then(function (response) {
             console.log('response', response);
             if (Object.prototype.hasOwnProperty.call(response,"data")) {
@@ -411,37 +445,12 @@ export default {
               }
             }
           });
-      let strStatus = '';
-      if (result.status === "error") {
-        if (Object.prototype.hasOwnProperty.call(result,"data")) {
-          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result,"data") && Object.prototype.hasOwnProperty.call(result,"status")) {
-            if (result.status === 'error') {
-              let resultStr = '';
-              if (Array.isArray(result.data)) {
-                result.data.forEach((item, index) => {
-                  if (index === 0) {
-                    resultStr = item;
-                  } else {
-                    resultStr = resultStr + ' ' + item;
-                  }
-                });
-              } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
-                resultStr = result.data;
-              }
-              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
-            } else {
-              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
-            }
-          }
-        }
-      } else if (result.status === "success") {
-        strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
-      }
-      parameters.exchange.status = strStatus;
-      parameters.exchange.inProgress = false;
     },
     async getRequest(urlRequest) {
       return await this.$axios.get(urlRequest);
+    },
+    async postRequest(objRequest) {
+      return await this.$axios.post(objRequest.url, {data: objRequest.data});
     },
     clickStopExchange() {
       this.operationExchangeProgress = false;

@@ -265,6 +265,7 @@ export default {
                 roomName: this.roomName,
                 tempName: this.tempName,
                 relayName: this.relayName,
+                thisServerUpdateTime: Math.floor(Date.now() / 1000),
             }
             axios.post('/api/save_setting_to_files', objSetting)
                 .then(response => {

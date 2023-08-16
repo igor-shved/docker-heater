@@ -5,5 +5,7 @@ mix.js('src/main.js', 'js')
     .version()
     .copy('src/css', 'public/css')
     .copy('src/fonts', 'public/fonts')
+    .copy('src/images', 'public/images')
+    .copy('src/index.html', 'public')
     .sass('src/sass/main.scss', 'css')
     .setPublicPath('public');

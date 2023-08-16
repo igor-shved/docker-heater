@@ -17454,76 +17454,12 @@ __webpack_require__.r(__webpack_exports__);
                 strOperationPast = 'завантаженні';
                 strOperationAfter = 'завантаженню';
               }
+              //parameters.exchange.inProgress = true;
+              //setTimeout(()=>{}, 3000);
               parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
-              urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange; //let result = await this.getResultGetRequest(urlRequest);
+              urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
               _context3.next = 13;
-              return _this5.getResultPythonRequest(urlRequest);
-            case 13:
-              result = _context3.sent;
-              //console.log('urlRequest',urlRequest);
-              strStatus = '';
-              if (result.status === "error") {
-                if (Object.prototype.hasOwnProperty.call(result, "data")) {
-                  if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
-                    if (result.status === 'error') {
-                      resultStr = '';
-                      if (Array.isArray(result.data)) {
-                        result.data.forEach(function (item, index) {
-                          if (index === 0) {
-                            resultStr = item;
-                          } else {
-                            resultStr = resultStr + ' ' + item;
-                          }
-                        });
-                      } else if (typeof result.data === "string" || (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result.data) === "object" && result.data.constructor === String) {
-                        resultStr = result.data;
-                      }
-                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
-                    } else {
-                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
-                    }
-                  }
-                }
-              } else if (result.status === "success") {
-                strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
-              }
-              parameters.exchange.status = strStatus;
-              parameters.exchange.inProgress = false;
-            case 18:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3);
-      }))();
-    },
-    getResultPythonRequest: function getResultPythonRequest(urlRequest) {
-      var _this6 = this;
-      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee4() {
-        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return _this6.postRequest({
-                url: 'https://bot.imcagro.com.ua/web/api/exchange1c',
-                data: urlRequest
-              });
-            case 2:
-              return _context4.abrupt("return", _context4.sent);
-            case 3:
-            case "end":
-              return _context4.stop();
-          }
-        }, _callee4);
-      }))();
-    },
-    getResultGetRequest: function getResultGetRequest(urlRequest) {
-      var _this7 = this;
-      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee5() {
-        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
-            case 0:
-              _context5.next = 2;
-              return _this7.getRequest(urlRequest).then(function (response) {
+              return _this5.getRequest(urlRequest).then(function (response) {
                 console.log('response', response);
                 if (Object.prototype.hasOwnProperty.call(response, "data")) {
                   if (Object.prototype.hasOwnProperty.call(response.data, "data")) {
@@ -17578,49 +17514,58 @@ __webpack_require__.r(__webpack_exports__);
                   }
                 }
               });
-            case 2:
-              return _context5.abrupt("return", _context5.sent);
-            case 3:
+            case 13:
+              result = _context3.sent;
+              strStatus = '';
+              if (result.status === "error") {
+                if (Object.prototype.hasOwnProperty.call(result, "data")) {
+                  if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
+                    if (result.status === 'error') {
+                      resultStr = '';
+                      if (Array.isArray(result.data)) {
+                        result.data.forEach(function (item, index) {
+                          if (index === 0) {
+                            resultStr = item;
+                          } else {
+                            resultStr = resultStr + ' ' + item;
+                          }
+                        });
+                      } else if (typeof result.data === "string" || (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result.data) === "object" && result.data.constructor === String) {
+                        resultStr = result.data;
+                      }
+                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
+                    } else {
+                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+                    }
+                  }
+                }
+              } else if (result.status === "success") {
+                strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
+              }
+              parameters.exchange.status = strStatus;
+              parameters.exchange.inProgress = false;
+            case 18:
             case "end":
-              return _context5.stop();
+              return _context3.stop();
           }
-        }, _callee5);
+        }, _callee3);
       }))();
     },
     getRequest: function getRequest(urlRequest) {
-      var _this8 = this;
-      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee6() {
-        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee6$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+      var _this6 = this;
+      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee4() {
+        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              _context6.next = 2;
-              return _this8.$axios.get(urlRequest);
+              _context4.next = 2;
+              return _this6.$axios.get(urlRequest);
             case 2:
-              return _context6.abrupt("return", _context6.sent);
+              return _context4.abrupt("return", _context4.sent);
             case 3:
             case "end":
-              return _context6.stop();
+              return _context4.stop();
           }
-        }, _callee6);
-      }))();
-    },
-    postRequest: function postRequest(objRequest) {
-      var _this9 = this;
-      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee7() {
-        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee7$(_context7) {
-          while (1) switch (_context7.prev = _context7.next) {
-            case 0:
-              _context7.next = 2;
-              return _this9.$axios.post(objRequest.url, {
-                data: objRequest.data
-              });
-            case 2:
-              return _context7.abrupt("return", _context7.sent);
-            case 3:
-            case "end":
-              return _context7.stop();
-          }
-        }, _callee7);
+        }, _callee4);
       }))();
     },
     clickStopExchange: function clickStopExchange() {
@@ -17629,14 +17574,14 @@ __webpack_require__.r(__webpack_exports__);
   }),
   computed: {
     array_block: function array_block() {
-      var _this10 = this;
+      var _this7 = this;
       return this.arrayBlock.map(function (item) {
         if (Array.isArray(item)) {
           item.map(function (itemChild) {
             if (!Object.prototype.hasOwnProperty.call(itemChild, "isSelect")) {
               itemChild.isSelect = false;
             }
-            if (_this10.selectExchanges.includes(itemChild)) {
+            if (_this7.selectExchanges.includes(itemChild)) {
               itemChild.isSelect = true;
             }
             return itemChild;
@@ -29291,7 +29236,7 @@ const isThenable = (thing) =>
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/main": 0,
-/******/ 			"css/main": 0
+/******/ 			"public/css/main": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -29343,8 +29288,8 @@ const isThenable = (thing) =>
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/main"], function() { return __webpack_require__("./src/main.js"); })
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/main"], function() { return __webpack_require__("./src/sass/main.scss"); })
+/******/ 	__webpack_require__.O(undefined, ["public/css/main"], function() { return __webpack_require__("./src/main.js"); })
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["public/css/main"], function() { return __webpack_require__("./src/sass/main.scss"); })
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

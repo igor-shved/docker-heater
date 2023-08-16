@@ -205,12 +205,12 @@ a:visited, a:active, a:link {
   justify-content: center;
   height: calc(1.3rem + 20px);
   font-size: 1.3rem;
-  background-color: black;
+  background-color: white;
   bottom: 0px;
   border-radius: 0.5rem;
 }
 .footer__content {
-  color: grey;
+  color: black;
   align-self: center;
 }
 

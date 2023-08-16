@@ -1,9 +1,11 @@
 {
-    "/js/main.js": "/js/main.js?id=27d357dec92a0383e07791d8408c91f0",
-    "/css/main.css": "/css/main.css?id=87be9c8e315c253a5b3a0c53546fb3e7",
-    "/css/icons.css": "/css/icons.css?id=b8a53818cf80674f2369dabedd022ac1",
+    "/js/main.js": "/js/main.js?id=49098c398184611ba0310a950cf0ea0a",
+    "/css/main.css": "/css/main.css?id=c89106e9170688896ff8e25c4a6a2422",
+    "/css/icons.css": "/css/icons.css?id=7866c96fa8fbf372bccaaa5ca7879e07",
     "/fonts/icon.eot": "/fonts/icon.eot?id=1084d2e5f9f75aecce4b5eb45054d982",
-    "/fonts/icon.svg": "/fonts/icon.svg?id=ab7a8df954e1329a56cbcf3cfab354a4",
+    "/fonts/icon.svg": "/fonts/icon.svg?id=94e9053f74379e2add098c0a4e16ce99",
     "/fonts/icon.ttf": "/fonts/icon.ttf?id=15b850c048529cd868b8eeb9c1cdb707",
-    "/fonts/icon.woff": "/fonts/icon.woff?id=f552c07dd3273cabd2d279b5fbf08f82"
+    "/fonts/icon.woff": "/fonts/icon.woff?id=f552c07dd3273cabd2d279b5fbf08f82",
+    "/images/imc_logo.png": "/images/imc_logo.png?id=a8626dbb72a177bc01e04fcbdd5fb0d4",
+    "/index.html": "/index.html?id=0a14f381df445423c8885603ee62eb71"
 }
