@@ -85,12 +85,8 @@ export default {
       visibleOperationExchange: false,
       countSelect: 1,
       operationExchangeProgress: false,
-      //=========== debug ================
-      tasks: ['завдання 1', 'завдання 2', 'завдання 3', 'завдання 4'],
-      completedTasks: [],
       checkUpload: true,
       checkDownload: true,
-      //===================================
       //publicPath: process.env.BASE_URL,
     }
   },
@@ -111,7 +107,7 @@ export default {
       this.operationProgress = true;
       await this.getRequest('https://api.imcagro.com.ua/api/v1/exchange_cluster?token=demo')
           .then(function (response) {
-            if (Object.prototype.hasOwnProperty.call(response,"data")) {
+            if (Object.prototype.hasOwnProperty.call(response, "data")) {
               if (response.data.status === 'operation_success') {
                 response.data.data.map((item, index) => {
                   if (index === 0) {
@@ -261,11 +257,7 @@ export default {
       let arrayTasks = [];
       for (let itemExchange of this.selectExchanges) {
         for (let item of this.generateTasks(itemExchange)) {
-          if (item.operation === 'upload' && this.checkUpload) {
-            arrayTasks.push(item);
-          } else if (item.operation === 'download' && this.checkDownload) {
-            arrayTasks.push(item);
-          }
+          arrayTasks.push(item);
         }
       }
       this.runArrayTasks(arrayTasks);
@@ -280,9 +272,10 @@ export default {
     generateTasks(itemExchange) {
       let index = 0;
       let arrayTasks = [];
+      let lengthArray = itemExchange.selectArray.length;
       for (let baseExchange of itemExchange.selectArray) {
         if (index === 0) {
-          if (baseExchange !== this.mainExchange) {
+          if (baseExchange !== this.mainExchange && this.checkDownload && this.checkUpload) {
             arrayTasks.push({
               exchange: itemExchange,
               baseFrom: this.mainExchange,
@@ -299,30 +292,43 @@ export default {
               exchange: itemExchange,
               baseFrom: baseExchange,
               baseTo: this.mainExchange,
+              operation: 'upload',
+            });
+          } else if (this.checkUpload && !this.checkDownload && baseExchange !== this.mainExchange && (index <= lengthArray - 1)) {
+            arrayTasks.push({
+              exchange: itemExchange,
+              baseFrom: baseExchange,
+              baseTo: itemExchange.selectArray[index + 1],
               operation: 'upload',
             });
           }
         } else {
           if (baseExchange === this.mainExchange) {
-            arrayTasks.push({
-              exchange: itemExchange,
-              baseFrom: this.mainExchange,
-              baseTo: itemExchange.selectArray[index - 1],
-              operation: 'download',
-            });
+            if (this.checkDownload) {
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: baseExchange,
+                baseTo: itemExchange.selectArray[index - 1],
+                operation: 'download',
+              });
+            }
           } else {
-            arrayTasks.push({
-              exchange: itemExchange,
-              baseFrom: this.mainExchange,
-              baseTo: baseExchange,
-              operation: 'upload',
-            });
-            arrayTasks.push({
-              exchange: itemExchange,
-              baseFrom: baseExchange,
-              baseTo: this.mainExchange,
-              operation: 'download',
-            });
+            if (this.checkUpload) {
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: itemExchange.selectArray[index - 1],
+                baseTo: baseExchange,
+                operation: 'upload',
+              });
+            }
+            if (this.checkDownload) {
+              arrayTasks.push({
+                exchange: itemExchange,
+                baseFrom: baseExchange,
+                baseTo: itemExchange.selectArray[index - 1],
+                operation: 'download',
+              });
+            }
           }
         }
         index += 1;
@@ -334,6 +340,10 @@ export default {
         parameters.exchange.inProgress = false;
         return;
       }
+      //await this.runProcessRequest(parameters);
+      await this.runProcessRequestPython(parameters);
+    },
+    async runProcessRequest(parameters) {
       parameters.exchange.inProgress = true;
       let strOperationCur = '';
       let strOperationPast = '';
@@ -352,13 +362,12 @@ export default {
       }
       parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
       let urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
-      //let result = await this.getResultGetRequest(urlRequest);
-      let result = await this.getResultPythonRequest(urlRequest);
-      //console.log('urlRequest',urlRequest);
+      let result = await this.getResultGetRequest(urlRequest);
+      //console.log('result', result);
       let strStatus = '';
       if (result.status === "error") {
-        if (Object.prototype.hasOwnProperty.call(result,"data")) {
-          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result,"data") && Object.prototype.hasOwnProperty.call(result,"status")) {
+        if (Object.prototype.hasOwnProperty.call(result, "data")) {
+          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
             if (result.status === 'error') {
               let resultStr = '';
               if (Array.isArray(result.data)) {
@@ -384,15 +393,64 @@ export default {
       parameters.exchange.status = strStatus;
       parameters.exchange.inProgress = false;
     },
-    async getResultPythonRequest(urlRequest){
+    async runProcessRequestPython(parameters) {
+      parameters.exchange.inProgress = true;
+      let strOperationCur = '';
+      let strOperationPast = '';
+      let strOperationAfter = '';
+      let baseName = '';
+      if (parameters.operation === 'upload') {
+        baseName = parameters.baseTo.name;
+        strOperationCur = 'вивантаження';
+        strOperationPast = 'вивантаженні';
+        strOperationAfter = 'вивантаженню';
+      } else if (parameters.operation === 'download') {
+        baseName = parameters.baseFrom.name;
+        strOperationCur = 'завантаження';
+        strOperationPast = 'завантаженні';
+        strOperationAfter = 'завантаженню';
+      }
+      parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
+      let urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
+      let response = await this.getResultPythonRequest(urlRequest);
+      let result = response.data;
+      let strStatus = '';
+      if (result.status === "error") {
+        if (Object.prototype.hasOwnProperty.call(result, "data")) {
+          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
+            if (result.status === 'error') {
+              let resultStr = '';
+              if (Array.isArray(result.data)) {
+                result.data.forEach((item, index) => {
+                  if (index === 0) {
+                    resultStr = item;
+                  } else {
+                    resultStr = resultStr + ' ' + item;
+                  }
+                });
+              } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
+                resultStr = result.data;
+              }
+              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
+            } else {
+              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+            }
+          }
+        }
+      } else if (result.status === "success") {
+        strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
+      }
+      parameters.exchange.status = strStatus;
+      parameters.exchange.inProgress = false;
+    },
+    async getResultPythonRequest(urlRequest) {
       return await this.postRequest({url: 'https://bot.imcagro.com.ua/web/api/exchange1c', data: urlRequest})
     },
-    async getResultGetRequest(urlRequest){
+    async getResultGetRequest(urlRequest) {
       return await this.getRequest(urlRequest)
           .then(function (response) {
-            console.log('response', response);
-            if (Object.prototype.hasOwnProperty.call(response,"data")) {
-              if (Object.prototype.hasOwnProperty.call(response.data,"data")) {
+            if (Object.prototype.hasOwnProperty.call(response, "data")) {
+              if (Object.prototype.hasOwnProperty.call(response.data, "data")) {
                 return {
                   status: 'success',
                   data: JSON.parse(response.data.data),
@@ -402,8 +460,8 @@ export default {
             throw  Error("Where is data in response ?");
           })
           .catch(function (error) {
-            if (Object.prototype.hasOwnProperty.call(error,"response")) {
-              if (Object.prototype.hasOwnProperty.call(error.response,"data")) {
+            if (Object.prototype.hasOwnProperty.call(error, "response")) {
+              if (Object.prototype.hasOwnProperty.call(error.response, "data")) {
                 try {
                   return {
                     status: 'error',
@@ -430,7 +488,7 @@ export default {
                   }
                 }
               }
-            } else if (Object.prototype.hasOwnProperty.call(error,"message")) {
+            } else if (Object.prototype.hasOwnProperty.call(error, "message")) {
               try {
                 return {
                   status: 'error',
@@ -461,7 +519,7 @@ export default {
       return this.arrayBlock.map(item => {
         if (Array.isArray(item)) {
           item.map(itemChild => {
-            if (!Object.prototype.hasOwnProperty.call(itemChild,"isSelect")) {
+            if (!Object.prototype.hasOwnProperty.call(itemChild, "isSelect")) {
               itemChild.isSelect = false;
             }
             if (this.selectExchanges.includes(itemChild)) {
@@ -477,7 +535,6 @@ export default {
         return item;
       });
     },
-
   },
   watch: {
     arraySelect: {

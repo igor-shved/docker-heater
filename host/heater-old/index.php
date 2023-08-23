@@ -2200,6 +2200,7 @@ ws = new WebSocket("ws://house4u.com.ua:789");
                 res += schedule + scheduleMode;
                 //alert(res);
                 //scheduleArrTime
+                console.log('res', res);
                 return res;
             }
 
@@ -2329,7 +2330,7 @@ ws = new WebSocket("ws://house4u.com.ua:789");
                 hash = hash.toString(16) + ";";
 
                 vals = vals + hash;
-
+                console.log('s-apply vals', vals);
                 urlstate = scriptPath + 's-apply.php?vals=' + vals;
 
                 if (forceUpdate)
@@ -3298,7 +3299,7 @@ ws = new WebSocket("ws://house4u.com.ua:789");
                             var reload_X = partsTmp[4]; //
 
                             //alert(partsTmp);
-                            console.log('partsTmp', partsTmp, 'partsTmp[2]', partsTmp[2], 'reload_X = partsTmp[4]', partsTmp[4])
+                            //console.log('partsTmp', partsTmp, 'partsTmp[2]', partsTmp[2], 'reload_X = partsTmp[4]', partsTmp[4])
                             if (reload_X * 1 == 1) {
                                 //alert("Требуется перезагрузка 1");
                                 //console.log('clearReloadX call...');
@@ -3330,8 +3331,8 @@ ws = new WebSocket("ws://house4u.com.ua:789");
 
                             stateX = parts[2];
 
-                            console.log('parts', parts);
-                            console.log('roomsTsensors', roomsTsensors);
+                            // console.log('parts', parts);
+                            // console.log('roomsTsensors', roomsTsensors);
                             for (var i = 1; i < roomsNum + 1; i++) {
                                 obj = document.getElementById('Tx_' + i);
                                 //alert('Tx_'+roomsTsensors[i]);

@@ -1,5 +1,6 @@
 {
-    "/js/main.js": "/js/main.js?id=49098c398184611ba0310a950cf0ea0a",
+    "/js/main.js": "/js/main.js?id=c5c7395525e1029bb580eb788ca5c5ae",
+    "/js/include_mix_manifest.js": "/js/include_mix_manifest.js?id=526fd2ed27beabd65f9ad0be8768e2a2",
     "/css/main.css": "/css/main.css?id=c89106e9170688896ff8e25c4a6a2422",
     "/css/icons.css": "/css/icons.css?id=7866c96fa8fbf372bccaaa5ca7879e07",
     "/fonts/icon.eot": "/fonts/icon.eot?id=1084d2e5f9f75aecce4b5eb45054d982",
@@ -7,5 +8,5 @@
     "/fonts/icon.ttf": "/fonts/icon.ttf?id=15b850c048529cd868b8eeb9c1cdb707",
     "/fonts/icon.woff": "/fonts/icon.woff?id=f552c07dd3273cabd2d279b5fbf08f82",
     "/images/imc_logo.png": "/images/imc_logo.png?id=a8626dbb72a177bc01e04fcbdd5fb0d4",
-    "/index.html": "/index.html?id=0a14f381df445423c8885603ee62eb71"
+    "/index.html": "/index.html?id=418af953ed0cd431af15604b8b980816"
 }

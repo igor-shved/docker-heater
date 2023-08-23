@@ -30,10 +30,10 @@
                     <a href="" @click.prevent="selectScheduleMode(0)"><img src="/icons/t2.png"/></a>
                 </div>
                 <div class="modal__schedule_mode_select_element">
-                    <a href="" @click.prevent="selectScheduleMode(1)"><img src="/icons/mode-off.png"/></a>
+                    <a href="" @click.prevent="selectScheduleMode(2)"><img src="/icons/mode-off.png"/></a>
                 </div>
                 <div class="modal__schedule_mode_select_element">
-                    <a href="" @click.prevent="selectScheduleMode(2)"><img src="/icons/mode-on.png"/></a>
+                    <a href="" @click.prevent="selectScheduleMode(1)"><img src="/icons/mode-on.png"/></a>
                 </div>
             </div>
         </template>
@@ -46,11 +46,11 @@
             >
             </select_temperature>
 
-            <div v-else-if="scheduleMode === 1" class="modal__schedule_info">
+            <div v-else-if="scheduleMode === 2" class="modal__schedule_info">
                 <img src="/icons/mode-off.png"/>
                 <p>Выключить</p>
             </div>
-            <div v-else-if="scheduleMode === 2" class="modal__schedule_info">
+            <div v-else-if="scheduleMode === 1" class="modal__schedule_info">
                 <img src="/icons/mode-on.png"/>
                 <p>Включить</p>
             </div>

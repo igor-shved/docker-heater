@@ -96,9 +96,9 @@ export default {
         imgPeriod() {
             if (this.scheduleItem.mode === 0) {
                 return '/icons/t-small.png';
-            } else if (this.scheduleItem.mode === 1) {
-                return '/icons/s_mode-off.png';
             } else if (this.scheduleItem.mode === 2) {
+                return '/icons/s_mode-off.png';
+            } else if (this.scheduleItem.mode === 1) {
                 return '/icons/s_mode-on.png';
             }
         },

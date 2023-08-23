@@ -254,6 +254,11 @@ export default {
             this.isOpenModalSchedule = false;
         },
         saveSetting() {
+            let thisServerUpdateTime = Math.floor(Date.now() / 1000);
+            let strSetting = this.generateSettingsText(thisServerUpdateTime);
+            let hashStrSetting = strSetting.hashCode();
+            if (hashStrSetting < 0) hashStrSetting = -hashStrSetting;
+            hashStrSetting = hashStrSetting.toString(16) + ";";
             let objSetting = {
                 id: this.curRoom.id,
                 currentMode: this.currentMode,
@@ -265,7 +270,9 @@ export default {
                 roomName: this.roomName,
                 tempName: this.tempName,
                 relayName: this.relayName,
-                thisServerUpdateTime: Math.floor(Date.now() / 1000),
+                thisServerUpdateTime: thisServerUpdateTime,
+                strSetting: strSetting,
+                hashStrSetting: hashStrSetting,
             }
             axios.post('/api/save_setting_to_files', objSetting)
                 .then(response => {
@@ -274,6 +281,24 @@ export default {
                 .catch(err => {
                     console.log('error /api/save_setting_to_files', err.response.data);
                 })
+        },
+        generateSettingsText(thisServerUpdateTime) {
+            let P_or_room_num = this.roomsPOutputs;
+            if (this.curRoom.id == 0) {
+                P_or_room_num = this.curRoom.id;
+            }
+            let timeout = "0;0";
+            // if (setTimeOutFlag || askTimeOutTime) {
+            //     timeout = curTimeOut + ";" + timeOutMode;
+            // }
+            let strSchedule = '';
+            let strScheduleMode = '';
+            this.scheduleSetting.forEach(item => {
+                strSchedule += String(item.time) + String(item.temp * 10).padStart(3, '0') + ';';
+                strScheduleMode += String(item.mode);
+            })
+            let strSetting = String(this.curRoom.id) + ';' + String(this.currentMode) + ';' + String(this.rightNowTemp) + ';' + timeout + ':' + String(P_or_room_num) + ';' + String(this.roomsTsensors) + ';' + String(this.standByTemp) + ';' + String(this.scheduleSetting.length) + ';' + strSchedule + strScheduleMode + ';';
+            return strSetting;
         },
     },
 }

@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 services:
   nginx:
@@ -36,6 +36,7 @@ services:
     working_dir: ${WORKDIR_CONTAINER}
     volumes:
       - ${WORKDIR_LOCAL}:${WORKDIR_CONTAINER}
+      - ./host/heater-old/logs:/var/www/logs
       #- ./php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
       #- ./php-fpm/z-debug.ini:/usr/local/etc/php/conf.d/z-xdebug.ini
     #environment:
@@ -54,11 +55,13 @@ services:
     volumes:
       - ./mysql/db:/var/lib/mysql
       - ./mysql/log:/var/log/mysql
-    environment:
+    env_file:
+      - env/mysql.env
+    #environment:
       #MYSQL_DATABASE: heater
-      MYSQL_USER: webdev
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: 12345
+      #MYSQL_USER: webdev
+      #MYSQL_ROOT_PASSWORD: root
+      #MYSQL_PASSWORD: 12345
     networks:
       - app_net
     container_name: app_mysql
