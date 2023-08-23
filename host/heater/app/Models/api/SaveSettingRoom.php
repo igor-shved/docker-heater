@@ -4,9 +4,9 @@ namespace App\Models\api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 class SaveSettingRoom extends Model
@@ -23,7 +23,7 @@ class SaveSettingRoom extends Model
         if (!$diskFiles->exists('/outputs/st')) {
             $diskFiles->put('/outputs/st', '00000000000000000');
         }
-        //Log::channel('debug')->debug(json_encode($saveSettingRoom->generateSettingsText($requestData)));
+        Log::channel('debug')->debug(json_encode($saveSettingRoom->generateSettingsText($requestData)));
         $dataRoom = json_encode($saveSettingRoom->generateSettingsText($requestData));
         $diskFiles->put('/outputs/' . $requestData->get('id'), $dataRoom);
         $rndStr = $saveSettingRoom->generateRandomString(6);
@@ -44,9 +44,9 @@ class SaveSettingRoom extends Model
         foreach ($requestData->get('scheduleSetting') as $item) {
             $strTemp = str_pad($item['temp'] * 10, 3, '0', STR_PAD_LEFT);
             $strSchedule = $strSchedule . dechex($item['time'] . $strTemp) . ';';
-            $strScheduleNoDechex = $strSchedule . $item['time'] . $strTemp . ';';
             $strScheduleMode = $strScheduleMode . $item['mode'];
         }
+        Log::channel('debug')->debug('$strScheduleMode' . json_encode($strScheduleMode));
         return dechex($requestData->get('id')) . ';' . dechex($requestData->get('currentMode')) . ';' . dechex($requestData->get('rightNowTemp') * 10) . ';' . $timeout . ':' . dechex($P_or_room_num) . ';' . dechex($requestData->get('roomsTsensors')) . ';' . dechex($requestData->get('standByTemp') * 10) . ';' . dechex(count($requestData->get('scheduleSetting'))) . ';' . $strSchedule . dechex($strScheduleMode) . ';';
     }
 
