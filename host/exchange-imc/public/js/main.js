@@ -17107,7 +17107,9 @@ __webpack_require__.r(__webpack_exports__);
       countSelect: 1,
       operationExchangeProgress: false,
       checkUpload: true,
-      checkDownload: true
+      checkDownload: true,
+      labelButtonAddExchange: 'Додати вибраний обмін в список',
+      selectOnlyMainExchange: false
       //publicPath: process.env.BASE_URL,
     };
   },
@@ -17256,7 +17258,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     clickAddExchange: function clickAddExchange() {
-      if (this.arraySelect.length <= 1) {
+      if (this.selectOnlyMainExchange) {
+        this.addAllExchangeWithMain();
+        return;
+      } else if (this.arraySelect.length <= 1) {
         return;
       }
       this.selectExchanges.push({
@@ -17355,6 +17360,24 @@ __webpack_require__.r(__webpack_exports__);
         }, _callee2, null, [[2, 12, 15, 18]]);
       }))();
     },
+    addAllExchangeWithMain: function addAllExchangeWithMain() {
+      var _this5 = this;
+      this.arrayExchange.map(function (exchange) {
+        var arraySelect = [];
+        arraySelect.push(_this5.mainExchange);
+        arraySelect.push(exchange);
+        _this5.selectExchanges.push({
+          id: _this5.countSelect,
+          selectArray: [].concat(arraySelect),
+          status: '',
+          inProgress: false
+        });
+        _this5.countSelect += 1;
+      });
+      this.mainExchange.isSelect = false;
+      this.arraySelect.splice(0, this.arraySelect.length);
+      this.outputCurrentExchange([]);
+    },
     generateTasks: function generateTasks(itemExchange) {
       var index = 0;
       var arrayTasks = [];
@@ -17431,12 +17454,12 @@ __webpack_require__.r(__webpack_exports__);
       return arrayTasks;
     },
     processRequest: function processRequest(parameters) {
-      var _this5 = this;
+      var _this6 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee3() {
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              if (_this5.operationExchangeProgress) {
+              if (_this6.operationExchangeProgress) {
                 _context3.next = 3;
                 break;
               }
@@ -17444,7 +17467,7 @@ __webpack_require__.r(__webpack_exports__);
               return _context3.abrupt("return");
             case 3:
               _context3.next = 5;
-              return _this5.runProcessRequestPython(parameters);
+              return _this6.runProcessRequestPython(parameters);
             case 5:
             case "end":
               return _context3.stop();
@@ -17453,7 +17476,7 @@ __webpack_require__.r(__webpack_exports__);
       }))();
     },
     runProcessRequest: function runProcessRequest(parameters) {
-      var _this6 = this;
+      var _this7 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee4() {
         var strOperationCur, strOperationPast, strOperationAfter, baseName, urlRequest, result, strStatus, resultStr;
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee4$(_context4) {
@@ -17478,7 +17501,7 @@ __webpack_require__.r(__webpack_exports__);
               parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
               urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
               _context4.next = 10;
-              return _this6.getResultGetRequest(urlRequest);
+              return _this7.getResultGetRequest(urlRequest);
             case 10:
               result = _context4.sent;
               //console.log('result', result);
@@ -17518,7 +17541,7 @@ __webpack_require__.r(__webpack_exports__);
       }))();
     },
     runProcessRequestPython: function runProcessRequestPython(parameters) {
-      var _this7 = this;
+      var _this8 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee5() {
         var strOperationCur, strOperationPast, strOperationAfter, baseName, urlRequest, response, result, strStatus, resultStr;
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee5$(_context5) {
@@ -17543,7 +17566,7 @@ __webpack_require__.r(__webpack_exports__);
               parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
               urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
               _context5.next = 10;
-              return _this7.getResultPythonRequest(urlRequest);
+              return _this8.getResultPythonRequest(urlRequest);
             case 10:
               response = _context5.sent;
               result = response.data;
@@ -17583,13 +17606,13 @@ __webpack_require__.r(__webpack_exports__);
       }))();
     },
     getResultPythonRequest: function getResultPythonRequest(urlRequest) {
-      var _this8 = this;
+      var _this9 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee6() {
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               _context6.next = 2;
-              return _this8.postRequest({
+              return _this9.postRequest({
                 url: 'https://bot.imcagro.com.ua/web/api/exchange1c',
                 data: urlRequest
               });
@@ -17603,13 +17626,13 @@ __webpack_require__.r(__webpack_exports__);
       }))();
     },
     getResultGetRequest: function getResultGetRequest(urlRequest) {
-      var _this9 = this;
+      var _this10 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee7() {
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               _context7.next = 2;
-              return _this9.getRequest(urlRequest).then(function (response) {
+              return _this10.getRequest(urlRequest).then(function (response) {
                 if (Object.prototype.hasOwnProperty.call(response, "data")) {
                   if (Object.prototype.hasOwnProperty.call(response.data, "data")) {
                     return {
@@ -17673,13 +17696,13 @@ __webpack_require__.r(__webpack_exports__);
       }))();
     },
     getRequest: function getRequest(urlRequest) {
-      var _this10 = this;
+      var _this11 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee8() {
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
             case 0:
               _context8.next = 2;
-              return _this10.$axios.get(urlRequest);
+              return _this11.$axios.get(urlRequest);
             case 2:
               return _context8.abrupt("return", _context8.sent);
             case 3:
@@ -17690,13 +17713,13 @@ __webpack_require__.r(__webpack_exports__);
       }))();
     },
     postRequest: function postRequest(objRequest) {
-      var _this11 = this;
+      var _this12 = this;
       return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee9() {
         return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee9$(_context9) {
           while (1) switch (_context9.prev = _context9.next) {
             case 0:
               _context9.next = 2;
-              return _this11.$axios.post(objRequest.url, {
+              return _this12.$axios.post(objRequest.url, {
                 data: objRequest.data
               });
             case 2:
@@ -17710,18 +17733,25 @@ __webpack_require__.r(__webpack_exports__);
     },
     clickStopExchange: function clickStopExchange() {
       this.operationExchangeProgress = false;
+    },
+    changeLabelButtonAddExchange: function changeLabelButtonAddExchange() {
+      if (this.selectOnlyMainExchange) {
+        this.labelButtonAddExchange = 'Додати обмін з усіма базами в список';
+      } else {
+        this.labelButtonAddExchange = 'Додати вибраний обмін в список';
+      }
     }
   }),
   computed: {
     array_block: function array_block() {
-      var _this12 = this;
+      var _this13 = this;
       return this.arrayBlock.map(function (item) {
         if (Array.isArray(item)) {
           item.map(function (itemChild) {
             if (!Object.prototype.hasOwnProperty.call(itemChild, "isSelect")) {
               itemChild.isSelect = false;
             }
-            if (_this12.selectExchanges.includes(itemChild)) {
+            if (_this13.selectExchanges.includes(itemChild)) {
               itemChild.isSelect = true;
             }
             return itemChild;
@@ -17739,8 +17769,14 @@ __webpack_require__.r(__webpack_exports__);
     arraySelect: {
       deep: true,
       handler: function handler() {
-        if (this.arraySelect.length > 1) {
+        if (this.arraySelect.length === 1 && this.arraySelect[0] === this.mainExchange) {
+          this.selectOnlyMainExchange = true;
+        } else {
+          this.selectOnlyMainExchange = false;
+        }
+        if (this.arraySelect.length > 1 || this.selectOnlyMainExchange) {
           this.visibleAddExchange = true;
+          this.changeLabelButtonAddExchange();
         } else {
           this.visibleAddExchange = false;
         }
@@ -17947,51 +17983,47 @@ var _hoisted_7 = {
   key: 0,
   "class": "content-row__block-center"
 };
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_8 = {
   "class": "button-block__text"
-}, " Додати обмін в список ", -1 /* HOISTED */);
-var _hoisted_9 = [_hoisted_8];
-var _hoisted_10 = {
+};
+var _hoisted_9 = {
   "class": "content-row content-flex-center"
 };
-var _hoisted_11 = {
+var _hoisted_10 = {
   key: 0,
   "class": "content-row__block-center"
 };
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "button-block__text"
 }, " Виконати обмін ", -1 /* HOISTED */);
-var _hoisted_13 = [_hoisted_12];
-var _hoisted_14 = {
-  "class": "content-row content-flex-center"
-};
-var _hoisted_15 = {
-  key: 0,
+var _hoisted_12 = [_hoisted_11];
+var _hoisted_13 = {
+  key: 1,
   "class": "content-row__block-center"
 };
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "button-block__text"
 }, " Зупинити обмін ", -1 /* HOISTED */);
-var _hoisted_17 = [_hoisted_16];
-var _hoisted_18 = {
+var _hoisted_15 = [_hoisted_14];
+var _hoisted_16 = {
   "class": "content-row content-flex-center"
 };
-var _hoisted_19 = {
+var _hoisted_17 = {
   key: 0,
   "class": "check-box"
 };
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "check-box__label",
   "for": "idUpload"
 }, "вивантаження даних", -1 /* HOISTED */);
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "check-box__label",
   "for": "idDownload"
 }, "завантаження даних", -1 /* HOISTED */);
-var _hoisted_22 = {
+var _hoisted_20 = {
   "class": "content-row content-flex-center"
 };
-var _hoisted_23 = {
+var _hoisted_21 = {
   key: 0,
   "class": "block-text"
 };
@@ -18010,31 +18042,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.clickAddExchange && $options.clickAddExchange.apply($options, arguments);
     }, ["prevent"]))
-  }, _hoisted_9)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.labelButtonAddExchange), 1 /* TEXT */)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
     "class": "button-block button-block__run-exchange",
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.clickRunExchange && $options.clickRunExchange.apply($options, arguments);
     }, ["prevent"]))
-  }, _hoisted_13)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  }, _hoisted_12)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "",
     "class": "button-block button-block__stop-exchange",
     onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.clickStopExchange && $options.clickStopExchange.apply($options, arguments);
     }, ["prevent"]))
-  }, _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, _hoisted_15)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
     id: "idUpload",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.checkUpload = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkUpload]]), _hoisted_20]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkUpload]]), _hoisted_18]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "checkbox",
     id: "idDownload",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.checkDownload = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkDownload]]), _hoisted_21])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, "Вибраний план обміну:")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.selectExchanges, function (item) {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.checkDownload]]), _hoisted_19])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [$data.visibleOperationExchange ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, "Вибраний план обміну:")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.selectExchanges, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_select_exchanges, {
       key: 'selectExchanges' + String(item.id),
       selectExchangesProps: item

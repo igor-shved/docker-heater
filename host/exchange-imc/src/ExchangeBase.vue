@@ -17,7 +17,7 @@
       <div v-if="visibleAddExchange" class="content-row__block-center">
         <a href="" class="button-block button-block__add-exchange" @click.prevent="clickAddExchange">
           <div class="button-block__text">
-            Додати обмін в список
+            {{ labelButtonAddExchange }}
           </div>
         </a>
       </div>
@@ -30,8 +30,6 @@
           </div>
         </a>
       </div>
-    </div>
-    <div class="content-row content-flex-center">
       <div v-if="visibleOperationExchange" class="content-row__block-center">
         <a href="" class="button-block button-block__stop-exchange" @click.prevent="clickStopExchange">
           <div class="button-block__text">
@@ -87,6 +85,8 @@ export default {
       operationExchangeProgress: false,
       checkUpload: true,
       checkDownload: true,
+      labelButtonAddExchange: 'Додати вибраний обмін в список',
+      selectOnlyMainExchange: false,
       //publicPath: process.env.BASE_URL,
     }
   },
@@ -156,7 +156,7 @@ export default {
       return chunkArray;
     },
     selectExchange(curButton) {
-      if (this.arraySelect.length > 2 && (curButton === this.mainExchange || this.arraySelect.indexOf(curButton) === -1)) {
+      if ((this.arraySelect.length > 2 && (curButton === this.mainExchange || this.arraySelect.indexOf(curButton) === -1))) {
         return;
       }
       curButton.isSelect = !curButton.isSelect;
@@ -223,7 +223,10 @@ export default {
       }
     },
     clickAddExchange() {
-      if (this.arraySelect.length <= 1) {
+      if (this.selectOnlyMainExchange) {
+        this.addAllExchangeWithMain();
+        return;
+      } else if (this.arraySelect.length <= 1) {
         return;
       }
       this.selectExchanges.push({
@@ -268,6 +271,23 @@ export default {
         await this.processRequest(task);
       }
       this.operationExchangeProgress = false;
+    },
+    addAllExchangeWithMain() {
+      this.arrayExchange.map (exchange => {
+        let arraySelect = [];
+        arraySelect.push(this.mainExchange);
+        arraySelect.push(exchange);
+        this.selectExchanges.push({
+          id: this.countSelect,
+          selectArray: [...arraySelect],
+          status: '',
+          inProgress: false,
+        });
+        this.countSelect += 1;
+      });
+      this.mainExchange.isSelect = false;
+      this.arraySelect.splice(0, this.arraySelect.length);
+      this.outputCurrentExchange([]);
     },
     generateTasks(itemExchange) {
       let index = 0;
@@ -513,6 +533,13 @@ export default {
     clickStopExchange() {
       this.operationExchangeProgress = false;
     },
+    changeLabelButtonAddExchange() {
+      if (this.selectOnlyMainExchange) {
+        this.labelButtonAddExchange = 'Додати обмін з усіма базами в список';
+      } else {
+        this.labelButtonAddExchange = 'Додати вибраний обмін в список';
+      }
+    },
   },
   computed: {
     array_block() {
@@ -540,8 +567,14 @@ export default {
     arraySelect: {
       deep: true,
       handler() {
-        if (this.arraySelect.length > 1) {
+        if (this.arraySelect.length === 1 && this.arraySelect[0] === this.mainExchange) {
+          this.selectOnlyMainExchange = true;
+        } else {
+          this.selectOnlyMainExchange = false;
+        }
+        if (this.arraySelect.length > 1 || this.selectOnlyMainExchange) {
           this.visibleAddExchange = true;
+          this.changeLabelButtonAddExchange();
         } else {
           this.visibleAddExchange = false;
         }

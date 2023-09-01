@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/get_rooms_data', [RoomsDataController::class, 'getRoomsData']);
+Route::get('/init_data_files', [RoomsDataController::class, 'getRoomsData']);
+Route::get('/get_rooms_data', [InitDataFilesController::class, 'initDataFiles']);
 Route::post('/get_data_files_debug', [DataFilesDebugController::class, 'getDataFiles']);
 Route::any('/save_setting_to_files', SaveSettingController::class);
 //[DataFilesDebugController::class, 'saveSettingToFiles']

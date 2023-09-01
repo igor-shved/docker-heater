@@ -5,7 +5,6 @@ namespace App\Models\api;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -17,18 +16,36 @@ class SaveSettingRoom extends Model
     {
         $saveSettingRoom = new SaveSettingRoom();
         $requestData = collect($requestRoom);
-
         $diskFiles = Storage::disk('files_project');
-        $diskFiles->put('/outputs/date.x', $requestData->get('thisServerUpdateTime'));
+        try {
+            $diskFiles->put('/outputs/date.x', $requestData->get('thisServerUpdateTime'));
+        } catch (\Throwable $exception) {
+            return response()->json(['success'=>false, 'data'=>$exception->getMessage(), 'status'=>500]);
+        }
         if (!$diskFiles->exists('/outputs/st')) {
             $diskFiles->put('/outputs/st', '00000000000000000');
         }
         Log::channel('debug')->debug(json_encode($saveSettingRoom->generateSettingsText($requestData)));
         $dataRoom = json_encode($saveSettingRoom->generateSettingsText($requestData));
-        $diskFiles->put('/outputs/' . $requestData->get('id'), $dataRoom);
+        try {
+            $diskFiles->put('/outputs/' . $requestData->get('id'), $dataRoom);
+        } catch(\Throwable $exception) {
+            return response()->json(['success'=>false, 'data'=>$exception->getMessage(), 'status'=>500]);
+        }
         $rndStr = $saveSettingRoom->generateRandomString(6);
-        return response()->json(['success' => true, 'data' => $dataRoom, 'status' => 200]);
-        //return response()->json(['success' => true, 'data' => $requestData->get('thisServerUpdateTime'), 'status' => 200]);
+        $state = $diskFiles->get('/outputs/st');
+        $mode = $state[$requestData->get('id')];
+        dump($mode);
+        // m.dirty - 'outputs/st' был выдан уже контроллеру в ответ
+        // d.dirty - 'outputs/x', где x = 0..16 был выдан уже контроллеру в ответ
+        // o.dirty - данные 'outputs/st' или 'outputs/x' устарели,
+        // контроллер должен начать процедуру запроса данных с начала (refresh)
+        // x.dirty = 000 (первый байт = o.dirty, воторой байт m.dirty, третий байт - d.dirty)
+        // if $mode == 0 => mode = 1 // 1 - only temp & states;
+        // if $mode == 1 => mode = 1
+        // if $mode == 2 => mode = 3 // temp & shed
+
+        return response()->json(['success' => true, 'data' => $requestData->get('thisServerUpdateTime'), 'status' => 200]);
     }
 
     private function generateSettingsText($requestData)

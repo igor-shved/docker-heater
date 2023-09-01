@@ -149,19 +149,35 @@ var __webpack_exports__ = {};
   !*** ./src/js/include_mix_manifest.js ***!
   \****************************************/
 var _slicedToArray = (__webpack_require__(/*! ./node_modules/@babel/runtime/helpers/slicedToArray.js */ "./node_modules/@babel/runtime/helpers/slicedToArray.js")["default"]);
-fetch('../mix-manifest.json').then(function (response) {
+var currentUrl = window.location.href.replace(/\/$/, '');
+fetch(currentUrl + '/mix-manifest.json').then(function (response) {
   return response.json();
 }).then(function (data) {
+  var regexCss = /\.css\b/;
+  var regexJs = /\.js\b/;
+  var regexMixManifest = /include_mix_manifest.js\b/;
   Object.entries(data).map(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       key = _ref2[0],
       value = _ref2[1];
-    document.querySelectorAll('link[href="' + key + '"]').forEach(function (element) {
-      element.setAttribute('href', value);
-    });
-    document.querySelectorAll('script[src="' + key + '"]').forEach(function (element) {
-      element.setAttribute('src', value);
-    });
+    //     document.querySelectorAll('link[href="' + key + '"]').forEach(element => {
+    //         element.setAttribute('href', currentUrl + value);
+    //     });
+    //     document.querySelectorAll('script[src="' + key + '"]').forEach(element => {
+    //         element.setAttribute('src', currentUrl + value);
+    //     });
+
+    if (regexCss.test(value)) {
+      var linkElement = document.createElement('link');
+      linkElement.rel = 'stylesheet';
+      linkElement.href = currentUrl + value;
+      document.head.append(linkElement);
+    }
+    if (regexJs.test(value) && !regexMixManifest.test(value)) {
+      var scriptElement = document.createElement('script');
+      scriptElement.src = currentUrl + value;
+      document.body.append(scriptElement);
+    }
   });
 })["catch"](function (error) {
   console.error('error open mix-manifest.json', error);

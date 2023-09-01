@@ -144,7 +144,7 @@ if (flock($fstate, LOCK_EX)) // установка исключительной 
 
     //if ( $mode == 3 ) // no need to update $mode
     // but have to update x.dirty flag
-    savelog(['$mode'=>$mode, '$force'=>$force, '$force2'=>$force2]);
+    savelog(['$mode'=>$mode, '$force'=>$force, '$force2'=>$force2, '$xOutFileName'=>$xOutFileName]);
     savelog(['$xOut'=>$xOut]); //$xOut - считанные перед изменением данные из файла выбранной комнаты
     savelog(['$valGet'=>$valGet]);
     if ($xOut != "") {

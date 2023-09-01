@@ -9,5 +9,4 @@ mix.js('src/main.js', 'js')
     .copy('src/images', 'public/images')
     .copy('src/index.html', 'public')
     .sass('src/sass/main.scss', 'css')
-    .setPublicPath('public')
-    ;
+    .setPublicPath('public');
