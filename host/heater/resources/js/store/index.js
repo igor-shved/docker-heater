@@ -22,15 +22,6 @@ const state = {
     copySchedule: {roomId: 0, scheduleRoom: []},
 };
 
-const axios_async = async (req_url) => {
-    try {
-        const response = await axios.get(req_url);
-        return response.data;
-    } catch (error) {
-        throw new Error(error);
-    }
-}
-
 const actions = {
         LOAD_ROOMS_DATA({commit}, req_url) {
             axios.get(req_url)
@@ -51,7 +42,7 @@ const actions = {
                 })
                 .catch(error => {
                     console.log(error);
-                    commit('SET_ROOMS_DATA', []);
+                    commit('SET_ROOMS_DATA_UPDATE', []);
                 })
         },
         SET_NEW_SETTING_ARRAY({commit}, objSetting) {
@@ -127,9 +118,6 @@ const getters = {
     },
     isLoadDataRooms: state => {
         return state.isLoadDataRooms;
-    },
-    arrayNewSetting: state => {
-        return state.arrayNewSetting;
     },
     currentRoom: state => {
         return state.currentRoom;

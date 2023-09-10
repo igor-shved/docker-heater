@@ -1,0 +1,58 @@
+.banner {
+  padding-top: 24px;
+
+  &__slider {
+    position: relative;
+
+    .swiper-slide {
+      height: auto;
+    }
+  }
+
+  &__image {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    img {
+      border-radius: 32px;
+      overflow: hidden;
+    }
+  }
+
+  &__arrows {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    pointer-events: none;
+    padding: 24px;
+  }
+
+  &__arrow {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    pointer-events: all;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.5, 0.02, 0.13, 0.5);
+
+    &.swiper-button-disabled {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+body {
+  &.lock {
+    touch-action: none;
+    -ms-touch-action: none;
+    overflow: hidden;
+  }
+}
+
+html {
+  ::-webkit-scrollbar {
+    width: 4px;
+    right: -10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 7px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--orange);
+    border-radius: 10px;
+  }
+
+}
+
+picture {
+  display: inline-flex;
+  align-items: center;
+}
+
+@function percent($px, $from) {
+  $result: math.div($px, $from) * 100%;
+  @return $result;
+}
