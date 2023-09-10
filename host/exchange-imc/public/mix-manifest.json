@@ -1,12 +1,10 @@
 {
-    "/js/main.js": "/js/main.js?id=a6654d90eb964438ad7a7b5e464765fe",
-    "/js/include_mix_manifest.js": "/js/include_mix_manifest.js?id=6b59fc950bd921a8a378ff3c27c92b5f",
-    "/css/main.css": "/css/main.css?id=c89106e9170688896ff8e25c4a6a2422",
-    "/css/icons.css": "/css/icons.css?id=7866c96fa8fbf372bccaaa5ca7879e07",
+    "/js/main.js": "/js/main.js?id=0cd076d2c787812871e69732cf286b80",
+    "/css/main.css": "/css/main.css?id=67aa396aa649a735a9c42db3ba14b7df",
     "/fonts/icon.eot": "/fonts/icon.eot?id=1084d2e5f9f75aecce4b5eb45054d982",
     "/fonts/icon.svg": "/fonts/icon.svg?id=94e9053f74379e2add098c0a4e16ce99",
     "/fonts/icon.ttf": "/fonts/icon.ttf?id=15b850c048529cd868b8eeb9c1cdb707",
     "/fonts/icon.woff": "/fonts/icon.woff?id=f552c07dd3273cabd2d279b5fbf08f82",
-    "/images/imc_logo.png": "/images/imc_logo.png?id=a8626dbb72a177bc01e04fcbdd5fb0d4",
-    "/index.html": "/index.html?id=c8dac0d130367b23ae9ae3fd16dafd29"
+    "/favicon.ico": "/favicon.ico?id=59fb282f05e3d3a46b34e52024bbdfd6",
+    "/index.html": "/index.html?id=0d1e1c27f9508cf87306c070940c70d3"
 }

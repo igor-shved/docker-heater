@@ -273,7 +273,7 @@ export default {
       this.operationExchangeProgress = false;
     },
     addAllExchangeWithMain() {
-      this.arrayExchange.map (exchange => {
+      this.arrayExchange.map(exchange => {
         let arraySelect = [];
         arraySelect.push(this.mainExchange);
         arraySelect.push(exchange);
@@ -383,7 +383,7 @@ export default {
       parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
       let urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
       let result = await this.getResultGetRequest(urlRequest);
-      //console.log('result', result);
+      console.log('result', result);
       let strStatus = '';
       if (result.status === "error") {
         if (Object.prototype.hasOwnProperty.call(result, "data")) {
@@ -432,33 +432,54 @@ export default {
       }
       parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
       let urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
-      let response = await this.getResultPythonRequest(urlRequest);
-      let result = response.data;
-      let strStatus = '';
-      if (result.status === "error") {
-        if (Object.prototype.hasOwnProperty.call(result, "data")) {
-          if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
-            if (result.status === 'error') {
-              let resultStr = '';
-              if (Array.isArray(result.data)) {
-                result.data.forEach((item, index) => {
-                  if (index === 0) {
-                    resultStr = item;
-                  } else {
-                    resultStr = resultStr + ' ' + item;
-                  }
-                });
-              } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
-                resultStr = result.data;
+      let response = await this.getResultPythonRequest(urlRequest)
+          .then(response => {
+            return {success: true, data: response.data};
+          })
+          .catch(err => {
+                if (Object.prototype.hasOwnProperty.call(err.response.data, "data")) {
+                  return {success: true, data: err.response.data};
+                } else {
+                  return {success: false, data: err.response.data};
+                }
               }
-              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
-            } else {
-              strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+          );
+      let strStatus = '';
+      if (response.success) {
+        let result = response.data;
+        if (Object.prototype.hasOwnProperty.call(result, "status") && result.status === "error") {
+          if (Object.prototype.hasOwnProperty.call(result, "data")) {
+            if (typeof result === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
+              if (result.status === 'error') {
+                let resultStr = '';
+                if (Array.isArray(result.data)) {
+                  result.data.forEach((item, index) => {
+                    if (index === 0) {
+                      resultStr = item;
+                    } else {
+                      resultStr = resultStr + ' ' + item;
+                    }
+                  });
+                } else if (typeof result.data === "string" || (typeof result.data === "object" && result.data.constructor === String)) {
+                  resultStr = result.data;
+                }
+                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
+                this.operationExchangeProgress = false;
+              } else {
+                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+                this.operationExchangeProgress = false;
+              }
             }
           }
+        } else if (result.status === "success") {
+          strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
         }
-      } else if (result.status === "success") {
-        strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
+      } else if (Object.prototype.hasOwnProperty.call(response.data, "message")) {
+        strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + response.data.message + '. Більш детальну інформацію дивіться в консолі браузера.';
+        this.operationExchangeProgress = false;
+      } else {
+        strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + response.data + '. Більш детальну інформацію дивіться в консолі браузера.';
+        this.operationExchangeProgress = false;
       }
       parameters.exchange.status = strStatus;
       parameters.exchange.inProgress = false;

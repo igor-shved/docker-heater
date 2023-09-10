@@ -2355,7 +2355,7 @@ ws = new WebSocket("ws://house4u.com.ua:789");
                 $.ajax({url: urlstate, async: false, cache: false, timeout: 3000})
                     .done(function (data) {
                         //alert(data + "\n" + urlstate );
-
+                        res = false;
                         if (data == hash || data == 'ntc')
                             res = true;
                         else {
@@ -3165,6 +3165,7 @@ ws = new WebSocket("ws://house4u.com.ua:789");
                         if (allParams[13][6] == "true")
                             weAreLocalServer = true;
 
+                        console.log('allParams', allParams);
                         //alert(requestPassVar + "\n" + allParams[13][7]);
                         requestPassVar = false;
                         if (allParams[13][7] == "true")
@@ -3227,9 +3228,10 @@ ws = new WebSocket("ws://house4u.com.ua:789");
             }
 
             function updateSettingsFromRemoteHost() {
-                if (!weAreLocalServer || !useRmoteServerVar)
+                if (!weAreLocalServer || !useRmoteServerVar) {
+                    console.log('!weAreLocalServer || !useRmoteServerVar')
                     return;
-
+                }
                 urlstate = scriptPath + 'get-remote.php?update=' + thisServerUpdateTime;
 
                 //if ( stop_startListenXDirty_Remote )

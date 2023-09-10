@@ -31,11 +31,14 @@ export default {
     beforeMount() {
         document.body.addEventListener("keydown", this.onKeyDown);
         this.$eventBus.$on("modal_all_setting", this.modalAllSetting);
-        this.LOAD_ROOMS_DATA('/api/get_rooms_data');
+        this.$eventBus.$on("update_state_rooms", this.updateStateRooms);
+        //setTimeout(this.loadDataRooms, 3000);
+        this.loadDataRooms();
     },
     beforeUnmount() {
         document.body.removeEventListener("keydown", this.onKeyDown);
         this.$eventBus.$off("modal_all_setting", this.modalAllSetting);
+        this.$eventBus.$off("update_state_rooms", this.updateStateRooms);
     },
     methods: {
         ...mapActions(['LOAD_ROOMS_DATA']),
@@ -60,6 +63,12 @@ export default {
             this.curRoom = curRoom;
             this.isOpenModalAllSetting = false;
             document.body.classList.remove('body__Overflow_y_hidden');
+        },
+        async loadDataRooms(){
+            await this.LOAD_ROOMS_DATA('/api/get_rooms_data');
+        },
+        updateStateRooms(){
+
         },
     },
 

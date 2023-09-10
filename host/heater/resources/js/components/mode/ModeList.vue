@@ -31,7 +31,7 @@ export default {
         }
     },
     created() {
-        this.arrayModes = this.$getArrayModesFromRoom(this.roomProps.id);
+        this.arrayModes = this.roomProps.arrayModes;
         this.$eventBus.$on('select_mode_click', this.selectModeClick);
     },
     beforeUnmount() {

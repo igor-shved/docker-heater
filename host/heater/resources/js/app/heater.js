@@ -11,30 +11,6 @@ app.component('heater_list', require('../components/room/HeaterList.vue').defaul
 app.config.globalProperties.$eventBus = new VueEventer();
 app.mixin({
     created() {
-        this.$getArrayModesFromRoom = function (idRoom) {
-            let itemArray = undefined;
-            let arrayModes = [];
-            let arrayModesStore = this.$store.state.arrayModesRooms;
-            for (let i = 0; i < arrayModesStore.length; i++) {
-                if (arrayModesStore[i].id === idRoom) {
-                    itemArray = arrayModesStore[i];
-                    break;
-                }
-            }
-            if (itemArray != undefined) {
-                arrayModes = itemArray.arrayModes;
-            }
-            return arrayModes;
-        }
-        this.$setIsSelectArrayModes = function (arrayModes, idMode) {
-            arrayModes.forEach(item => {
-                if (item.id === idMode) {
-                    item.isSelect = true;
-                } else {
-                    item.isSelect = false;
-                }
-            })
-        }
         this.$isEqualArrays = function (arr1, arr2) {
             if (arr1.length !== arr2.length) return false;
             for (let i = 0; i < arr1.length; i++) {

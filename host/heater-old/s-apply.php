@@ -87,6 +87,7 @@ for ($i = 0; $i < count($vals) - 2; $i++)
     $strOldHash = $strOldHash . $vals[$i] . ";";
 
 $oldHash = hashme($strOldHash) . ";";
+savelog(['$strOldHash'=>$strOldHash]);
 $valGet = $valGetNew . $schedule;
 //savelog(['$valGet'=> $valGet]);
 //savelog(['$partsPart2'=> $partsPart2]);
@@ -95,7 +96,7 @@ $valGet = $valGetNew . $schedule;
 //savelog(['$scheduleNoDechex'=>$scheduleNoDechex]);
 //savelog(['$strOldHash'=>$strOldHash, '$oldHash'=>$oldHash,'$valGet'=>$valGet, '$vals'=>$vals]);
 
-savelog(['$vals'=>$vals]);
+//savelog(['$vals'=>$vals]);
 
 //print "LOCK_EX: $xOutFileName err";
 //return;
@@ -112,11 +113,13 @@ $rndStr = generateRandomString(6);
 
 $state = "";
 $fstate = fopen("outputs/st", "r+");
+
 if (flock($fstate, LOCK_EX)) // установка исключительной блокировки на запись
 {
     //$state = file_get_contents("outputs/st");   
     $state = fread($fstate, filesize("outputs/st"));
 
+    savelog(['s-apply outputs/st read', $state]);
     // write new data
     $file = fopen($xOutFileName, "w");
     if (flock($file, LOCK_EX)) {
@@ -144,9 +147,9 @@ if (flock($fstate, LOCK_EX)) // установка исключительной 
 
     //if ( $mode == 3 ) // no need to update $mode
     // but have to update x.dirty flag
-    savelog(['$mode'=>$mode, '$force'=>$force, '$force2'=>$force2, '$xOutFileName'=>$xOutFileName]);
-    savelog(['$xOut'=>$xOut]); //$xOut - считанные перед изменением данные из файла выбранной комнаты
-    savelog(['$valGet'=>$valGet]);
+//    savelog(['$mode'=>$mode, '$force'=>$force, '$force2'=>$force2, '$xOutFileName'=>$xOutFileName]);
+//    savelog(['$xOut'=>$xOut]); //$xOut - считанные перед изменением данные из файла выбранной комнаты
+//    savelog(['$valGet'=>$valGet]);
     if ($xOut != "") {
         //print "$valGet<br>$xOut<br>";
 
@@ -223,6 +226,7 @@ if (flock($fstate, LOCK_EX)) // установка исключительной 
         }
     }
 
+    //Запись в файл состояния данных outputs/st
     if ($state[$vals[0]] != $mode) {
         $state[$vals[0]] = $mode;
         $stx = explode(":", $state);

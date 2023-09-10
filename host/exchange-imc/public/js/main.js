@@ -17504,72 +17504,7 @@ __webpack_require__.r(__webpack_exports__);
               return _this7.getResultGetRequest(urlRequest);
             case 10:
               result = _context4.sent;
-              //console.log('result', result);
-              strStatus = '';
-              if (result.status === "error") {
-                if (Object.prototype.hasOwnProperty.call(result, "data")) {
-                  if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
-                    if (result.status === 'error') {
-                      resultStr = '';
-                      if (Array.isArray(result.data)) {
-                        result.data.forEach(function (item, index) {
-                          if (index === 0) {
-                            resultStr = item;
-                          } else {
-                            resultStr = resultStr + ' ' + item;
-                          }
-                        });
-                      } else if (typeof result.data === "string" || (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result.data) === "object" && result.data.constructor === String) {
-                        resultStr = result.data;
-                      }
-                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
-                    } else {
-                      strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
-                    }
-                  }
-                }
-              } else if (result.status === "success") {
-                strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
-              }
-              parameters.exchange.status = strStatus;
-              parameters.exchange.inProgress = false;
-            case 15:
-            case "end":
-              return _context4.stop();
-          }
-        }, _callee4);
-      }))();
-    },
-    runProcessRequestPython: function runProcessRequestPython(parameters) {
-      var _this8 = this;
-      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee5() {
-        var strOperationCur, strOperationPast, strOperationAfter, baseName, urlRequest, response, result, strStatus, resultStr;
-        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
-            case 0:
-              parameters.exchange.inProgress = true;
-              strOperationCur = '';
-              strOperationPast = '';
-              strOperationAfter = '';
-              baseName = '';
-              if (parameters.operation === 'upload') {
-                baseName = parameters.baseTo.name;
-                strOperationCur = 'вивантаження';
-                strOperationPast = 'вивантаженні';
-                strOperationAfter = 'вивантаженню';
-              } else if (parameters.operation === 'download') {
-                baseName = parameters.baseFrom.name;
-                strOperationCur = 'завантаження';
-                strOperationPast = 'завантаженні';
-                strOperationAfter = 'завантаженню';
-              }
-              parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
-              urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
-              _context5.next = 10;
-              return _this8.getResultPythonRequest(urlRequest);
-            case 10:
-              response = _context5.sent;
-              result = response.data;
+              console.log('result', result);
               strStatus = '';
               if (result.status === "error") {
                 if (Object.prototype.hasOwnProperty.call(result, "data")) {
@@ -17599,6 +17534,98 @@ __webpack_require__.r(__webpack_exports__);
               parameters.exchange.status = strStatus;
               parameters.exchange.inProgress = false;
             case 16:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
+      }))();
+    },
+    runProcessRequestPython: function runProcessRequestPython(parameters) {
+      var _this8 = this;
+      return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_4__["default"])( /*#__PURE__*/(0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().mark(function _callee5() {
+        var strOperationCur, strOperationPast, strOperationAfter, baseName, urlRequest, response, strStatus, result, resultStr;
+        return (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_regeneratorRuntime_js__WEBPACK_IMPORTED_MODULE_3__["default"])().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              parameters.exchange.inProgress = true;
+              strOperationCur = '';
+              strOperationPast = '';
+              strOperationAfter = '';
+              baseName = '';
+              if (parameters.operation === 'upload') {
+                baseName = parameters.baseTo.name;
+                strOperationCur = 'вивантаження';
+                strOperationPast = 'вивантаженні';
+                strOperationAfter = 'вивантаженню';
+              } else if (parameters.operation === 'download') {
+                baseName = parameters.baseFrom.name;
+                strOperationCur = 'завантаження';
+                strOperationPast = 'завантаженні';
+                strOperationAfter = 'завантаженню';
+              }
+              parameters.exchange.status = 'Виконується ' + strOperationCur + ' даних на ' + baseName;
+              urlRequest = parameters.baseFrom.path + parameters.operation + '/' + parameters.baseTo.nameExchange;
+              _context5.next = 10;
+              return _this8.getResultPythonRequest(urlRequest).then(function (response) {
+                return {
+                  success: true,
+                  data: response.data
+                };
+              })["catch"](function (err) {
+                if (Object.prototype.hasOwnProperty.call(err.response.data, "data")) {
+                  return {
+                    success: true,
+                    data: err.response.data
+                  };
+                } else {
+                  return {
+                    success: false,
+                    data: err.response.data
+                  };
+                }
+              });
+            case 10:
+              response = _context5.sent;
+              strStatus = '';
+              if (response.success) {
+                result = response.data;
+                if (Object.prototype.hasOwnProperty.call(result, "status") && result.status === "error") {
+                  if (Object.prototype.hasOwnProperty.call(result, "data")) {
+                    if ((0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result) === 'object' && Object.prototype.hasOwnProperty.call(result, "data") && Object.prototype.hasOwnProperty.call(result, "status")) {
+                      if (result.status === 'error') {
+                        resultStr = '';
+                        if (Array.isArray(result.data)) {
+                          result.data.forEach(function (item, index) {
+                            if (index === 0) {
+                              resultStr = item;
+                            } else {
+                              resultStr = resultStr + ' ' + item;
+                            }
+                          });
+                        } else if (typeof result.data === "string" || (0,_var_www_exchange_imc_node_modules_babel_runtime_helpers_esm_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(result.data) === "object" && result.data.constructor === String) {
+                          resultStr = result.data;
+                        }
+                        strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + resultStr;
+                        _this8.operationExchangeProgress = false;
+                      } else {
+                        strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName;
+                        _this8.operationExchangeProgress = false;
+                      }
+                    }
+                  }
+                } else if (result.status === "success") {
+                  strStatus = 'Операція по ' + strOperationAfter + ' даних на ' + baseName + ' виконана успішно';
+                }
+              } else if (Object.prototype.hasOwnProperty.call(response.data, "message")) {
+                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + response.data.message + '. Більш детальну інформацію дивіться в консолі браузера.';
+                _this8.operationExchangeProgress = false;
+              } else {
+                strStatus = 'Виникла помилка при ' + strOperationPast + ' даних на ' + baseName + ' по причині: ' + response.data + '. Більш детальну інформацію дивіться в консолі браузера.';
+                _this8.operationExchangeProgress = false;
+              }
+              parameters.exchange.status = strStatus;
+              parameters.exchange.inProgress = false;
+            case 15:
             case "end":
               return _context5.stop();
           }

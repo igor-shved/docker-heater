@@ -65,13 +65,17 @@ export default {
     },
     data() {
         return {
-            arrayModes: [],
+            arrayModes: this.roomProps.arrayModes,
             room: this.roomProps,
         }
     },
     created() {
-        this.arrayModes = this.$getArrayModesFromRoom(this.room.id);
-
+        //this.arrayModes = this.$getArrayModesFromRoom(this.room.id);
+    },
+    methods: {
+        openModalAllSetting() {
+            this.$eventBus.$emit('modal_all_setting', 'open', this.room);
+        }
     },
     computed: {
         itMainBlock() {
@@ -84,11 +88,6 @@ export default {
         },
         onRelay() {
             return this.room.currentStatusRelay === 1;
-        }
-    },
-    methods: {
-        openModalAllSetting() {
-            this.$eventBus.$emit('modal_all_setting', 'open', this.room);
         }
     },
 }

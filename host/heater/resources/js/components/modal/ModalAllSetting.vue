@@ -110,7 +110,7 @@ export default {
             isOpenModalStandByTemp: false,
             isOpenModalSettingRelayTemp: false,
             isOpenModalSchedule: false,
-            arrayModes: [],
+            arrayModes: this.roomProps.arrayModes,
             classArray: {
                 'modal__shadow_main': true,
                 'modal__shadow_background': true,
@@ -151,7 +151,7 @@ export default {
         },
         selectModeText() {
             let filterItem = this.arrayModes.filter(item =>
-                item.id === this.curRoom.currentMode
+                item.isSelect
             );
             let textMode = '';
             if (filterItem.length === 1) {
@@ -163,6 +163,7 @@ export default {
     methods: {
         ...mapActions(['COPY_SETTING_ROOM_TO_ARRAY', 'SET_CURRENT_ROOM']),
         closeModal() {
+            this.updateArrayModes('close');
             this.$eventBus.$emit('modal_all_setting', 'close', this.curRoom);
         },
         selectMode(selMode) {
@@ -253,11 +254,13 @@ export default {
             objArg.scheduleArray.map(item => this.scheduleSetting.push({...item}));
             this.isOpenModalSchedule = false;
         },
-        saveSetting() {
+        async saveSetting() {
             let thisServerUpdateTime = Math.floor(Date.now() / 1000);
             let strSetting = this.generateSettingsText(thisServerUpdateTime);
             let hashStrSetting = strSetting.hashCode();
-            if (hashStrSetting < 0) hashStrSetting = -hashStrSetting;
+            if (hashStrSetting < 0) {
+                hashStrSetting = -hashStrSetting;
+            }
             hashStrSetting = hashStrSetting.toString(16) + ";";
             let objSetting = {
                 id: this.curRoom.id,
@@ -274,17 +277,35 @@ export default {
                 strSetting: strSetting,
                 hashStrSetting: hashStrSetting,
             }
-            axios.post('/api/save_setting_to_files', objSetting)
+            await axios.post('/api/save_setting_to_files', objSetting)
                 .then(response => {
-                    console.log('response', response.data.data);
+                    this.$eventBus.$emit('update_state_rooms');
+                    this.updateArrayModes('save');
                 })
                 .catch(err => {
                     console.log('error /api/save_setting_to_files', err.response.data);
-                })
+                });
+        },
+        updateArrayModes(operation) {
+            let filterItem = null;
+            if (operation === 'save') {
+                filterItem = this.arrayModes.find(item => item.id === this.currentMode);
+            } else if (operation === 'close') {
+                filterItem = this.arrayModes.find(item => item.id === this.curRoom.currentMode);
+            }
+            this.arrayModes.forEach(item => {
+                if (item.id === filterItem.id) {
+                    item.isSelect = true;
+                    this.currentMode = item.id;
+                    this.curRoom.currentMode = item.id;
+                } else {
+                    item.isSelect = false;
+                }
+            })
         },
         generateSettingsText(thisServerUpdateTime) {
             let P_or_room_num = this.roomsPOutputs;
-            if (this.curRoom.id == 0) {
+            if (this.curRoom.id === 0) {
                 P_or_room_num = this.curRoom.id;
             }
             let timeout = "0;0";

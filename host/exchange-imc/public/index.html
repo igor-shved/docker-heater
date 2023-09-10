@@ -1,26 +1,52 @@
 <!DOCTYPE html>
 <html lang="">
+<script>
+    let currentUrl = window.location.href.replace(/\/$/, '');
+    fetch(currentUrl + '/mix-manifest.json')
+        .then(response => response.json())
+        .then(data => {
+            let regexCss = /\.css\b/;
+            let regexJs = /\.js\b/;
+            let regexIco = /\.ico\b/;
+            Object.entries(data).map(([key, value]) => {
+                if (regexCss.test(key)) {
+                    let linkElement = document.createElement('link');
+                    linkElement.rel = 'stylesheet';
+                    linkElement.href = currentUrl + value;
+                    document.head.append(linkElement);
+                }
+                if (regexJs.test(key)) {
+                    let scriptElement = document.createElement('script');
+                    scriptElement.src = currentUrl + value;
+                    document.head.append(scriptElement);
+                }
+                if (regexIco.test(key)) {
+                    let scriptElement = document.createElement('link');
+                    scriptElement.rel = "icon";
+                    scriptElement.type = "image/x-icon";
+                    scriptElement.href = currentUrl + value;
+                    document.head.append(scriptElement);
+                }
+            })
+        })
+        .catch(error => {
+            console.error('error open mix-manifest.json', error);
+        })
+</script>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="./images/imc_logo.png"/>
-<!--    <link rel="stylesheet" href="css/main.css"/>-->
-<!--    <link rel="stylesheet" href="css/icons.css"/>-->
     <title>Обміни із базами 1С</title>
 </head>
 <body>
 <noscript>
-    <strong>Нажаль у вас в браузері вимкнено запуск скриптів javascrip, тому не буде працювати даний веб-додаток.</strong>
+    <strong>Нажаль у вас в браузері вимкнено запуск скриптів javascript, тому не буде працювати даний
+        веб-додаток.</strong>
 </noscript>
 <div class="wrapper">
     <div id="exchange" class="content"></div>
-<!--    <div class="footer">-->
-<!--        <div class="footer__content icon-copyright"></div>-->
-<!--        <div class="footer__content">Igor Shved</div>-->
-<!--    </div>-->
 </div>
-<!--<script src="js/main.js"></script>-->
-<script src="./js/include_mix_manifest.js"></script>
 </body>
 </html>
