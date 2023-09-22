@@ -9,6 +9,7 @@
         <span>Loading data</span>
     </div>
     <modal_all_setting v-if="isOpenModalAllSetting"
+                       :key="'modalAllSetting'+ String(room.id)"
                        :roomProps="curRoom"
                        :zIndexProps = 1001
     />

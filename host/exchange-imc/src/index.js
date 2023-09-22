@@ -1,5 +1,5 @@
 import {createApp} from 'vue';
-import ExchangeBase from '././ExchangeBase.vue';
+import ExchangeBase from './ExchangeBase.vue';
 import axios from "axios";
 import VueEventer from "vue-eventer";
 import store from "./store";
