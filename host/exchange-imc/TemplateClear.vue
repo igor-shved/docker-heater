@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: 'app',
@@ -20,7 +20,7 @@ export default {
     ...mapActions([]),
   },
   computed: {
-    ...mapState({
+    ...mapGetters({
     })
   },
   watch: {},

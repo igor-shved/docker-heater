@@ -55,7 +55,11 @@ FROM php:$PHP_VER
 		&& docker-php-ext-install gd \
 		&& docker-php-ext-install curl \
 		&& docker-php-source delete
-		
+
+#Install xdebug
+    RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 	RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 	  && docker-php-ext-install -j$(nproc) gd \
 	  && docker-php-source delete
