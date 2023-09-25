@@ -14,7 +14,7 @@ export default {
     return {
     }
   },
-  mounted() {
+  beforeMount() {
   },
   methods: {
     ...mapActions([]),
